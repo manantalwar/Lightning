@@ -1,0 +1,2 @@
+# lightning
+Users are presented with a dashboard that summarizes time series data in a visually appealing way using charts and graphs.  Users are presented with an interactive GUI that facilitates comparison and modeling of time series data. The system encapsulates a REST API that processes user requests and accesses data in a secure manner. The system includes a database that stores the data securely and supports operations such as querying and accessing data.
