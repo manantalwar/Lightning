@@ -1,0 +1,32 @@
+body {
+  margin: 0px;
+}
+
+* {
+  background-color: #26303A;
+
+}
+
+.Box {
+  height: 100px;
+  width: 100px;
+  background-color: aqua;
+}
+
+.navbar {
+  background-color: white;
+  height: 80px;
+  display: flex;
+  align-items: stretch;
+}
+
+.isologo {
+  height: 80px;
+  /* width: 300px; */
+}
+
+/* .Box {
+  background-color: white;
+  height: 100px;
+  width: 100px;
+} */
