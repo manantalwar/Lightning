@@ -1,10 +1,17 @@
 body {
   margin: 0px;
+  
 }
 
 * {
   background-color: #26303A;
 
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  
 }
 
 .Box {
