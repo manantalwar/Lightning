@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from './Navbar';
-import './home.css';
+import './Home.css';
 
 const Home = ({props}) => {
     const [hover1, setHover1] = useState(false);

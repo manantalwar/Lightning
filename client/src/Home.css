@@ -42,5 +42,9 @@ html, body, .home{
 
 .mainbtn:hover {
   background-color: #2AA7DD;
+<<<<<<< HEAD:client/src/home.css
   font-size: 15px;
 }
+=======
+}
+>>>>>>> 6783c4f94900334bc95080a55568fa366ad1725e:client/src/Home.css
