@@ -2,7 +2,7 @@ import logo from './logo.jpg'
 
 const Navbar = ({page}) => {
     return (  
-        <nav className = 'Navbar'>
+        <nav className = 'navbar'>
             <img src={logo} className="isologo" alt="logo" />
             {page != "Home" &&
                 <div className="Nothome"> 

@@ -1,5 +1,3 @@
-import logo from './logo.jpg';
-import Navbar from './Navbar';
 import Home from './Home.js';
 
 function App() {
