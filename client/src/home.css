@@ -4,13 +4,11 @@ html, body, .home{
   height:100%;
 }
 
-
 .header {
   height: 10%;
   background-color: white;
   display: flex;
 }
-
 
 .container {
   display: flex;
