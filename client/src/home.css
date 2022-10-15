@@ -42,4 +42,5 @@ html, body, .home{
 
 .mainbtn:hover {
   background-color: #2AA7DD;
+  font-size: 15px;
 }
