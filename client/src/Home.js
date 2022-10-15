@@ -24,6 +24,7 @@ const Home = ({props}) => {
                         onMouseLeave={() => setHover2(false)}>
                         {!hover2 && <div>Simulation</div>}
                         {hover2 && <div>Filters datasets based on chosen queries and displays graphs and useful information about remaining nodes.</div>}
+                        
                     </button>
                 </div>
             </div>

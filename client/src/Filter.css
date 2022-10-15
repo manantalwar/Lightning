@@ -1,0 +1,70 @@
+.filter{
+    height: 100%;
+}
+
+.content{
+    height: 90%;
+    display: flex;
+}
+
+.list{
+    height: 100%;
+    width: 37%;
+    display: flex;
+    flex-direction: column;
+}
+
+.filterList{
+    height: 80%;
+    width: 85%;
+    background-color: #26303A;
+    border: 1vw solid white;
+    margin-left: 5%;
+}
+
+.topTitle{
+    color: white;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    font-size: 20px;
+    text-align: center;
+}
+
+.submit{
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 5%;
+    width: 30%;
+    font-size: 20px;
+}
+
+.filters{
+    height: 100%;
+    width: 21%;
+    display: flex;
+    flex-direction: column;
+}
+
+.scenarioTitle{
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 1%;
+    margin-top: 100%;
+}
+
+.filterInputs{
+    margin-top: 1%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.add{
+    margin-top: 3%;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
