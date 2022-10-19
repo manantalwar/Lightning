@@ -1,14 +1,12 @@
 const express= require("express");
 const getData = require("./getdata");
 const app=express();
-app.listen(3000)
+app.listen(3000) // localhost for now
 let dbName="dummy-data";
 let colName= "dummy-node-data";
-console.log("new")
+
+//express route-
 app.get('/', (req, res, next)=>{
-    console.log("here");
-    //data.forEach(res.send);
-    console.log(typeof(data))
     getData(dbName, colName).then(
         (data)=>res.send(data)
     )
