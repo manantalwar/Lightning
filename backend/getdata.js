@@ -1,8 +1,6 @@
 const csvtojson = require("csvtojson"); // npm install csvtojson
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://<username>:<password>@cluster0.auigosn.mongodb.net/?retryWrites=true&w=majority";
-let dbName="dummy-data";
-let colName= "dummy-node-data";
 async function getData(databaseName, collectionName){
     const client = new MongoClient(uri, { useUnifiedTopology: true}, { useNewUrlParser: true }, { connectTimeoutMS: 30000 }, { keepAlive: 1}); // establishing connection
     let tosend=[];
