@@ -11,6 +11,7 @@ html, body, .home{
 }
 
 .container {
+  margin-top: 5%;
   display: flex;
   flex-grow: 0;
   flex-direction: column;
@@ -22,6 +23,7 @@ html, body, .home{
 .box {
   height: 60%;
   width: 60%;
+  margin-bottom: 5%;
   background-color: white;
   display: flex;
   flex-direction: column;

@@ -1,3 +1,105 @@
 .validation{
     height: 100%;
 }
+
+.container{
+    top: 100px;
+}
+.title1{
+    position: absolute;
+width: 102px;
+height: 47px;
+left: 20px;
+top: 67px;
+
+font-family: 'Kameron';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 87px;
+
+color: #FFFFFF;
+}
+
+.title2{
+position: absolute;
+width: 91px;
+height: 47px;
+left: 800px;
+top: 67px;
+
+font-family: 'Kameron';
+font-style: normal;
+font-weight: 400;
+font-size: 20px;
+line-height: 87px;
+
+color: #FFFFFF;
+}
+
+.input1{
+    position: absolute;
+    width: 150px;
+    height: 40px;
+    left: 120px;
+    top: 100px;
+    
+background: #D9D9D9;
+}
+
+.input2{
+    position: absolute;
+    width: 150px;
+    height: 40px;
+    left: 320px;
+    top: 100px;
+    
+background: #D9D9D9;
+}
+
+.input3{
+position: absolute;
+width: 150px;
+height: 40px;
+left: 900px;
+top: 100px;
+
+background: #D9D9D9;
+}
+
+.input4{
+position: absolute;
+width: 150px;
+height: 40px;
+left: 1100px;
+top: 100px;
+
+background: #D9D9D9;
+}
+
+.addB{
+    background: #D9D9D9;   
+    position: absolute;
+width: 150px;
+height: 40px;
+left: 1500px;
+top: 100px;
+}
+
+.images{
+    display: flex;
+}
+
+.box {
+   flex: 33.33%;
+  padding: 5px;   
+}
+
+.data{
+    font-family: 'Kameron';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 20px;
+    color: #FFFFFF;
+    align-self: flex-start;
+}
