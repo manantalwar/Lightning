@@ -16,7 +16,7 @@ async function getData(databaseName, collectionName){
                 {LMP: '30.78'}
             ]
         }) 
-        await data.forEach((obj)=>ans.push(obj))
+        await data.forEach((obj)=>tosend.push(obj))
       // return variable which stores all the data
         return tosend;
     }
@@ -24,9 +24,6 @@ async function getData(databaseName, collectionName){
         await client.close()
     }
 }
-
-getData(dbName, colName)
-
 module.exports=getData;
 
 
