@@ -4,7 +4,7 @@ import graph2 from './graph2.png'
 import graph3 from './graph3.png'
 import './Validate.css'
 
-import { HeatMap, PieChart, Pie3D, Donut3D, LineChart } from './Templates';
+import { HeatMap, PieChart, Pie3D, Donut3D, LineChart, BarChart } from './Templates';
 
 const Validation = () => {
     const page = "Validation"
@@ -34,6 +34,8 @@ const Validation = () => {
                 
             </div>
             <LineChart />
+            <br></br>
+            <BarChart />
             <br></br>
             <Donut3D />
             <br></br>

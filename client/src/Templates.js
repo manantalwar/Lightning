@@ -119,6 +119,99 @@ export class HeatMap extends React.Component {
     }
 }
 
+export class BarChart extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        const options = { 
+            chart: {
+                type: 'column'
+            },
+            title: {
+                align: 'center',
+                text: 'Renewable Energy'
+            },
+            subtitle: {
+                align: 'center',
+                text: 'Click the columns to view Renewable Resources'
+            },
+            accessibility: {
+                announceNewData: {
+                    enabled: true
+                }
+            },
+            xAxis: {
+                type: 'category'
+            },
+            yAxis: {
+                title: {
+                    text: 'Total percent Renewable Resources'
+                }
+
+            },
+            legend: {
+                enabled: false
+            },
+            plotOptions: {
+                series: {
+                    borderWidth: 0,
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.y:.1f}%'
+                    }
+                }
+            },
+
+            tooltip: {
+                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+            },
+
+            series: [
+                {
+                    name: "Renewables",
+                    colorByPoint: true,
+                    data: [
+                        {
+                            name: "Wind",
+                            y: 63.06,
+                            drilldown: "Wind"
+                        },
+                        {
+                            name: "Solar",
+                            y: 19.84,
+                            drilldown: "Solar"
+                        },
+                        {
+                            name: "Refuse",
+                            y: 4.18,
+                            drilldown: "Refuse"
+                        },
+                        {
+                            name: "Wood",
+                            y: 4.12,
+                            drilldown: "Wood"
+                        },
+                        {
+                            name: "Landfill",
+                            y: 2.33,
+                            drilldown: "Landfill"
+                        }
+                    ]
+                }
+            ]
+        }
+        return (
+            <HighchartsReact
+                highcharts={Highcharts}
+                options={options}
+            />
+        );
+    }
+    
+}
+
 export class LineChart extends React.Component {
     constructor(props) {
         super(props);
