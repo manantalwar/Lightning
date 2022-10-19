@@ -1,8 +1,6 @@
 import React from 'react';
-// import { render } from 'react-dom';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
-<script src="http://code.highcharts.com/modules/heatmap.js"></script>
 
 const heat = require('highcharts/modules/heatmap');
 heat(Highcharts);
