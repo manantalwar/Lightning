@@ -1,5 +1,5 @@
 import React from 'react';
-import Highcharts from 'highcharts';
+import Highcharts, { chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 const heat = require('highcharts/modules/heatmap');
@@ -12,7 +12,7 @@ export class ScatterPlot extends React.Component {
     render() {
         const options = {
             title: {
-                text: 'Scatter plot with regression line'
+                text: 'Scatter Plot with Regression Line'
             },
             xAxis: {
                 min: 0,
@@ -132,8 +132,8 @@ function getPointCategoryName(point, dimension) {
 
 function makeCells() {
     let cells = [];
-    for (let i = 0; i < 7; ++i) {
-        for (let j = 0; j < 24; ++j) {
+    for (let i = 0; i < 24; ++i) {
+        for (let j = 0; j < 12; ++j) {
             cells.push([j, i, Math.floor(Math.random() * 10)])
         }
     }
@@ -150,34 +150,27 @@ export class HeatMap extends React.Component {
                 type: 'heatmap',
                 marginTop: 40,
                 marginBottom: 80,
-                plotBorderWidth: 1
+                plotBorderWidth: 1,
+                height: 87.5 + '%'
             },
 
 
             title: {
-                text: 'MW of Electricity used every Hour per Day'
+                text: 'Maximum Absolute Percent Errors'
             },
 
             xAxis: {
-                categories: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00']
+                categories: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                title: {
+                    text: 'Months'
+                }
             },
 
             yAxis: {
-                categories: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-                title: null,
-                reversed: true,
-            },
-
-            accessibility: {
-                point: {
-                    descriptionFormatter: function (point) {
-                        var ix = point.index + 1,
-                            xName = getPointCategoryName(point, 'x'),
-                            yName = getPointCategoryName(point, 'y'),
-                            val = point.value;
-                        return ix + '. ' + xName + ' sales ' + yName + ', ' + val + '.';
-                    }
-                }
+                categories: ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'],
+                title: {
+                    text: 'Hour'
+                },
             },
 
             colorAxis: {
@@ -192,17 +185,17 @@ export class HeatMap extends React.Component {
                 margin: 0,
                 verticalAlign: 'top',
                 y: 25,
-                symbolHeight: 280
+                symbolHeight: 984
             },
 
             tooltip: {
                 formatter: function () {
-                    return '<b>' + this.point.value + '</b> MW used at <b>' + getPointCategoryName(this.point, 'x') + '</b> Hrs Last <b>' + getPointCategoryName(this.point, 'y') + '</b>';
+                    return '<b>' + this.point.value + '</b>% at <b>' + getPointCategoryName(this.point, 'y') + '</b> on <b>' + getPointCategoryName(this.point, 'x') + '</b>';
                 }
             },
 
             series: [{
-                name: 'Sales per employee',
+                name: 'Month',
                 borderWidth: 1,
                 data: makeCells(),
                 dataLabels: {
