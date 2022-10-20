@@ -5,6 +5,124 @@ import HighchartsReact from 'highcharts-react-official';
 const heat = require('highcharts/modules/heatmap');
 heat(Highcharts);
 
+export class ScatterPlot extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        const options = {
+            title: {
+                text: 'Scatter plot with regression line'
+            },
+            xAxis: {
+                min: 0,
+                max: 5
+            },
+            yAxis: {
+                min: 0
+            },
+            series: [{
+                type: 'line',
+                name: 'Regression Line',
+                data: [[0, 1.11], [5, 4.51]],
+                marker: {
+                    enabled: false
+                },
+                states: {
+                    hover: {
+                        lineWidth: 0
+                    }
+                },
+                enableMouseTracking: false
+            }, {
+                type: 'scatter',
+                name: 'Observations',
+                data: [1, 1.5, 2.8, 3.5, 3.9, 4.2],
+                marker: {
+                    radius: 4
+                }
+            }]
+        }
+        return (
+            <HighchartsReact
+                highcharts={Highcharts}
+                options={options}
+            />
+        );
+    }
+}
+
+export class Histogram extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render() {
+        const { mainText, subText } = this.props;
+        const options = {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: mainText
+            },
+            subtitle: {
+                text: subText
+            },
+            xAxis: {
+                categories: [
+                2.5,
+                17.5,
+                32.5,
+                47.5,
+                62.5,
+                77.5,
+                107.5,
+                122.5,
+                137.5,
+                152.5,
+                167.5,
+                182.5,
+                197.5
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Percent'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:12px">Price: {point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">Percent: </td>' +
+                '<td style="padding:0">{point.y:.1f} %<b></b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0,
+                    borderWidth: 1,
+                    groupPadding: 0,
+                    shadow: false
+                }
+            },
+            series: [{
+                name: 'HUB Node Prices',
+                data: [2, 7, 17, 19, 13, 9, 7, 6, 5, 4, 3, 2, 1]
+
+            }]
+        }
+        return (
+            <HighchartsReact
+                highcharts={Highcharts}
+                options={options}
+            />
+        );
+    }
+}
+
 function getPointCategoryName(point, dimension) {
     var series = point.series,
         isY = dimension === 'y',
@@ -119,99 +237,6 @@ export class HeatMap extends React.Component {
     }
 }
 
-export class BarChart extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        const options = { 
-            chart: {
-                type: 'column'
-            },
-            title: {
-                align: 'center',
-                text: 'Renewable Energy'
-            },
-            subtitle: {
-                align: 'center',
-                text: 'Click the columns to view Renewable Resources'
-            },
-            accessibility: {
-                announceNewData: {
-                    enabled: true
-                }
-            },
-            xAxis: {
-                type: 'category'
-            },
-            yAxis: {
-                title: {
-                    text: 'Total percent Renewable Resources'
-                }
-
-            },
-            legend: {
-                enabled: false
-            },
-            plotOptions: {
-                series: {
-                    borderWidth: 0,
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.y:.1f}%'
-                    }
-                }
-            },
-
-            tooltip: {
-                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
-            },
-
-            series: [
-                {
-                    name: "Renewables",
-                    colorByPoint: true,
-                    data: [
-                        {
-                            name: "Wind",
-                            y: 63.06,
-                            drilldown: "Wind"
-                        },
-                        {
-                            name: "Solar",
-                            y: 19.84,
-                            drilldown: "Solar"
-                        },
-                        {
-                            name: "Refuse",
-                            y: 4.18,
-                            drilldown: "Refuse"
-                        },
-                        {
-                            name: "Wood",
-                            y: 4.12,
-                            drilldown: "Wood"
-                        },
-                        {
-                            name: "Landfill",
-                            y: 2.33,
-                            drilldown: "Landfill"
-                        }
-                    ]
-                }
-            ]
-        }
-        return (
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
-            />
-        );
-    }
-    
-}
-
 export class LineChart extends React.Component {
     constructor(props) {
         super(props);
@@ -323,410 +348,6 @@ export class LineChart extends React.Component {
                 }, 
             ]
         }
-        return (
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
-            />
-        );
-    }
-}
-
-export class Pie3D extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
-        const options = {
-            chart: {
-                type: 'pie',
-                options3d: {
-                    enabled: true,
-                    alpha: 45,
-                    beta: 0
-                }
-            },
-            title: {
-                text: 'Renewable Energy'
-            },
-            subtitle: {
-                text: 'Renewable Sources'
-            },
-            accessibility: {
-                point: {
-                    valueSuffix: '%'
-                }
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    depth: 35,
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.name}'
-                    }
-                }
-            },
-            series: [{
-                type: 'pie',
-                name: 'Share',
-                data: [
-                    ['Samsung', 23],
-                    ['Apple', 18],
-                    {
-                        name: 'Xiaomi',
-                        y: 12,
-                        sliced: true,
-                        selected: true
-                    },
-                    ['Oppo*', 9],
-                    ['Vivo', 8],
-                    ['Others', 30]
-                ]
-            }]
-        }
-        return (
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
-            />
-        );
-    }
-}
-
-export class Donut3D extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        const options = {
-            chart: {
-                type: 'pie',
-                options3d: {
-                    enabled: true,
-                    alpha: 45
-                }
-            },
-            title: {
-                text: 'Resource Mix'
-            },
-            subtitle: {
-                text: 'Resources'
-            },
-            plotOptions: {
-                pie: {
-                    innerSize: 100,
-                    depth: 45
-                }
-            },
-            series: [{
-                name: 'Resources',
-                data: [
-                    ['Natural Gas', 41],
-                    ['Nuclear', 26],
-                    ['Net Imports', 16],
-                    ['Hydro', 9],
-                    ['Renewables', 7],
-                    ['Other', 1],
-                ]
-            }]
-        }
-        return (
-            <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
-            />
-        );
-    }
-}
-
-function formatAsPercent(num) {
-  return new Intl.NumberFormat('default', {
-    style: 'percent',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  }).format(num / 100);
-}
-
-export class PieChart extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        
-        const options = {
-            chart: {
-                type: 'pie'
-            },
-            title: {
-                text: 'Browser market shares. January, 2022'
-            },
-            subtitle: {
-                text: 'Click the slices to view versions. Source: <a href="http://statcounter.com" target="_blank">statcounter.com</a>'
-            },
-            accessibility: {
-                announceNewData: {
-                    enabled: true
-                },
-                point: {
-                    valueSuffix: '%'
-                }
-            },
-            plotOptions: {
-                series: {
-                    dataLabels: {
-                        enabled: true,
-                        format: '{point.name}: {point.y:.1f}%'
-                    }
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
-                pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
-            },
-            series: [{
-                name: "Browsers",
-                colorByPoint: true,
-                data: [
-                        {
-                            name: "Chrome",
-                            y: 61.04,
-                            drilldown: "Chrome"
-                        },
-                        {
-                            name: "Safari",
-                            y: 9.47,
-                            drilldown: "Safari"
-                        },
-                        {
-                            name: "Edge",
-                            y: 9.32,
-                            drilldown: "Edge"
-                        },
-                        {
-                            name: "Firefox",
-                            y: 8.15,
-                            drilldown: "Firefox"
-                        },
-                        {
-                            name: "Other",
-                            y: 11.02,
-                            drilldown: null
-                        }
-                    ]
-                }
-            ],
-            drilldown: {
-                series: [
-                    {
-                        name: "Chrome",
-                        id: "Chrome",
-                        data: [
-                            [
-                                "v97.0",
-                                36.89
-                            ],
-                            [
-                                "v96.0",
-                                18.16
-                            ],
-                            [
-                                "v95.0",
-                                0.54
-                            ],
-                            [
-                                "v94.0",
-                                0.7
-                            ],
-                            [
-                                "v93.0",
-                                0.8
-                            ],
-                            [
-                                "v92.0",
-                                0.41
-                            ],
-                            [
-                                "v91.0",
-                                0.31
-                            ],
-                            [
-                                "v90.0",
-                                0.13
-                            ],
-                            [
-                                "v89.0",
-                                0.14
-                            ],
-                            [
-                                "v88.0",
-                                0.1
-                            ],
-                            [
-                                "v87.0",
-                                0.35
-                            ],
-                            [
-                                "v86.0",
-                                0.17
-                            ],
-                            [
-                                "v85.0",
-                                0.18
-                            ],
-                            [
-                                "v84.0",
-                                0.17
-                            ],
-                            [
-                                "v83.0",
-                                0.21
-                            ],
-                            [
-                                "v81.0",
-                                0.1
-                            ],
-                            [
-                                "v80.0",
-                                0.16
-                            ],
-                            [
-                                "v79.0",
-                                0.43
-                            ],
-                            [
-                                "v78.0",
-                                0.11
-                            ],
-                            [
-                                "v76.0",
-                                0.16
-                            ],
-                            [
-                                "v75.0",
-                                0.15
-                            ],
-                            [
-                                "v72.0",
-                                0.14
-                            ],
-                            [
-                                "v70.0",
-                                0.11
-                            ],
-                            [
-                                "v69.0",
-                                0.13
-                            ],
-                            [
-                                "v56.0",
-                                0.12
-                            ],
-                            [
-                                "v49.0",
-                                0.17
-                            ]
-                        ]
-                    },
-                    {
-                        name: "Safari",
-                        id: "Safari",
-                        data: [
-                            [
-                                "v15.3",
-                                0.1
-                            ],
-                            [
-                                "v15.2",
-                                2.01
-                            ],
-                            [
-                                "v15.1",
-                                2.29
-                            ],
-                            [
-                                "v15.0",
-                                0.49
-                            ],
-                            [
-                                "v14.1",
-                                2.48
-                            ],
-                            [
-                                "v14.0",
-                                0.64
-                            ],
-                            [
-                                "v13.1",
-                                1.17
-                            ],
-                            [
-                                "v13.0",
-                                0.13
-                            ],
-                            [
-                                "v12.1",
-                                0.16
-                            ]
-                        ]
-                    },
-                    {
-                        name: "Edge",
-                        id: "Edge",
-                        data: [
-                            [
-                                "v97",
-                                6.62
-                            ],
-                            [
-                                "v96",
-                                2.55
-                            ],
-                            [
-                                "v95",
-                                0.15
-                            ]
-                        ]
-                    },
-                    {
-                        name: "Firefox",
-                        id: "Firefox",
-                        data: [
-                            [
-                                "v96.0",
-                                4.17
-                            ],
-                            [
-                                "v95.0",
-                                3.33
-                            ],
-                            [
-                                "v94.0",
-                                0.11
-                            ],
-                            [
-                                "v91.0",
-                                0.23
-                            ],
-                            [
-                                "v78.0",
-                                0.16
-                            ],
-                            [
-                                "v52.0",
-                                0.15
-                            ]
-                        ]
-                    }
-                ]
-            }
-        }   
         return (
             <HighchartsReact
                 highcharts={Highcharts}

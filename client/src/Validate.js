@@ -1,7 +1,7 @@
 import Navbar from './Navbar';
 import './Validate.css'
 
-import { HeatMap, PieChart, Pie3D, Donut3D, LineChart, BarChart } from './Templates';
+import { HeatMap, ScatterPlot, Histogram, LineChart } from './Templates';
 
 const Validation = () => {
     const page = "Validation"
@@ -23,13 +23,15 @@ const Validation = () => {
                 </div>          
                 
             </div>
-            <LineChart />
-            <br></br>
-            <BarChart />
-            <br></br>
-            <Donut3D />
-            <br></br>
             <HeatMap />
+            <br></br>
+            <ScatterPlot />
+            <br></br>
+            <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>
+            <br></br>
+            <Histogram mainText={'Historgram: Scenario'} subText={'HUB Node Prices of Scenario that we are Validating'}/>
+            <br></br>
+            <LineChart />
         </div>
 
     );
