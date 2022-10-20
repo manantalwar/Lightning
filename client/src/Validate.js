@@ -1,7 +1,7 @@
 import Navbar from './Navbar';
 import './Validate.css'
 
-import { HeatMap, ScatterPlot, Histogram, LineChart } from './Templates';
+import { HeatMap, ScatterPlot, Histogram, LineChart } from './Graphs';
 
 const Validation = () => {
     const page = "Validation"
