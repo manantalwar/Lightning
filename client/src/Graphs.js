@@ -185,8 +185,8 @@ export class HeatMap extends React.Component {
                 margin: 0,
                 verticalAlign: 'top',
                 y: 25,
-                symbolHeight: 984
-            },
+                symbolHeight: 328.5
+           },
 
             tooltip: {
                 formatter: function () {
