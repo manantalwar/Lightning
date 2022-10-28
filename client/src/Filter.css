@@ -20,6 +20,7 @@
     background-color: #26303A;
     border: 1vw solid white;
     margin-left: 5%;
+    overflow-y: scroll;
 }
 
 .topTitle{
