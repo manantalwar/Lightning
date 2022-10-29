@@ -29,7 +29,7 @@ const Filter = () => {
         const filter = {key:'scenario', scenario: scenario}
         setFilters(filters.concat(filter))
     }
-    
+
     return (  
         <div className="filter">
             <Navbar page={page}/>
@@ -54,7 +54,7 @@ const Filter = () => {
                             <option value={key}>{key}</option>
                         ))}
                     </select>
-                    <div>
+                    <div className='customFilters'>
                         {keys[customKey] === 'string' &&
                             <input className='filterInputs' type='text' defaultValue='value'></input>
                         }
