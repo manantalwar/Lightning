@@ -1,9 +1,9 @@
 const { PrismaClient } = require('@prisma/client')
 
-async function prismaGetOne(collection){
+async function prismaGetOne(collection, filters = {}){
     const prisma = new PrismaClient()
     try{
-        const one = await prisma[collection].findFirst()
+        const one = await prisma[collection].findFirst(filters)
         return one
     }
     finally{
