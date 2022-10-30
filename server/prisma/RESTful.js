@@ -22,6 +22,8 @@ Should Return:
     test/field1: "number"
     test/field2: "boolean"
 }
+With form: obj1/obj2/.../objn/fieldname: "type"
+For Fields within n objects
 */
 app.get('/init', (req, res, next)=>{
     prismadb.prismaGetOne(collection).then(node => {
