@@ -1,25 +1,28 @@
 const { PrismaClient } = require('@prisma/client')
+const prisma = new PrismaClient()
 
+//Exit Message
+prisma.$on('beforeExit', async () => {
+    console.log('Connection Closed.')
+})
+
+//Gets one node With filter Array
 async function prismaGetOne(collection, filters = {}){
-    const prisma = new PrismaClient()
     try{
         const one = await prisma[collection].findFirst(filters)
         return one
-    }
-    finally{
-        await prisma.$disconnect()
+    } finally {
+        console.log('Data Queried.')
     }
 }
 
-//Filters Type Def:
+//Gets many nodes With filter Array
 async function prismaGet(collection, filters = {}){
-    const prisma = new PrismaClient()
     try{
         const many = await prisma[collection].findMany(filters)
         return many
-    }
-    finally{
-        await prisma.$disconnect()
+    } finally {
+        console.log('Data Queried.')
     }
 }
 

@@ -15,7 +15,7 @@ Take the object:
         field2: "true"
     }
 }
-Should Return:
+Our Route Should Return:
 {
     name: "string"
     test: "object"
@@ -67,6 +67,9 @@ app.get('/init', (req, res, next)=>{
 //get: Returns Nodes according to a query
 //TODO: Parse Query Fields for Prismas filtration object
 app.get('/get', (req, res, next)=>{
+    const test = req.query
+    console.log(test)
+
     filters = {}
     prismadb.prismaGet(collection,filters).then(node => {
         res.send(node)
