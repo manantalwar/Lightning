@@ -17,7 +17,7 @@ app.get('/init', (req, res, next)=>{
                 return typeof(true);
             } else if (!isNaN(Date.parse(field))){ //Identifies Dates
                 return "date";
-            } else { //Otherwise we interpret as a string
+            } else { //Otherwise we interpret as a string or object
                 return typeof(field);
             }
         }
@@ -38,7 +38,8 @@ app.get('/init', (req, res, next)=>{
                 }
             });
             return keys
-        }  
+        }
+
         res.send(classify(node))
     })
 });
