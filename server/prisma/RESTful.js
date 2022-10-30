@@ -66,6 +66,7 @@ app.get('/init', (req, res, next)=>{
 
 //get: Returns Nodes according to a query
 //TODO: Parse Query Fields for Prismas filtration object
+//URL Query Form: /page?...
 app.get('/get', (req, res, next)=>{
     const test = req.query
     console.log(test)
