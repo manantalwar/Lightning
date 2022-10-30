@@ -5,7 +5,24 @@ app.listen(3000) // localhost for now
 
 const collection = "dummy_node_data"
 
-//Init Route: This Route supplies data to the Client For Filtration Initilization
+//init: This Route supplies data to the Client For Filtration Initilization
+/*
+Take the object:
+{
+    name: "name",
+    test: {
+        field1: 1
+        field2: "true"
+    }
+}
+Should Return:
+{
+    name: "string"
+    test: "object"
+    test/field1: "number"
+    test/field2: "boolean"
+}
+*/
 app.get('/init', (req, res, next)=>{
     prismadb.prismaGetOne(collection).then(node => {
 
@@ -45,9 +62,10 @@ app.get('/init', (req, res, next)=>{
 });
 
 
+//get: Returns Nodes according to a query
+//TODO: Parse Query Fields for Prismas filtration object
 app.get('/get', (req, res, next)=>{
     filters = {}
-
     prismadb.prismaGet(collection,filters).then(node => {
         res.send(node)
     })
