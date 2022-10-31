@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model dummy_node_data {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  LMP         String
+  PERIOD_ID   String
+  PNODE_NAME  String
+  SCENARIO_ID String
+
+  @@map("dummy-node-data")
+}
