@@ -1,7 +1,7 @@
 const express= require("express");
 const RESTful = require("./prisma/RESTful.js");
 const app=express();
-app.listen(3000) // localhost for now
+app.listen(3001) // localhost for now
 
 const collection = "dummy_node_data"
 
@@ -63,16 +63,14 @@ app.get('/init', (req, res, next)=>{
     })
 });
 
+const homepage_router=require('./routes/home_route')
+const filterPage_router=require('./routes/filter_route')
+const validationPage_router=require('./routes/validation_route')
 
-//get: Returns Nodes according to a query
-//TODO: Parse Query Fields for Prismas filtration object
-//URL Query Form: /get?...
-app.get('/get', (req, res, next)=>{
-    const test = req.query
-    console.log(test)
+app.use('/filter', function(req, res, next){
+    req.RESTful={RESTful}
+    req.collection={collection}
+    next()
+},filterPage_router)
 
-    filters = {}
-    RESTful.Get(collection,filters).then(node => {
-        res.send(node)
-    })
-});
+
