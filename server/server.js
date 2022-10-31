@@ -1,5 +1,5 @@
 const express= require("express");
-const RESTful = require("./RESTful.js");
+const RESTful = require("./prisma/RESTful.js");
 const app=express();
 app.listen(3000) // localhost for now
 
