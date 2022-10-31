@@ -1,3 +1,4 @@
+//Initialize with npx prisma generate in terminal
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
