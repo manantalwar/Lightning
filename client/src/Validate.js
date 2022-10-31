@@ -36,7 +36,7 @@ const Validation = () => {
                 <div className='graphs'>
                     <div className = 'graph'>
                         <LineChart />
-                        <button onClick={() => setIsOpen1(true)}>Expand Graph</button>
+                        <button onClick={() => setIsOpen1(true)}>Expand Line Chart</button>
                         <Modal open={isOpen1} onClose={() => setIsOpen1(false)}>
                             <div>
                                 <LineChart />
@@ -45,7 +45,7 @@ const Validation = () => {
                     </div>
                     <div className = 'graph'>
                         <ScatterPlot />
-                        <button onClick={() => setIsOpen2(true)}>Expand Scatter</button>
+                        <button onClick={() => setIsOpen2(true)}>Expand Scatter Plot</button>
                         <Modal open={isOpen2} onClose={() => setIsOpen2(false)}>
                             <div>
                                 <ScatterPlot />
@@ -56,7 +56,7 @@ const Validation = () => {
                     <div className = 'graph'>
                             <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>         
                             <Histogram mainText={'Historgram: Scenario'} subText={'HUB Node Prices of Scenario that we are Validating'}/>  
-                            <button onClick={() => setIsOpen3(true)}>Expand Graph</button> 
+                            <button onClick={() => setIsOpen3(true)}>Expand Histogram Plot</button> 
                             <Modal open={isOpen3} onClose={() => setIsOpen3(false)}>
                             <div>
                                 <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>         
@@ -67,7 +67,7 @@ const Validation = () => {
                     </div>
                     <div className = 'graph'>
                         <HeatMap />
-                        <button onClick={() => setIsOpen4(true)}>Expand Graph</button>
+                        <button onClick={() => setIsOpen4(true)}>Expand HeatMap</button>
                         <Modal open={isOpen4} onClose={() => setIsOpen4(false)}>
                             <div>
                                 <HeatMap />
