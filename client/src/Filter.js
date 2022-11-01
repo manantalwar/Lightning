@@ -6,7 +6,7 @@ const Filter = () => {
     const page = "Filter"
     const [filters, setFilters] = useState([]);
     const scenarios = ['a', 'b', 'c'];
-    const keys = {selectKey: '', a:'string',b:'float'}
+    const keys = {selectKey: '', GenType:'string',Output:'float'}
     const [startLMP, setStartLMP] = useState()
     const [endLMP, setEndLMP] = useState()
     const [startDate, setStartDate] = useState()
@@ -16,6 +16,9 @@ const Filter = () => {
     const [period, setPeriod] = useState()
     const [scenario, setScenario] = useState()
     const [customKey, setCustomKey] = useState()
+    const [customOne, setCustomOne] = useState()
+    const [customStart, setCustomStart] = useState()
+    const [customEnd, setCustomEnd] = useState()
 
     const addLMP = () => {
         const filter = {key:'LMP', start:startLMP, end:endLMP};
@@ -29,6 +32,18 @@ const Filter = () => {
         const filter = {key:'scenario', scenario: scenario}
         setFilters(filters.concat(filter))
     }
+    const addCustom = () => {
+        let filter
+        if(keys[customKey] === 'string'){
+            filter = {key:customKey, value: customOne}
+        } else{ 
+            filter = {key:customKey, start:customStart, end:customEnd}
+        }
+        setFilters(filters.concat(filter))
+    }
+    const remove = (index) => {
+        setFilters(filters.filter((el, i) => i !== index))
+    }
 
     return (  
         <div className="filter">
@@ -38,7 +53,18 @@ const Filter = () => {
                 <div className="list"> 
                     <p className="topTitle">Active Filters</p>
                     <div className="filterList">
-                        <p>{JSON.stringify(filters)}</p>
+                        {/* <p>{JSON.stringify(filters)}</p> */}
+                        {filters.map((filter, index) => (
+                            <div className='filterObj'>
+                                {/* <p>test</p> */}
+                                {Object.keys(filter).map((key) => (
+                                    <p className='filterEl'>{key + ': ' + filter[key]}</p>
+                                ))}
+                                <button className='remove'
+                                    onClick={() => remove(index)}>-</button>
+                            </div>
+                            
+                        ))}
                     </div>
                     <button className="submit">Submit</button>
                 </div>
@@ -56,17 +82,21 @@ const Filter = () => {
                     </select>
                     <div className='customFilters'>
                         {keys[customKey] === 'string' &&
-                            <input className='filterInputs' type='text' defaultValue='value'></input>
+                            <input className='customFilterInputs' type='text' defaultValue='value'
+                                onChange={(e) => setCustomOne(e.target.value)}></input>
                         }
                         {keys[customKey] === 'float' &&
                             <div>
-                                <input className='filterInputs' type='value' defaultValue='start'></input>
-                                <input className='filterInputs' type='value' defaultValue='end'></input> 
+                                <input className='customFilterInputs' type='value' defaultValue='start'
+                                    onChange={(e) => setCustomStart(e.target.value)}></input>
+                                <input className='customFilterInputs' type='value' defaultValue='end'
+                                    onChange={(e) => setCustomEnd(e.target.value)}></input> 
                             </div>
                         }
                     </div>
                     
-                    <button className='add'>Add Filter</button>
+                    <button className='add'
+                        onClick={addCustom}>Add Filter</button>
                     {/* Scenario Filters */}
                     <p className='scenarioTitle'>Scenarios</p>
                     <select className='filterInputs'
