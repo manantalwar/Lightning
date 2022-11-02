@@ -12,7 +12,7 @@ export class ScatterPlot extends React.Component {
     render() {
         const options = {
             chart: {
-                height: '120%'
+                height: '112.5%'
             },
             title: {
                 text: 'Scatter Plot with Regression Line'
@@ -74,7 +74,7 @@ export class Histogram extends React.Component {
         const { mainText, subText } = this.props;
         const options = {
             chart: {
-                height: '60%',
+                height: '56.25%',
                 type: 'column'
             },
             title: {
@@ -169,7 +169,7 @@ export class HeatMap extends React.Component {
                 marginTop: 40,
                 marginBottom: 80,
                 plotBorderWidth: 1,
-                height: 120 + '%'
+                height: '112.5%',
             },
 
 
@@ -388,7 +388,7 @@ export class HeatMap extends React.Component {
 export default function LineChart() {
         const options = {
             chart: {
-                height: '120%',
+                height: '112.5%',
                 type: 'spline'
             },
             title: {
