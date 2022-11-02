@@ -36,7 +36,7 @@ const Validation = () => {
                 <div className='graphs'>
                     <div className = 'graph'>
                         <LineChart />
-                        <button onClick={() => setIsOpen1(true)}>Expand Line Chart</button>
+                        <button class= "expand" onClick={() => setIsOpen1(true)}>Expand</button>
                         <Modal open={isOpen1} onClose={() => setIsOpen1(false)}>
                             <div>
                                 <LineChart />
@@ -45,7 +45,7 @@ const Validation = () => {
                     </div>
                     <div className = 'graph'>
                         <ScatterPlot />
-                        <button onClick={() => setIsOpen2(true)}>Expand Scatter Plot</button>
+                        <button class= "expand" onClick={() => setIsOpen2(true)}>Expand</button>
                         <Modal open={isOpen2} onClose={() => setIsOpen2(false)}>
                             <div>
                                 <ScatterPlot />
@@ -61,7 +61,7 @@ const Validation = () => {
 
                         
 
-                            <button onClick={() => setIsOpen3(true)}>Expand Histogram Plot</button> 
+                            <button class= "expand" onClick={() => setIsOpen3(true)}>Expand</button> 
                             <Modal open={isOpen3} onClose={() => setIsOpen3(false)}>
                             <div>
                                 <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>         
@@ -71,7 +71,7 @@ const Validation = () => {
                     </div>
                     <div className = 'graph'>
                         <HeatMap />
-                        <button onClick={() => setIsOpen4(true)}>Expand HeatMap</button>
+                        <button class= "expand" onClick={() => setIsOpen4(true)}>Expand</button>
                         <Modal open={isOpen4} onClose={() => setIsOpen4(false)}>
                             <div>
                                 <HeatMap />
