@@ -14,19 +14,22 @@ let filters={
     }
 router.route('/').get((req, res, next)=>{
     const test = req.query
-    let RESTful=req.RESTful.RESTful
-    let collection=req.collection.collection
-    console.log(test)
+    let RESTful=req.RESTful
+    let collection=req.collection
+    let init=req.init
+   // console.log(test)
+    console.log(init)
     assign("SCENARIO_ID", '2') //assign with query type and 
     gtltFilter("LMP",33, 32)
-    RESTful.Get(collection,filters).then(node => {
-        res.send(node)
+    RESTful.Get(collection,filters).then(nodes => {
+        res.send(nodes)
     }).catch(err=>res.status(400).json('Error: ' +err))
 });
 
 function assign(queryType, filterVal){
     filters.where[queryType]=filterVal;
 }
+// Push empty object if 
 function gtltFilter(queryType, ltVal, gtVal){
      const gt="gt"
      const lt="lt"
