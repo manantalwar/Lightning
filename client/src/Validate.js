@@ -54,16 +54,20 @@ const Validation = () => {
                      </Modal>  
                     </div>
                     <div className = 'graph'>
+                        <div style={{width: "100%", height: "100%"}}>
                             <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>         
                             <Histogram mainText={'Historgram: Scenario'} subText={'HUB Node Prices of Scenario that we are Validating'}/>  
+                        </div>
+
+                        
+
                             <button onClick={() => setIsOpen3(true)}>Expand Histogram Plot</button> 
                             <Modal open={isOpen3} onClose={() => setIsOpen3(false)}>
                             <div>
                                 <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>         
                                 <Histogram mainText={'Historgram: Scenario'} subText={'HUB Node Prices of Scenario that we are Validating'}/> 
                             </div>
-
-                     </Modal>                                                  
+                            </Modal>                                                  
                     </div>
                     <div className = 'graph'>
                         <HeatMap />
@@ -73,7 +77,7 @@ const Validation = () => {
                                 <HeatMap />
                             </div>
 
-                     </Modal>                        
+                        </Modal>                        
                     </div>
                     
                 </div>

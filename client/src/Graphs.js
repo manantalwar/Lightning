@@ -130,10 +130,13 @@ export class Histogram extends React.Component {
             }]
         }
         return (
+
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}
             />
+
+
         );
     }
 }
@@ -514,7 +517,6 @@ export default function LineChart() {
             highcharts={Highcharts}
             options={options}
             allowChartUpdate={true}
-            containerProps={{ style: { height: "100%" } }}
             />
             </div>
         );
