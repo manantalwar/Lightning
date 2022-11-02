@@ -4,13 +4,13 @@ import LineChart from './Graphs';
 
 const MODAL_STYLES = {
     position: 'fixed',
-    top: '40%',
+    top: '10%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     backgroundColor: '#FFF',
     zIndex: 1000,
-    width: '50%',
-    height: '50%'
+    width: '40%',
+    height: '10%'
   }
 
   const OVERLAY_STYLES = {

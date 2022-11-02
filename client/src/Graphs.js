@@ -493,12 +493,7 @@ export default function LineChart() {
 
         const chartComponent = useRef(null);
 
-  function clickHandler(e) {
-    e.target.style.width = "500px";
-    e.target.style.height = "500px";
 
-    chartComponent.current.chart.reflow();
-  }
 
 
 
@@ -507,12 +502,12 @@ export default function LineChart() {
 
                 style={{
                     width: "100%",
-                    height: "100%"
+                    height: "100%",
                     // border: "1px solid #ccc",
                     // padding: "10px",
                     // cursor: "pointer"
                 }}
-                onClick={clickHandler}
+ 
     >
             <HighchartsReact
             ref={chartComponent}
