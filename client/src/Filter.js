@@ -3,7 +3,7 @@ import { useState } from 'react';
 import './Filter.css'
 
 const Filter = () => {
-    const page = "Filter"
+    const page = "Node Selector"
     const [filters, setFilters] = useState([]);
     const scenarios = ['a', 'b', 'c'];
     const keys = {selectKey: '', GenType:'string',Output:'float'}
@@ -71,7 +71,7 @@ const Filter = () => {
                 {/* Div containing custom filters and scenario */}
                 <div className='filters'> 
                     {/* Custom Filters */}
-                    <p className='topTitle'>Custom Filters</p> 
+                    <p className='topTitle'>Unique Descriptors</p> 
                     {/* <input className='filterInputs' type='text' defaultValue='key'></input> */}
                     <select className='filterInputs'
                         onChange={(e) => setCustomKey(e.target.value)}
