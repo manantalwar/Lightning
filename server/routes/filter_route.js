@@ -17,8 +17,6 @@ router.route('/').get((req, res, next)=>{
     let RESTful=req.RESTful.RESTful
     let collection=req.collection.collection
     console.log(test)
-    let val=30.12
-    let val2=30.10
     assign("SCENARIO_ID", '2') //assign with query type and 
     gtltFilter("LMP",33, 32)
     RESTful.Get(collection,filters).then(node => {
