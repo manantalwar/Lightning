@@ -50,8 +50,6 @@ function gtltFilter(obj, queryType, gtVal, ltVal){
         gt:gtVal.toString(),
         lt:ltVal.toString()
     }
-    //[lt.toString()] = 
-    //obj.where[queryType][gt.toString()] = 
 }
 
 module.exports=router
