@@ -22,6 +22,7 @@ router.route('/').get((req, res, next)=>{
     //assign(filters,"SCENARIO_ID", '2')
 
     for(key in q){
+        if(!init.hasOwnProperty(key)){continue;}
         if(init[key].toString() == "number"){
             if(typeof(q[key]) == "object"){
                 gtltFilter(filters, key.toString(), q[key][0], q[key][1])
