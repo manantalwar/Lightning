@@ -25,11 +25,11 @@ router.route('/').get((req, res, next)=>{
         if(!init.hasOwnProperty(key)){continue;}
         if(init[key].toString() == "number"){
             if(typeof(q[key]) == "object"){
-                gtltFilter(filters, key.toString(), q[key][0], q[key][1])
+                gtltFilter(filters.where, key.toString(), q[key][0], q[key][1])
             }
             else{
                 if(!isNaN(q[key])){
-                    assign(filters, key.toString(), q[key])
+                    assign(filters.where, key.toString(), q[key])
                 }
             }
         }
@@ -42,12 +42,12 @@ router.route('/').get((req, res, next)=>{
 });
 
 function assign(obj, queryType, filterVal){
-    obj.where[queryType]=filterVal;
+    obj[queryType]=filterVal;
 }
 
 // Push empty object if 
 function gtltFilter(obj, queryType, gtVal, ltVal){
-    obj.where[queryType] = {
+    obj[queryType] = {
         gte:gtVal.toString(),
         lte:ltVal.toString()
     }
