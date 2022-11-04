@@ -5,6 +5,7 @@ const router = require("express").Router()
 //URL Query Form: /get?...
 
 // Filters is a JSON object. Whichever category needs a range component, needs to have an empty object inside the where part. For example, LMP
+//
 
 router.route('/').get((req, res, next)=>{
     const q = req.query
