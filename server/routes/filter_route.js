@@ -8,7 +8,6 @@ const router = require("express").Router()
 
 router.route('/').get((req, res, next)=>{
     const q = req.query
-    //console.log(q)
     let RESTful=req.RESTful
     let collection=req.collection
     let init=req.init
@@ -34,6 +33,8 @@ router.route('/').get((req, res, next)=>{
             }
         }
     }
+
+    console.log(q)
     console.log(filters)
 
     RESTful.Get(collection, filters).then(nodes => {
