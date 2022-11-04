@@ -35,6 +35,7 @@ router.route('/').get((req, res, next)=>{
         }
     }
     console.log(filters)
+    
     RESTful.Get(collection, filters).then(nodes => {
         res.send(nodes)
     }).catch(err=>res.status(400).json('Error: ' +err))
