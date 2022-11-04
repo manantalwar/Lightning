@@ -151,7 +151,7 @@ export class HeatMap extends React.Component {
                 marginTop: 40,
                 marginBottom: 80,
                 plotBorderWidth: 1,
-                height: 87.5 + '%'
+                height: 95 + '%'
             },
 
 
@@ -185,7 +185,7 @@ export class HeatMap extends React.Component {
                 margin: 0,
                 verticalAlign: 'top',
                 y: 25,
-                symbolHeight: 328.5
+                symbolHeight: 226.5
            },
 
             tooltip: {
