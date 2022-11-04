@@ -24,7 +24,6 @@ router.route('/').get((req, res, next)=>{
     for(key in q){
         if(init[key].toString() == "number"){
             if(typeof(q[key]) == "object"){
-                console.log(q[key])
                 gtltFilter(filters, key.toString(), q[key][0], q[key][1])
             }
             else{
@@ -34,6 +33,7 @@ router.route('/').get((req, res, next)=>{
             }
         }
     }
+    console.log(q)
     console.log(filters)
     
     RESTful.Get(collection, filters).then(nodes => {
