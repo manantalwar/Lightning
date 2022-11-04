@@ -48,8 +48,8 @@ function assign(obj, queryType, filterVal){
 // Push empty object if 
 function gtltFilter(obj, queryType, gtVal, ltVal){
     obj.where[queryType] = {
-        gt:gtVal.toString(),
-        lt:ltVal.toString()
+        gte:gtVal.toString(),
+        lte:ltVal.toString()
     }
 }
 
