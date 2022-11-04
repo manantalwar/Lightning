@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import Highcharts, { chart } from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -11,6 +11,9 @@ export class ScatterPlot extends React.Component {
     }
     render() {
         const options = {
+            chart: {
+                height: '110%'
+            },
             title: {
                 text: 'Scatter Plot with Regression Line'
             },
@@ -44,10 +47,21 @@ export class ScatterPlot extends React.Component {
             }]
         }
         return (
+            <div
+            style={{
+                width: "100%",
+                height: "100%"
+                // border: "1px solid #ccc",
+                // padding: "10px",
+                // cursor: "pointer"
+            }}
+            >
             <HighchartsReact
+
                 highcharts={Highcharts}
                 options={options}
             />
+            </div>
         );
     }
 }
@@ -60,6 +74,7 @@ export class Histogram extends React.Component {
         const { mainText, subText } = this.props;
         const options = {
             chart: {
+                height: '55%',
                 type: 'column'
             },
             title: {
@@ -115,10 +130,13 @@ export class Histogram extends React.Component {
             }]
         }
         return (
+
             <HighchartsReact
                 highcharts={Highcharts}
                 options={options}
             />
+
+
         );
     }
 }
@@ -151,7 +169,7 @@ export class HeatMap extends React.Component {
                 marginTop: 40,
                 marginBottom: 80,
                 plotBorderWidth: 1,
-                height: 95 + '%'
+                height: '110%',
             },
 
 
@@ -209,34 +227,168 @@ export class HeatMap extends React.Component {
                     condition: {
                         maxWidth: 500
                     },
-                    chartOptions: {
-                        yAxis: {
-                            labels: {
-                                formatter: function () {
-                                    return this.value.charAt(0);
-                                }
-                            }
-                        }
-                    }
+                    // chartOptions: {
+                    //     yAxis: {
+                    //         labels: {
+                    //             formatter: function () {
+                    //                 return this.value.charAt(0);
+                    //             }
+                    //         }
+                    //     }
+                    // }
                 }]
             }
         }
         return (
+            <div
+            style={{
+                width: "100%",
+                height: "100%"
+                // border: "1px solid #ccc",
+                // padding: "10px",
+                // cursor: "pointer"
+            }}
+            >
             <HighchartsReact
+
                 highcharts={Highcharts}
                 options={options}
             />
+            </div>
+
         );
     }
 }
 
-export class LineChart extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-    render() {
+
+// export class LineChart extends React.Component {
+//     constructor(props) {
+//         super(props);
+//     }
+//     render() {
+//         const options = {
+//             chart: {
+//                 type: 'spline'
+//             },
+//             title: {
+//                 text: 'System Demand'
+//             },
+//             subtitle: {
+//                 text: 'Forecasted & Actual'
+//             },
+//             xAxis: {
+//                 type: 'datetime',
+//                 dateTimeLabelFormats: { // don't display the dummy year
+//                     hour: '%H:%M',
+//                     year: '%b'
+//                 },
+//                 title: {
+//                     text: 'Hour'
+//                 }
+//             },
+//             yAxis: {
+//                 title: {
+//                     text: 'MW'
+//                 },
+//                 min: 0
+//             },
+//             tooltip: {
+//                 headerFormat: '<b>{series.name}</b><br>',
+//                 pointFormat: '{point.x:%H:%M}: {point.y:.2f} MW'
+//             },
+
+//             plotOptions: {
+//                 series: {
+//                     marker: {
+//                         enabled: true,
+//                         radius: 2.5
+//                     }
+//                 }
+//             },
+
+//             colors: ['Crimson', 'DeepSkyBlue'],
+//             // colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
+
+//             // Define the data points. All series have a dummy year of 1970/71 in order
+//             // to be compared on the same x axis. Note that in JavaScript, months start
+//             // at 0 for January, 1 for February etc.
+//             series: [
+//                 {
+//                     name: "Forecasted (MW)",
+//                     data: [
+//                         [Date.UTC(2022, 9, 19, 0, 0), 8250],
+//                         [Date.UTC(2022, 9, 19, 1, 0), 7777],
+//                         [Date.UTC(2022, 9, 19, 2, 0), 5677],
+//                         [Date.UTC(2022, 9, 19, 3, 0), 4077],
+//                         [Date.UTC(2022, 9, 19, 4, 0), 3600],
+//                         [Date.UTC(2022, 9, 19, 5, 0), 2200],
+//                         [Date.UTC(2022, 9, 19, 6, 0), 7450],
+//                         [Date.UTC(2022, 9, 19, 7, 0), 9870],
+//                         [Date.UTC(2022, 9, 19, 8, 0), 11897],
+//                         [Date.UTC(2022, 9, 19, 9, 0), 12789],
+//                         [Date.UTC(2022, 9, 19, 10, 0), 11567],
+//                         [Date.UTC(2022, 9, 19, 11, 0), 10456],
+//                         [Date.UTC(2022, 9, 19, 12, 0), 10897],
+//                         [Date.UTC(2022, 9, 19, 13, 0), 10453],
+//                         [Date.UTC(2022, 9, 19, 14, 0), 9853],
+//                         [Date.UTC(2022, 9, 19, 15, 0), 10234],
+//                         [Date.UTC(2022, 9, 19, 16, 0), 11456],
+//                         [Date.UTC(2022, 9, 19, 17, 0), 12678],
+//                         [Date.UTC(2022, 9, 19, 18, 0), 14357],
+//                         [Date.UTC(2022, 9, 19, 19, 0), 15340],
+//                         [Date.UTC(2022, 9, 19, 20, 0), 16790],
+//                         [Date.UTC(2022, 9, 19, 21, 0), 13335],
+//                         [Date.UTC(2022, 9, 19, 22, 0), 9340],
+//                         [Date.UTC(2022, 9, 19, 23, 0), 8950],
+//                     ]
+//                 }, {
+//                     name: "Actual (MW)",
+//                     data: [
+//                         [Date.UTC(2022, 9, 19, 0, 0), 8350],
+//                         [Date.UTC(2022, 9, 19, 1, 0), 7677],
+//                         [Date.UTC(2022, 9, 19, 2, 0), 5877],
+//                         [Date.UTC(2022, 9, 19, 3, 0), 4177],
+//                         [Date.UTC(2022, 9, 19, 4, 0), 3500],
+//                         [Date.UTC(2022, 9, 19, 5, 0), 2800],
+//                         [Date.UTC(2022, 9, 19, 6, 0), 7750],
+//                         [Date.UTC(2022, 9, 19, 7, 0), 9370],
+//                         [Date.UTC(2022, 9, 19, 8, 0), 12897],
+//                         [Date.UTC(2022, 9, 19, 9, 0), 11789],
+//                         [Date.UTC(2022, 9, 19, 10, 0), 11667],
+//                         [Date.UTC(2022, 9, 19, 11, 0), 10756],
+//                         [Date.UTC(2022, 9, 19, 12, 0), 10697],
+//                         [Date.UTC(2022, 9, 19, 13, 0), 10753],
+//                         [Date.UTC(2022, 9, 19, 14, 0), 9833],
+//                         [Date.UTC(2022, 9, 19, 15, 0), 10334],
+//                         [Date.UTC(2022, 9, 19, 16, 0), 11756],
+//                         [Date.UTC(2022, 9, 19, 17, 0), 12478],
+//                         [Date.UTC(2022, 9, 19, 18, 0), 14657],
+//                         [Date.UTC(2022, 9, 19, 19, 0), 15740],
+//                         [Date.UTC(2022, 9, 19, 20, 0), 16890],
+//                         [Date.UTC(2022, 9, 19, 21, 0), 14535],
+//                         [Date.UTC(2022, 9, 19, 22, 0), 7360],
+//                         [Date.UTC(2022, 9, 19, 23, 0), 6940],      
+//                     ]
+//                 }, 
+//             ]
+//         }
+
+
+//         return (
+//             <HighchartsReact
+//                 containerProps={{ style: { height: "100%"}}}
+//                 highcharts={Highcharts}
+//                 options={options}
+//             />
+
+//         );
+//     }
+// }
+
+export default function LineChart() {
         const options = {
             chart: {
+                height: '110%',
                 type: 'spline'
             },
             title: {
@@ -341,11 +493,31 @@ export class LineChart extends React.Component {
                 }, 
             ]
         }
+
+        const chartComponent = useRef(null);
+
+
+
+
+
         return (
+            <div
+
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    // border: "1px solid #ccc",
+                    // padding: "10px",
+                    // cursor: "pointer"
+                }}
+ 
+    >
             <HighchartsReact
-                highcharts={Highcharts}
-                options={options}
+            ref={chartComponent}
+            highcharts={Highcharts}
+            options={options}
+            allowChartUpdate={true}
             />
+            </div>
         );
-    }
 }

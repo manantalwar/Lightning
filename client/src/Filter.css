@@ -2,6 +2,37 @@
     height: 100%;
 }
 
+.filterObj{
+    /* height: 10%; */
+    width: 97%;
+    background-color: white;
+    margin-top:1%;
+    margin-left: 1%;
+    margin-right: 2%;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    display:inline-block;
+    justify-content: space-between;
+    text-align: justify;
+}
+
+.filterEl{
+    display: inline-block;
+    margin-top: 0%;
+    margin-bottom: 0%;
+    margin-left: 2%;
+    /* border-style: solid;
+    border-radius: 4px; */
+}
+
+.remove{
+    float: right;
+    margin-right: 1%;
+    background-color: white;
+    border-radius: 4px;
+    border-width: 1px;
+}
+
 .content{
     height: 90%;
     display: flex;
@@ -14,12 +45,20 @@
     flex-direction: column;
 }
 
+.customFilters{
+    height: 8%;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .filterList{
     height: 80%;
     width: 85%;
     background-color: #26303A;
     border: 1vw solid white;
     margin-left: 5%;
+    overflow-y: auto;
 }
 
 .topTitle{
@@ -59,6 +98,11 @@
     width: 80%;
     margin-left: auto;
     margin-right: auto;
+}
+
+.customFilterInputs{
+    margin-top: 1%;
+    width: 97%;
 }
 
 .add{

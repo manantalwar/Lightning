@@ -21,102 +21,20 @@
     text-align: center;
     margin: 1%;
     margin-top: 1.5%;
-   /*    */
-     /* position: absolute;
-    width: 102px;
-    height: 47px; 
- left: 20px;
-top: 67px; 
-
-font-family: 'Kameron';
-font-style: normal;
-font-weight: 400;
-font-size: 20px;
-line-height: 87px;
-
-color: #FFFFFF; */
 }
-
-/* .title2{
-    color: white;
-    font-size: 20px;
-    text-align: center;
-    margin: 1%;
-/* position: absolute;
-width: 91px;
-height: 47px;
-left: 800px;
-top: 67px;
-
-font-family: 'Kameron';
-font-style: normal;
-font-weight: 400;
-font-size: 20px;
-line-height: 87px;
-
-color: #FFFFFF; 
-} */
 
 .inputs{
     width: 15%;
     height: 60%;
     margin: 1%;
-    /* position: absolute;
-    width: 150px;
-    height: 40px;
-    left: 120px;
-    top: 100px;
-    
-background: #D9D9D9; */
 }
 
-/* .input2{
-    width: 15%;
-    height: 60%;
-    margin: 1%;
-    /* position: absolute;
-    width: 150px;
-    height: 40px;
-    left: 320px;
-    top: 100px;
-    
-background: #D9D9D9; */
-/* }
-
-.input3{
-    width: 15%;
-    height: 60%; */
-/* position: absolute;
-width: 150px;
-height: 40px;
-left: 900px;
-top: 100px;
-
-background: #D9D9D9; */
-/* }
-
-.input4{
-    width: 15%;
-    height: 60%; */
-/* position: absolute;
-width: 150px;
-height: 40px;
-left: 1100px;
-top: 100px;
-
-background: #D9D9D9; 
- } */ 
 
 .addB{
     width: 10%;
     height: 50%;
     margin: 1.25%;
-   /*  background: #D9D9D9;   
-    position: absolute;
-width: 150px;
-height: 40px;
-left: 1500px;
-top: 100px; */
+
 }
 
 .scenarioSelector{
@@ -126,27 +44,20 @@ top: 100px; */
 }
 
 .graph{
-    height: 100%;
-    width: 40%;
-    margin-left: 5%;
+    width: 28%;
+    height: 60%;
+    margin: 2%;
 }
 
-.histogram{
-    height: 70%;
-    width: 100%;
-}
-
-.twoGraphs{
+.graphs{
     display: flex;
     flex-direction: row;
-    width: 100%;
-    height: 65%;
-    margin-bottom: 2%;
+    flex-wrap: wrap;
+    height: 100%;
+    justify-content: space-between;
 }
 
-/* .images{
-    display: flex;
-} */
+
 
 .box {
    flex: 33.33%;
@@ -161,4 +72,18 @@ top: 100px; */
     color: #FFFFFF;
     margin-top: 5%;
     margin-left: 60%;
+}
+
+.expand {
+    outline: none;
+    position: relative;
+    bottom: 100%;
+    float:right;
+    padding: 2px 6px;
+    border:none;
+    background-color: lightblue;
+}
+
+.expand:hover {
+    background-color: blanchedalmond;
 }
