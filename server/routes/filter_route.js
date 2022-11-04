@@ -33,7 +33,6 @@ router.route('/').get((req, res, next)=>{
             }
         }
     }
-
     console.log(q)
     console.log(filters)
 

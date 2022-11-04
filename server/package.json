@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+<<<<<<< HEAD
+=======
   "type": "commonjs",
+>>>>>>> c6360e5605c4f6e7223a7565fec94b32584be7f8
   "scripts": {
     "start": "nodemon server.js"
   },
