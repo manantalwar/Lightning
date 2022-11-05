@@ -40,7 +40,7 @@ router.route('/').get((req, res, next)=>{
     //assign(filters,"SCENARIO_ID", '2')
     // THIS HANDLES NUMBERS /filter?field=val returns every entry where field == val
     // /filter?field=val&field=val2 returns every entry where val <= field <= val2
-    // /filter?field=SELECT&field=val&field=val2... returns every entry where field == val OR field == val2
+    // /filter?field=OR&field=val&field=val2... returns every entry where field == val OR field == val2
     // /NOW WORKS WITH COMPOUND SELECTION
     for(key in q){
         if(!init.hasOwnProperty(key)){continue;}
@@ -50,7 +50,7 @@ router.route('/').get((req, res, next)=>{
         key = unpacked[2]
         if(init[key].toString() == "number"){ //Handles Fields that are numbers 
             if(typeof(q[key]) == "object"){
-                if(q[key][0].toLowerCase() == 'select'){ //Select field list of potential vals
+                if(q[key][0].toLowerCase() == 'or'){ //Select field list of potential vals
                     let orObj = {OR:[]}
                     q[key].forEach((elem) => {
                         if(!isNaN(elem)){
