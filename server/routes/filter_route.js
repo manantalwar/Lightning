@@ -69,16 +69,16 @@ router.route('/').get((req, res, next)=>{
                 }
             }
         } else if(init[key].toString() == "boolean"){ //handles bools
-            if(typeof(q[key]) == "string"){
+            if(typeof(q[key]) == "string"){ //accepts 1 val
                 assign(empty, key.toString(), q[key])
                 filters.where.AND.push(toPush)
             }
         } else if(init[key].toString() == "string"){ //handles strings
-            if(typeof(q[key]) == "string"){  //one choice
+            if(typeof(q[key]) == "string"){  //one val
                 assign(empty, key.toString(), q[key])
                 filters.where.AND.push(toPush)
             }
-            else if(typeof(q[key]) == "object"){  //list of choices
+            else if(typeof(q[key]) == "object"){  //list of vals
                 let orObj = {OR:[]}
                 q[key].forEach((elem) => {
                     assign(empty, key.toString(), elem)
