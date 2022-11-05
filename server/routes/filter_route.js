@@ -102,7 +102,7 @@ router.route('/').get((req, res, next)=>{
 
     RESTful.Get(collection, filters).then(nodes => {
         res.send(nodes)
-    }).catch(err=>res.status(400).json('Error: ' +err))
+    }).catch(err=>res.status(400).json('Error: ' + err))
 });
 
 //assigns key/val pair to object
