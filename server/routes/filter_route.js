@@ -57,12 +57,11 @@ router.route('/').get((req, res, next)=>{
                         }
                     });
                     filters.where.AND.push(orObj)
-                }else{ //Range of vals
+                } else { //Range of vals (2, start and end)
                     gtltFilter(empty, key.toString(), q[key][0], q[key][1])
                     filters.where.AND.push(toPush)
                 }
-            }
-            else{ // ONE val
+            } else { // ONE val
                 if(!isNaN(q[key])){
                     assign(empty, key.toString(), q[key])
                     filters.where.AND.push(toPush)
