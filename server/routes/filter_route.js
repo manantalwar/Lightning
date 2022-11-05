@@ -20,7 +20,7 @@ router.route('/').get((req, res, next)=>{
     }
 
     //UNPACKS Potentially nested fields with a base pointer/nested pointer/and corrected field name
-    function unpack(field){ 
+    function unpack(field){
         let obj = {}
         let pointer = obj
 
@@ -87,7 +87,7 @@ router.route('/').get((req, res, next)=>{
                 });
                 filters.where.AND.push(orObj)
             }
-        } else if(init[key].toString() == "date"){ //PARSES DATES PLEASE CHECK THIS FUNCTIONALITY
+        } else if(init[key].toString() == "date"){ //PARSES DATES : CHECK THIS FUNCTIONALITY
             if(typeof(q[key]) == "object"){ //Only accepts range
                 let start = new Date(q[key][0]) 
                 let end =   new Date(q[key][1]) 
