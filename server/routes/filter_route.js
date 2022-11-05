@@ -91,8 +91,10 @@ router.route('/').get((req, res, next)=>{
             if(typeof(q[key]) == "object"){ //Only accepts range
                 let start = new Date(q[key][0])
                 let end =   new Date(q[key][1])
-                if(!isNaN(start) && !isNaN(end)) {gtltFilter(empty, key.toString(), start, end)}
-                filters.where.AND.push(toPush)
+                if(!isNaN(start) && !isNaN(end)) {
+                    gtltFilter(empty, key.toString(), start, end)
+                    filters.where.AND.push(toPush)
+                }
             }
         }
     }
