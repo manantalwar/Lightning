@@ -98,7 +98,7 @@ router.route('/').get((req, res, next)=>{
     }
 
     console.log(q)
-    console.log(filters)
+    console.log(JSON.stringify(filters))
 
     RESTful.Get(collection, filters).then(nodes => {
         res.send(nodes)
