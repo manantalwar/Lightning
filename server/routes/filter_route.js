@@ -89,10 +89,10 @@ router.route('/').get((req, res, next)=>{
             }
         } else if(init[key].toString() == "date"){ //PARSES DATES PLEASE CHECK THIS FUNCTIONALITY
             if(typeof(q[key]) == "object"){ //Only accepts range
-                let start = new Date(q[key][0])
-                let end =   new Date(q[key][1])
+                let start = new Date(q[key][0]) 
+                let end =   new Date(q[key][1]) 
                 if(!isNaN(start) && !isNaN(end)) {gtltFilter(empty, key.toString(), start, end)}
-                filters.where.AND.push(toPush)
+                filters.where.AND.push(toPush)  
             }
         }
     }
