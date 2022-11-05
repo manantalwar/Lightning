@@ -12,14 +12,15 @@ router.route('/').get((req, res, next)=>{
     let RESTful=req.RESTful
     let collection=req.collection
     let init=req.init
-    //console.log(test)
+    
     let filters = {
         where:{
             AND:[] //{OR:[{LMP:'30.1'},{LMP:'30.2'}]},{SCENARIO_ID:1}]
         }
     }
 
-    function unpack(field){
+    //UNPACKS Potentially nested fields with a base pointer/nested pointer/and corrected field name
+    function unpack(field){ 
         let obj = {}
         let pointer = obj
         let arr = field.split('/')
