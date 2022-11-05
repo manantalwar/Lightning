@@ -69,12 +69,12 @@ router.route('/').get((req, res, next)=>{
                     filters.where.AND.push(toPush)
                 }
             }
-        } else if(init[key].toString() == "boolean"){ //handles bools
+        } else if(init[key].toString() == "boolean"){ //handles bool fields
             if(typeof(q[key]) == "string"){ //accepts 1 val
                 assign(empty, key.toString(), q[key])
                 filters.where.AND.push(toPush)
             }
-        } else if(init[key].toString() == "string"){ //handles strings
+        } else if(init[key].toString() == "string"){ //handles string fields
             if(typeof(q[key]) == "string"){  //one val
                 assign(empty, key.toString(), q[key])
                 filters.where.AND.push(toPush)
@@ -87,7 +87,7 @@ router.route('/').get((req, res, next)=>{
                 });
                 filters.where.AND.push(orObj)
             }
-        } else if(init[key].toString() == "date"){ //PARSES DATES : CHECK THIS FUNCTIONALITY
+        } else if(init[key].toString() == "date"){ //PARSES DATE Fields : CHECK THIS FUNCTIONALITY
             if(typeof(q[key]) == "object"){ //Only accepts range
                 let start = new Date(q[key][0])
                 let end =   new Date(q[key][1])
