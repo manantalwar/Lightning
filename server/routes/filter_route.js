@@ -12,7 +12,7 @@ router.route('/').get((req, res, next)=>{
     let RESTful=req.RESTful
     let collection=req.collection
     let init=req.init
-    
+
     let filters = {
         where:{
             AND:[] //{OR:[{LMP:'30.1'},{LMP:'30.2'}]},{SCENARIO_ID:1}]
@@ -43,7 +43,7 @@ router.route('/').get((req, res, next)=>{
     // /NOW WORKS WITH COMPOUND SELECTION
     for(key in q){
         if(!init.hasOwnProperty(key)){continue;}
-        let unpacked = unpack(key.toString())
+        let unpacked = unpack(key.toString()) //unpack field (potentially nested)
         let toPush = unpacked[0]
         let empty = unpacked[1]
         key = unpacked[2]
@@ -86,8 +86,11 @@ router.route('/').get((req, res, next)=>{
                 });
                 filters.where.AND.push(orObj)
             }
-        } else if(init[key].toString() == "date"){
-            //TODO : FINISH DATE PARSING
+        } else if(init[key].toString() == "date"){ //PARSES DATES PLEASE CHECK THIS FUNCTIONALITY
+            if(typeof(q[key]) == "object"){ //Only accepts range
+                gtltFilter(empty, key.toString(), new Date(q[key][0]), new Date(q[key][1]))
+            }
+            filters.where.AND.push(toPush)
         }
     }
 
