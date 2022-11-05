@@ -33,7 +33,7 @@ router.route('/').get((req, res, next)=>{
                 pointer = pointer[elem]
             }
         })
-        
+
         return [obj, pointer, fieldname]
     }
 
