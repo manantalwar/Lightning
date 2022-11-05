@@ -63,7 +63,7 @@ router.route('/').get((req, res, next)=>{
                     gtltFilter(empty, key.toString(), q[key][0], q[key][1])
                     filters.where.AND.push(toPush)
                 }
-            } else { // ONE val
+            } else if (typeof(q[key]) == "string") { // ONE val
                 if(!isNaN(q[key])){
                     assign(empty, key.toString(), q[key])
                     filters.where.AND.push(toPush)
