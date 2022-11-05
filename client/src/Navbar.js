@@ -1,6 +1,8 @@
 import logo from './logo.jpg'
 import './Navbar.css'
-
+ const openInNewTab=url=>{
+        window.open(url, '_self', 'noopener,noreferrer');
+    }
 const Navbar = ({page}) => {
     return (  
         <div className='header'>
@@ -9,7 +11,7 @@ const Navbar = ({page}) => {
                 {page !== "Home" &&
                     <div className="notHome"> 
                         <p className='title'>{page}</p> 
-                        <button className="homeBtn" onClick={() => console.log("Return Home")}>Home</button>
+                        <button className="homeBtn" onClick={() => openInNewTab('./')}>Home</button>
                     </div>
                 }
             </div>

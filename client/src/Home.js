@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Navbar from './Navbar';
 import './Home.css';
-import axios from 'axios';
+import './App.css';
 
 // const path = require('path');
 
-const Home = ({props}) => {
+const Home = () => {
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);
     const page = "Home"
 
-    // this function is fired when validation button is clicked.
-    const clickValidation = async (event) => {
-    event.preventDefault();
-      await axios.post(`http://localhost:3000/filter`, {
-        // sendFile: path.join(__dirname, "public", "Home.js")
-        sendFile: ".\lightning\client\src\Validate.js"
-      });
-    };
+    const openInNewTab=url=>{
+        window.open(url, '_self', 'noopener,noreferrer');
+    }
 
     return (  
         <div className="home">
@@ -28,18 +23,26 @@ const Home = ({props}) => {
                         className="mainbtn" 
                         onMouseEnter={() => setHover1(true)}
                         onMouseLeave={() => setHover1(false)}
-                        onClick={() => clickValidation}>
+                        onClick={() => openInNewTab('./validate')}>
                         {!hover1 && <div>Validation</div>}
                         {hover1 && <div>Validating simulation data as compared to base case data. Displays graphs comparing the data sets and shows useful statitsics comparing the data.</div>}
                     </button>
                     <button 
                         className="mainbtn"
                         onMouseEnter={() => setHover2(true)}
-                        onMouseLeave={() => setHover2(false)}>
+                        onMouseLeave={() => setHover2(false)}
+                        onClick={() => openInNewTab('./filter')}>
                         {!hover2 && <div>Simulation</div>}
                         {hover2 && <div>Filters datasets based on chosen queries and displays graphs and useful information about remaining nodes.</div>}
                         
                     </button>
+                    {/* <Router>
+                        <Routes>
+                            <Route path="/"element={<Home/>}></Route>
+                            <Route path="/filter"element={<Filter/>}></Route>
+                            <Route path="/validate"element={<Validation/>}></Route>
+                        </Routes>
+                    </Router> */}
                 </div>
             </div>
 
