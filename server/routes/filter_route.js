@@ -19,6 +19,22 @@ router.route('/').get((req, res, next)=>{
         }
     }
 
+    function unpack(field){
+        let obj = {}
+        let pointer = obj
+        let arr = field.split('/')
+        let fieldname = arr[arr.length - 1]
+
+        arr.forEach((elem) => {
+            if(elem != fieldname){
+                assign(pointer, elem, {})
+                pointer = pointer[elem]
+            }
+        })
+        
+        return [obj, pointer, fieldname]
+    }
+
     //assign(filters,"SCENARIO_ID", '2')
     // THIS HANDLES NUMBERS /filter?field=val returns every entry where field == val
     // /filter?field=val&field=val2 returns every entry where val <= field <= val2
@@ -26,34 +42,55 @@ router.route('/').get((req, res, next)=>{
     // /NOW WORKS WITH COMPOUND SELECTION
     for(key in q){
         if(!init.hasOwnProperty(key)){continue;}
-        if(init[key].toString() == "number"){ 
+        let unpacked = unpack(key.toString())
+        let toPush = unpacked[0]
+        let empty = unpacked[1]
+        key = unpacked[2]
+        if(init[key].toString() == "number"){ //Handles Fields that are numbers 
             if(typeof(q[key]) == "object"){
-                if(q[key][0].toLowerCase() == 'select'){
-                    let obj = {OR:[]}
+                if(q[key][0].toLowerCase() == 'select'){ //Select field list of potential vals
+                    let orObj = {OR:[]}
                     q[key].forEach((elem) => {
                         if(!isNaN(elem)){
-                            let obj2 = {}
-                            obj2[key.toString()] = elem
-                            obj.OR.push(obj2)
+                            assign(empty, key.toString(), elem)
+                            orObj.OR.push({ ...toPush })
                         }
                     });
-                    filters.where.AND.push(obj)
-                }else{
-                    let obj = {}
-                    gtltFilter(obj, key.toString(), q[key][0], q[key][1])
-                    filters.where.AND.push(obj)
+                    filters.where.AND.push(orObj)
+                }else{ //Range of vals
+                    gtltFilter(empty, key.toString(), q[key][0], q[key][1])
+                    filters.where.AND.push(toPush)
                 }
             }
-            else{
+            else{ // ONE val
                 if(!isNaN(q[key])){
-                    let obj = {}
-                    assign(obj, key.toString(), q[key])
-                    filters.where.AND.push(obj)
+                    assign(empty, key.toString(), q[key])
+                    filters.where.AND.push(toPush)
                 }
             }
+        } else if(init[key].toString() == "boolean"){ //handles bools
+            if(typeof(q[key]) == "string"){
+                assign(empty, key.toString(), q[key])
+                filters.where.AND.push(toPush)
+            }
+        } else if(init[key].toString() == "string"){ //handles strings
+            if(typeof(q[key]) == "string"){  //one choice
+                assign(empty, key.toString(), q[key])
+                filters.where.AND.push(toPush)
+            }
+            else if(typeof(q[key]) == "object"){  //list of choices
+                let orObj = {OR:[]}
+                q[key].forEach((elem) => {
+                    assign(empty, key.toString(), elem)
+                    orObj.OR.push({ ...toPush })
+                });
+                filters.where.AND.push(orObj)
+            }
+        } else if(init[key].toString() == "date"){
+            //TODO : FINISH DATE PARSING
         }
     }
-    
+
     console.log(q)
     console.log(filters)
 
