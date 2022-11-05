@@ -96,7 +96,7 @@ router.route('/').get((req, res, next)=>{
             }
         }
     }
-    //console.log(filters.where.AND[0].OR)
+    
     console.log(q)
     console.log(filters)
 
