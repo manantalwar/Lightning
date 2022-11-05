@@ -41,7 +41,7 @@ router.route('/').get((req, res, next)=>{
     // THIS HANDLES NUMBERS /filter?field=val returns every entry where field == val
     // /filter?field=val&field=val2 returns every entry where val <= field <= val2
     // /filter?field=OR&field=val&field=val2... returns every entry where field == val OR field == val2
-    // /NOW WORKS WITH COMPOUND SELECTION
+    // NOW WORKS WITH COMPOUND SELECTION
     for(key in q){
         if(!init.hasOwnProperty(key)){continue;}
         let unpacked = unpack(key.toString()) //unpack field (potentially nested)
@@ -59,7 +59,7 @@ router.route('/').get((req, res, next)=>{
                         }
                     });
                     filters.where.AND.push(orObj)
-                } else { //Range of vals (2, start and end)
+                } else if(!isNaN(q[key][0]) && !isNaN(q[key][1])){ //Range of vals (2, start and end)
                     gtltFilter(empty, key.toString(), q[key][0], q[key][1])
                     filters.where.AND.push(toPush)
                 }
@@ -89,12 +89,14 @@ router.route('/').get((req, res, next)=>{
             }
         } else if(init[key].toString() == "date"){ //PARSES DATES PLEASE CHECK THIS FUNCTIONALITY
             if(typeof(q[key]) == "object"){ //Only accepts range
-                gtltFilter(empty, key.toString(), new Date(q[key][0]), new Date(q[key][1]))
+                let start = new Date(q[key][0])
+                let end =   new Date(q[key][1])
+                if(!isNaN(start) && !isNaN(end)) {gtltFilter(empty, key.toString(), start, end)}
+                filters.where.AND.push(toPush)
             }
-            filters.where.AND.push(toPush)
         }
     }
-
+    //console.log(filters.where.AND[0].OR)
     console.log(q)
     console.log(filters)
 
