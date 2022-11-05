@@ -39,9 +39,9 @@ router.route('/').get((req, res, next)=>{
 
     //assign(filters,"SCENARIO_ID", '2')
     // THIS HANDLES NUMBERS /filter?field=val returns every entry where field == val
-    // /filter?field=val&field=val2 returns every entry where val <= field <= val2
-    // /filter?field=OR&field=val&field=val2... returns every entry where field == val OR field == val2
-    // NOW WORKS WITH COMPOUND SELECTION
+    // /filter?field=val&field=val2 returns every entry where val <= field <= val2 extra values ignored
+    // /filter?field=OR&field=val&field=val2... returns every entry where field == val OR field == val2 OR ... any extra values
+    // NOW WORKS WITH COMPOUND SELECTION THANKS TO AND:[]
     for(key in q){
         if(!init.hasOwnProperty(key)){continue;}
         let unpacked = unpack(key.toString()) //unpack field (potentially nested)
