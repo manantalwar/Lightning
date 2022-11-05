@@ -23,6 +23,7 @@ router.route('/').get((req, res, next)=>{
     function unpack(field){ 
         let obj = {}
         let pointer = obj
+
         let arr = field.split('/')
         let fieldname = arr[arr.length - 1]
 
