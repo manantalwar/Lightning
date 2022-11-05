@@ -89,10 +89,10 @@ router.route('/').get((req, res, next)=>{
             }
         } else if(init[key].toString() == "date"){ //PARSES DATES : CHECK THIS FUNCTIONALITY
             if(typeof(q[key]) == "object"){ //Only accepts range
-                let start = new Date(q[key][0]) 
-                let end =   new Date(q[key][1]) 
+                let start = new Date(q[key][0])
+                let end =   new Date(q[key][1])
                 if(!isNaN(start) && !isNaN(end)) {gtltFilter(empty, key.toString(), start, end)}
-                filters.where.AND.push(toPush)  
+                filters.where.AND.push(toPush)
             }
         }
     }
@@ -105,11 +105,12 @@ router.route('/').get((req, res, next)=>{
     }).catch(err=>res.status(400).json('Error: ' +err))
 });
 
+//assigns key/val pair to object
 function assign(obj, queryType, filterVal){
     obj[queryType]=filterVal;
 }
 
-// Push empty object if 
+//assigns qt lt prisma object query to some object
 function gtltFilter(obj, queryType, gtVal, ltVal){
     obj[queryType] = {
         gte:gtVal.toString(),
