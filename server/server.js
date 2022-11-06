@@ -1,7 +1,11 @@
 const express= require("express");
 const RESTful = require("./prisma/RESTful.js");
+
+const Ip = 'localhost'
+const port = 3000
 const app=express();
-app.listen(3000) // localhost for now
+app.listen(port, Ip)
+
 const collection = "dummy_node_data"
 
  //Function returning the type of a field
