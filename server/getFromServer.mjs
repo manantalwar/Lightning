@@ -8,7 +8,7 @@ const initPath = '/init'
 
 /*
     Due to the asynchonous nature of http calls.
-    We must handle our data within promises.
+    We must handle our data within promises and then() calls.
     GOOD: pullNodes().then((nodes) => console.log(nodes))
     BAD: console.log(pullNodes())
 */
