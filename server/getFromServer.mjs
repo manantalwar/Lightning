@@ -6,6 +6,13 @@ const port = '3000'
 const filterPath = '/filter'
 const initPath = '/init'
 
+/*
+    Due to the asynchonous nature of http calls.
+    We must handle our data within promises.
+    GOOD: pullNodes().then((nodes) => console.log(nodes))
+    BAD: console.log(pullNodes())
+*/
+
 //returns a promise of nodes pullnodes().then((data) => //do something) where data : [nodes]
 async function pullNodes(query = ''){ 
     const url = protocol + serverUrl + port + filterPath + query
