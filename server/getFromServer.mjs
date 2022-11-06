@@ -39,7 +39,7 @@ returns a promise of aggregate field Object where Obj: {nodefield: [node1_val, .
 Where Graph rendering code would look presumably something like:
 aggregateNode(q).then((obj) => {
 const graph = new Graph({
-    x-axis:obj['SCENARIO_ID']
+    x-axis:obj['PERIOD_ID']
     y-axis:obj['LMP']
 })});
 */
