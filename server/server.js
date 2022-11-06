@@ -58,8 +58,8 @@ Our Route Should Return:
 With form: obj1/obj2/.../objn/fieldname: "type"
 For Fields within n objects
 */
-app.get('/init', (req, res, next)=>{
-    RESTful.GetOne(collection).then(node => {
+app.get('/init', async (req, res, next)=>{
+    await RESTful.GetOne(collection).then(node => {
         res.send(classify(node))
     })
 });
