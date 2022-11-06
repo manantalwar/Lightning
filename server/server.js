@@ -8,8 +8,8 @@ app.listen(port, Ip)
 
 const collection = "dummy_node_data"
 
- //Function returning the type of a field
- function getType(field){
+//Function returning the type of a field
+function getType(field){
     if(typeof(field) == "string" && !isNaN(field)){ //Identifies Numbers
         return typeof(1);
     } else if (field == true || field == false || field == "true" || field == "false"){ //Identifies Booleans
