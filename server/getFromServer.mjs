@@ -33,7 +33,16 @@ async function pullInit(){
         })
 }
 
-//returns a promise of aggregate field Object where Obj: {nodefield: [node1_val, ... , noden_val], nodefield2: [...] , ...}
+
+/*
+returns a promise of aggregate field Object where Obj: {nodefield: [node1_val, ... , noden_val], nodefield2: [...] , ...}
+Where Graph rendering code would look presumably something like:
+aggregateNode(q).then((obj) => {
+const graph = new Graph({
+    x-axis:obj['SCENARIO_ID']
+    y-axis:obj['LMP']
+})});
+*/
 async function aggregateNodes(query = ''){
     let obj = {}
     await pullNodes(query).then((data) => data.forEach((elem) => {
