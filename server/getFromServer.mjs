@@ -18,6 +18,9 @@ async function pullNodes(query = ''){
     const url = protocol + serverUrl + port + filterPath + query
     return await fetch(url)
         .then((response) => response.json())
+        .catch(error => {
+            throw(error);
+        })
 }
 
 //return promise of init obj
@@ -25,6 +28,9 @@ async function pullInit(){
     const url = protocol + serverUrl + port + initPath
     return await fetch(url)
         .then((response) => response.json())
+        .catch(error => {
+            throw(error);
+        })
 }
 
 //returns a promise of aggregate field Object where Obj: {nodefield: [node1_val, ... , noden_val], nodefield2: [...] , ...}
