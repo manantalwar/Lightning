@@ -34,7 +34,7 @@ async function pullInit(){
 }
 
 //returns a promise of aggregate field Object where Obj: {nodefield: [node1_val, ... , noden_val], nodefield2: [...] , ...}
-async function aggregateNodes(query = ''){ 
+async function aggregateNodes(query = ''){
     let obj = {}
     await pullNodes(query).then((data) => data.forEach((elem) => {
         for(let key in elem){
