@@ -1,36 +1,20 @@
 const express= require("express");
 const RESTful = require("./prisma/RESTful.js");
+
+const Ip = 'localhost'
+const port = 3000
 const app=express();
-app.listen(3000) // localhost for now
+app.listen(port, Ip)
+
 const collection = "dummy_node_data"
 
-//init: This Route supplies data to the Client For Filtration Initilization
-/*
-Take the object:
-{
-    name: "name",
-    test: {
-        field1: 1
-        field2: "true"
-    }
-}
-Our Route Should Return:
-{
-    name: "string"
-    test: "object"
-    test/field1: "number"
-    test/field2: "boolean"
-}
-With form: obj1/obj2/.../objn/fieldname: "type"
-For Fields within n objects
-*/
- //Function returning the type of a field
- function getType(field){
+//Function returning the type of a field
+function getType(field){
     if(typeof(field) == "string" && !isNaN(field)){ //Identifies Numbers
         return typeof(1);
     } else if (field == true || field == false || field == "true" || field == "false"){ //Identifies Booleans
         return typeof(true);
-    } else if (!isNaN(Date.parse(field))){ //Identifies Dates
+    } else if (!isNaN(Date.parse(field.toString()))){ //Identifies Dates
         return "date";
     } else { //Otherwise we interpret as a string or object
         return typeof(field);
@@ -54,8 +38,28 @@ function classify(obj){
     return keys
 }
 
-app.get('/init', (req, res, next)=>{
-    RESTful.GetOne(collection).then(node => {
+//init: This Route supplies data to the Client For Filtration Initilization
+/*
+Take the object:
+{
+    name: "name",
+    test: {
+        field1: 1
+        field2: "true"
+    }
+}
+Our Route Should Return:
+{
+    name: "string"
+    test: "object"
+    test/field1: "number"
+    test/field2: "boolean"
+}
+With form: obj1/obj2/.../objn/fieldname: "type"
+For Fields within n objects
+*/
+app.get('/init', async (req, res, next)=>{
+    await RESTful.GetOne(collection).then(node => {
         res.send(classify(node))
     })
 });

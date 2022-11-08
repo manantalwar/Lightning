@@ -3,10 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
-<<<<<<< HEAD
-=======
   "type": "commonjs",
->>>>>>> c6360e5605c4f6e7223a7565fec94b32584be7f8
   "scripts": {
     "start": "nodemon server.js"
   },
@@ -18,6 +15,7 @@
     "axios": "^0.27.2",
     "express": "^4.18.2",
     "morgan": "^1.10.0",
+    "node-fetch": "^3.2.10",
     "nodemon": "^2.0.20"
   },
   "devDependencies": {

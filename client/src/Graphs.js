@@ -1,5 +1,5 @@
 import React, {useRef} from 'react';
-import Highcharts, { chart } from 'highcharts';
+import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
 const heat = require('highcharts/modules/heatmap');
@@ -204,7 +204,7 @@ export class HeatMap extends React.Component {
                 margin: 0,
                 verticalAlign: 'top',
                 y: 25,
-                symbolHeight: 328.5
+                symbolHeight: 226.5
            },
 
             tooltip: {
