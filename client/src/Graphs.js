@@ -57,7 +57,7 @@ export class ScatterPlot extends React.Component {
             }}
             >
             <HighchartsReact
-
+                containerProps={{ style: { height: "100%"}}}
                 highcharts={Highcharts}
                 options={options}
             />
@@ -132,6 +132,7 @@ export class Histogram extends React.Component {
         return (
 
             <HighchartsReact
+                // containerProps={{ style: { height: "100%"}}}
                 highcharts={Highcharts}
                 options={options}
             />
@@ -250,7 +251,7 @@ export class HeatMap extends React.Component {
             }}
             >
             <HighchartsReact
-
+                containerProps={{ style: { height: "100%"}}}
                 highcharts={Highcharts}
                 options={options}
             />
@@ -502,7 +503,6 @@ export default function LineChart() {
 
         return (
             <div
-
                 style={{
                     width: "100%",
                     height: "100%",
@@ -510,9 +510,9 @@ export default function LineChart() {
                     // padding: "10px",
                     // cursor: "pointer"
                 }}
- 
-    >
+            >
             <HighchartsReact
+            containerProps={{ style: { height: "100%"}}}
             ref={chartComponent}
             highcharts={Highcharts}
             options={options}
