@@ -34,7 +34,7 @@ router.route('/').get((req, res, next)=>{
             }
         })
 
-        return [obj, pointer, fieldname]
+        return [obj, pointer]
     }
 
     //assign(filters,"SCENARIO_ID", '2')
@@ -47,7 +47,6 @@ router.route('/').get((req, res, next)=>{
         let unpacked = unpack(key.toString()) //unpack field (potentially nested)
         let toPush = unpacked[0]
         let empty = unpacked[1]
-        key = unpacked[2]
         if(init[key].toString() == "number"){ //Handles Fields that are numbers 
             if(typeof(q[key]) == "object"){
                 if(q[key][0].toLowerCase() == 'or'){ //Select field list of potential vals
