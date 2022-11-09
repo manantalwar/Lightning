@@ -1,12 +1,14 @@
-import Navbar from './Navbar';
-import { useState } from 'react';
+import Navbar from './Navbar'
+import { useEffect, useState } from 'react'
 import './Filter.css'
+import {pullInit} from './getFromServer.mjs'
 
 const Filter = () => {
     const page = "Node Selector"
-    const [filters, setFilters] = useState([]);
+    const [filters, setFilters] = useState([])
+    const [queries, setQueries] = useState([])
     const scenarios = ['a', 'b', 'c'];
-    const keys = {selectKey: '', GenType:'string',Output:'float'}
+    const [keys, setKeys] = useState({})
     const [startLMP, setStartLMP] = useState()
     const [endLMP, setEndLMP] = useState()
     const [startDate, setStartDate] = useState()
@@ -21,8 +23,13 @@ const Filter = () => {
     const [customEnd, setCustomEnd] = useState()
 
     const addLMP = () => {
-        const filter = {key:'LMP', start:startLMP, end:endLMP};
-        setFilters(filters.concat(filter));
+        /* if(startLMP !== undefined && endLMP !== undefined){} */
+        const filter = {key:'LMP', start:startLMP, end:endLMP}
+            /* if(end !== undefined){
+                const query = filter.key + '=' + filter.start + '&' + filter.end
+            } */
+        setFilters(filters.concat(filter))
+        /* } */
     }
     const addDate = () => {
         const filter = {key:'date', startDate: startDate, endDate: endDate, startTime: startTime, endTime: endTime, period: period}
@@ -43,7 +50,15 @@ const Filter = () => {
     }
     const remove = (index) => {
         setFilters(filters.filter((el, i) => i !== index))
+        setQueries(queries.filter((el, i) => i !== index))
     }
+
+    useEffect(() => {
+        pullInit().then((obj) => setKeys(obj))
+    }, [])
+
+
+    
 
     return (  
         <div className="filter">
@@ -53,10 +68,8 @@ const Filter = () => {
                 <div className="list"> 
                     <p className="topTitle">Active Filters</p>
                     <div className="filterList">
-                        {/* <p>{JSON.stringify(filters)}</p> */}
                         {filters.map((filter, index) => (
                             <div className='filterObj'>
-                                {/* <p>test</p> */}
                                 {Object.keys(filter).map((key) => (
                                     <p className='filterEl'>{key + ': ' + filter[key]}</p>
                                 ))}
@@ -72,7 +85,6 @@ const Filter = () => {
                 <div className='filters'> 
                     {/* Custom Filters */}
                     <p className='topTitle'>Unique Descriptors</p> 
-                    {/* <input className='filterInputs' type='text' defaultValue='key'></input> */}
                     <select className='filterInputs'
                         onChange={(e) => setCustomKey(e.target.value)}
                         defaultValue='key'>
@@ -85,7 +97,7 @@ const Filter = () => {
                             <input className='customFilterInputs' type='text' defaultValue='value'
                                 onChange={(e) => setCustomOne(e.target.value)}></input>
                         }
-                        {keys[customKey] === 'float' &&
+                        {keys[customKey] === 'number' &&
                             <div>
                                 <input className='customFilterInputs' type='value' defaultValue='start'
                                     onChange={(e) => setCustomStart(e.target.value)}></input>

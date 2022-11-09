@@ -60,6 +60,7 @@ With form: obj1/obj2/.../objn/fieldname: "type"
 For Fields within n objects
 */
 app.get('/init', async (req, res, next)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*')
     await RESTful.GetOne(collection).then(node => {
         res.send(classify(node))
     })
@@ -70,6 +71,7 @@ const filterPage_router=require('./routes/filter_route')
 const validationPage_router=require('./routes/validation_route')
 
 app.use('/filter', async function(req, res, next){
+    res.setHeader('Access-Control-Allow-Origin', '*')
     req.RESTful=RESTful
     req.collection=collection
     await RESTful.GetOne(req.collection).then((node) => {
