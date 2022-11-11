@@ -64,7 +64,9 @@ async function aggregateNodes(query = ''){
     return obj
 }
 
-/* const testQuery = '?LMP=or&LMP=30.01&LMP=30.12'
+/* 
+//This query returns Nodes where: LMP == 30.01 OR LMP=30.12 OR 30.16 <= LMP <= 30.20
+const testQuery = '?LMP=30.01&LMP=30.12&LMP=range&LMP=30.16&LMP=30.20'
 
 pullInit().then((obj) => console.log(obj))
 
