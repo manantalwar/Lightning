@@ -69,7 +69,8 @@ app.get('/init', async (req, res, next)=>{
             //GENERATOR: {Fuel:"Oil"}, //[{OR:[{LMP:'30.1'},{LMP:'30.2'}]},{SCENARIO_ID:1}]
         },
         include:{
-            Generator:true
+            Generator:true,
+            Scenario:true
         }
     }
 

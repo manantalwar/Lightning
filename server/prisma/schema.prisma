@@ -13,9 +13,9 @@ model dummy_generators {
   Fuel          String
   Load_Zone     String           @map("Load Zone")
   Name          String
-  PNODE         String           @unique
   Reserve_Zone  String           @map("Reserve Zone")
   Type          String
+  PNODE         String           @unique
   Node          dummy_node_data?
 
   @@map("dummy-generators")
@@ -37,8 +37,8 @@ model dummy_node_data {
 model dummy_scenarios {
   id              String           @id @default(auto()) @map("_id") @db.ObjectId
   AUTHOR_GROUP_ID String
-  SCENARIO_ID     String           @unique
   SCENARIO_NAME   String
+  SCENARIO_ID     String           @unique
   Node            dummy_node_data?
 
   @@map("dummy-scenarios")
