@@ -13,10 +13,10 @@ model dummy_generators {
   Fuel          String
   Load_Zone     String @map("Load Zone")
   Name          String
-  PNODE         String
+  PNODE         String @unique
   Reserve_Zone  String @map("Reserve Zone")
   Type          String
-
+  Node          dummy_node_data @relation(fields: [PNODE], references: [PNODE_NAME])
   @@map("dummy-generators")
 }
 
@@ -25,9 +25,9 @@ model dummy_node_data {
   LMP         String
   MW          String
   PERIOD_ID   DateTime @db.Date
-  PNODE_NAME  String
+  PNODE_NAME  String @unique
   SCENARIO_ID String
-
+  GENERATOR   dummy_generators?
   @@map("dummy-node-data")
 }
 

@@ -16,6 +16,9 @@ router.route('/').get((req, res, next)=>{
     let filters = {
         where:{
             AND:[], //[{OR:[{LMP:'30.1'},{LMP:'30.2'}]},{SCENARIO_ID:1}]
+        },
+        include:{
+            GENERATOR:true
         }
     }
 
