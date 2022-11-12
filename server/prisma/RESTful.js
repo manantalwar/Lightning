@@ -7,6 +7,12 @@ prisma.$on('beforeExit', async () => {
     console.log('Connection Closed.')
 })
 
+prisma.$on('query', async (e) => {
+    console.log('Query: ' + e.query)
+    console.log('Params: ' + e.params)
+    console.log('Duration: ' + e.duration + 'ms')
+  })
+
 //Gets one node With filter Array
 async function GetOne(collection, filters = {}){
     try{

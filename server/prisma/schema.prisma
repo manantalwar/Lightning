@@ -7,12 +7,35 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model dummy_generators {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  Dispatch_Zone String @map("Dispatch Zone")
+  Fuel          String
+  Load_Zone     String @map("Load Zone")
+  Name          String
+  PNODE         String
+  Reserve_Zone  String @map("Reserve Zone")
+  Type          String
+
+  @@map("dummy-generators")
+}
+
 model dummy_node_data {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   LMP         String
-  PERIOD_ID   String
+  MW          String
+  PERIOD_ID   DateTime @db.Date
   PNODE_NAME  String
   SCENARIO_ID String
 
   @@map("dummy-node-data")
+}
+
+model dummy_scenarios {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  AUTHOR_GROUP_ID String
+  SCENARIO_ID     String
+  SCENARIO_NAME   String
+
+  @@map("dummy-scenarios")
 }
