@@ -16,7 +16,7 @@ model dummy_generators {
   PNODE         String @unique
   Reserve_Zone  String @map("Reserve Zone")
   Type          String
-  Node          dummy_node_data @relation(fields: [PNODE], references: [PNODE_NAME])
+  Node          dummy_node_data? 
   @@map("dummy-generators")
 }
 
@@ -27,7 +27,7 @@ model dummy_node_data {
   PERIOD_ID   DateTime @db.Date
   PNODE_NAME  String @unique
   SCENARIO_ID String
-  GENERATOR   dummy_generators?
+  Generator   dummy_generators? @relation(fields: [PNODE_NAME], references: [PNODE])
   @@map("dummy-node-data")
 }
 
