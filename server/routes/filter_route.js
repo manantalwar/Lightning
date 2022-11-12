@@ -16,7 +16,6 @@ router.route('/').get((req, res, next)=>{
     let filters = {
         where:{
             AND:[], //[{OR:[{LMP:'30.1'},{LMP:'30.2'}]},{SCENARIO_ID:1}]
-            //{PERIOD_ID: {gte: new Date("2020-07-17T02:00:00.000Z").toISOString()}}
         }
     }
 
