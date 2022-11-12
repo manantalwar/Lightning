@@ -1,8 +1,8 @@
 const csvtojson = require("csvtojson"); // npm install csvtojson
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://admin:adminpassword@cluster0.auigosn.mongodb.net/?retryWrites=true&w=majority";
-let path= "dummy-node-data2.csv"; //Changed this and following field for each table
-let colName= "dummy-node-data"; //<--
+let path= "dummy-groups.csv"; //Changed this and following field for each table
+let colName= "dummy-groups"; //<--
 let dbName="dummy-data-fixed";
 
 // Add your IP to mongo database !!!! Otherwise you will see some topology error (made public)
