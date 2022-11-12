@@ -65,7 +65,7 @@ async function aggregateNodes(query = ''){
 }
 
 //This query returns Nodes where: LMP == 30.01 OR LMP=30.12 OR 30.16 <= LMP <= 30.20
-const testQuery = '?LMP=30.01&LMP=30.12&LMP=range&LMP=30.16&LMP=30.20'
+const testQuery = '?Generator/Fuel=Oil&PERIOD_ID=2020-07-17T18:00:00.000Z&PERIOD_ID=2020-07-17T19:00:00.000Z'
 
 pullInit().then((obj) => console.log(obj))
 

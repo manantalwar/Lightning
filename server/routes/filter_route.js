@@ -15,10 +15,10 @@ router.route('/').get((req, res, next)=>{
 
     let filters = {
         where:{
-            AND:[], //[{OR:[{LMP:'30.1'},{LMP:'30.2'}]},{SCENARIO_ID:1}]
+            AND:[ ], //[{OR:[{LMP:'30.1'},{LMP:'30.2'}]},{SCENARIO_ID:1}]
         },
         include:{
-            GENERATOR:true
+            Generator: true
         }
     }
 
@@ -37,7 +37,7 @@ router.route('/').get((req, res, next)=>{
             }
         })
 
-        return [obj, pointer]
+        return [obj, pointer, fieldname]
     }
 
     //assign(filters,"SCENARIO_ID", '2')
@@ -50,6 +50,7 @@ router.route('/').get((req, res, next)=>{
         let unpacked = unpack(key.toString()) //unpack field (potentially nested)
         let toPush = unpacked[0]
         let empty = unpacked[1]
+        let newKey = unpacked[2]
         if(init[key].toString() === "number"){ //Handles Fields that are numbers 
             if(typeof(q[key]) === "object"){
                 let i = 0
@@ -57,11 +58,11 @@ router.route('/').get((req, res, next)=>{
                 while (i < q[key].length){ //Now iterates through array by index
                     if(q[key][i].toLowerCase() === "range" && i < (q[key].length - 2)){
                         if(!isNaN(q[key][i+1]) && !isNaN(q[key][i+2]))
-                        gtltFilter(empty, key.toString(), q[key][i+1].toString(), q[key][i+2].toString())
+                        gtltFilter(empty, newKey.toString(), q[key][i+1].toString(), q[key][i+2].toString())
                         orObj.OR.push({ ...toPush })
                         i += 2;
                     } else if (!isNaN(q[key][i])) {
-                        assign(empty, key.toString(), q[key][i])
+                        assign(empty, newKey.toString(), q[key][i])
                         orObj.OR.push({ ...toPush })
                     }
                     i += 1;
@@ -69,25 +70,25 @@ router.route('/').get((req, res, next)=>{
                 filters.where.AND.push(orObj)
             } else if (typeof(q[key]) === "string") { // ONE val
                 if(!isNaN(q[key])){
-                    assign(empty, key.toString(), q[key])
+                    assign(empty, newKey.toString(), q[key])
                     filters.where.AND.push(toPush)
                 }
             }
         } else if(init[key].toString() === "boolean"){ //handles bool fields
             if(typeof(q[key]) === "string"){ //accepts 1 val
-                assign(empty, key.toString(), q[key])
+                assign(empty, newKey.toString(), q[key])
                 filters.where.AND.push(toPush)
             }
         } else if(init[key].toString() == "string"){ //handles string fields
             if(typeof(q[key]) === "object"){  //list of vals
                 let orObj = {OR:[]}
                 q[key].forEach((elem) => {
-                    assign(empty, key.toString(), elem)
+                    assign(empty, newKey.toString(), elem)
                     orObj.OR.push({ ...toPush })
                 });
                 filters.where.AND.push(orObj)
-            } else if(typeof(q[key]) === "string"){  //one val
-                assign(empty, key.toString(), q[key])
+            } else if (typeof(q[key]) === "string"){  //one val
+                assign(empty, newKey.toString(), q[key])
                 filters.where.AND.push(toPush)
             }
         } else if(init[key].toString() === "date"){ //PARSES DATE Fields : CHECK THIS FUNCTIONALITY
@@ -95,7 +96,14 @@ router.route('/').get((req, res, next)=>{
                 let start = new Date(q[key][0])
                 let end =   new Date(q[key][1])
                 if(!isNaN(start) && !isNaN(end)) {
-                    gtltFilter(empty, key.toString(), start, end)
+                    gtltFilter(empty, newKey.toString(), start, end)
+                    filters.where.AND.push(toPush)
+                }
+            }
+            else if (typeof(q[key]) === "string"){
+                let date = new Date(q[key])
+                if(!isNaN(date)){
+                    assign(empty, newKey.toString(), date)
                     filters.where.AND.push(toPush)
                 }
             }
