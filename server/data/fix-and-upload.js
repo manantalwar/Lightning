@@ -1,17 +1,18 @@
 const csvtojson = require("csvtojson"); // npm install csvtojson
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://admin:adminpassword@cluster0.auigosn.mongodb.net/?retryWrites=true&w=majority";
-let path= "dummy-node-data2.csv";
+let path= "dummy-node-data2.csv"; //Changed this and following field for each table
+let colName= "dummy-node-data"; //<--
 let dbName="dummy-data-fixed";
-let colName= "dummy-node-data";
-// Add your IP to mongo database !!!! Otherwise you will see some topology error
+
+// Add your IP to mongo database !!!! Otherwise you will see some topology error (made public)
 
 function upload(localfilePath, databaseName, collectionName, uri){
     csvtojson() //converting csv file to JSON. To upload CSV file directly- we can us mongoimport. 
     .fromFile(localfilePath)
     .then(csvData => {
         csvData.forEach((elem) => {
-            if(path === "dummy-node-data2.csv"){ elem["PERIOD_ID"] =  new Date(elem["PERIOD_ID"] + ": UTC") }
+            if(path === "dummy-node-data2.csv"){ elem["PERIOD_ID"] =  new Date(elem["PERIOD_ID"] + ": UTC") } //Correct Dates SPECIFY UTC
         });
         console.log(csvData)
         
