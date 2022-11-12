@@ -14,8 +14,8 @@ function getType(field){
         return typeof(1);
     } else if (field == true || field == false || field == "true" || field == "false"){ //Identifies Booleans
         return typeof(true);
-    } else if (!isNaN(Date.parse(field.toString()))){ //Identifies Dates
-        return "date";
+    } else if (typeof(field) == "object"){ //Identifies Dates
+        if(!isNaN(new Date(field.toString()))){return "date";}
     } else { //Otherwise we interpret as a string or object
         return typeof(field);
     }

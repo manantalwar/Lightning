@@ -54,7 +54,7 @@ router.route('/').get((req, res, next)=>{
                 while (i < q[key].length){ //Now iterates through array by index
                     if(q[key][i].toLowerCase() === "range" && i < (q[key].length - 2)){
                         if(!isNaN(q[key][i+1]) && !isNaN(q[key][i+2]))
-                        gtltFilter(empty, key.toString(), q[key][i+1], q[key][i+2])
+                        gtltFilter(empty, key.toString(), q[key][i+1].toString(), q[key][i+2].toString())
                         orObj.OR.push({ ...toPush })
                         i += 2;
                     } else if (!isNaN(q[key][i])) {
@@ -115,8 +115,8 @@ function assign(obj, queryType, filterVal){
 //assigns qt lt prisma object query to some object
 function gtltFilter(obj, queryType, gtVal, ltVal){
     obj[queryType] = {
-        gte:gtVal.toString(),
-        lte:ltVal.toString()
+        gte:gtVal,
+        lte:ltVal
     }
 }
 
