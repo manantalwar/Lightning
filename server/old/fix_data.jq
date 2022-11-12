@@ -1,3 +1,4 @@
+#ULTIMATELY we used csvtojson XD
 .PERIOD_ID |= { "$date": (. + ":") }
 
 # cat .\dummy-node-data.json | jq .[] | jq -f .\fix_data.jq > temp-node.json
