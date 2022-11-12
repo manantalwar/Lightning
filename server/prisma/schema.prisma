@@ -7,6 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model dummy_node_data {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  LMP         String
+  MW          String
+  PERIOD_ID   DateTime          @db.Date
+  PNODE_NAME  String            @unique
+  SCENARIO_ID String            @unique
+  Scenario    dummy_scenarios?  @relation(fields: [SCENARIO_ID], references: [SCENARIO_ID])
+  Generator   dummy_generators? @relation(fields: [PNODE_NAME], references: [PNODE])
+
+  @@map("dummy-node-data")
+}
+
 model dummy_generators {
   id            String           @id @default(auto()) @map("_id") @db.ObjectId
   Dispatch_Zone String           @map("Dispatch Zone")
@@ -21,25 +34,22 @@ model dummy_generators {
   @@map("dummy-generators")
 }
 
-model dummy_node_data {
-  id          String            @id @default(auto()) @map("_id") @db.ObjectId
-  LMP         String
-  MW          String
-  PERIOD_ID   DateTime          @db.Date
-  PNODE_NAME  String            @unique
-  SCENARIO_ID String            @unique
-  Scenario    dummy_scenarios?  @relation(fields: [SCENARIO_ID], references: [SCENARIO_ID])
-  Generator   dummy_generators? @relation(fields: [PNODE_NAME], references: [PNODE])
-
-  @@map("dummy-node-data")
-}
-
 model dummy_scenarios {
   id              String           @id @default(auto()) @map("_id") @db.ObjectId
-  AUTHOR_GROUP_ID String
+  AUTHOR_GROUP_ID String           @unique
   SCENARIO_NAME   String
   SCENARIO_ID     String           @unique
   Node            dummy_node_data?
+  Group           dummy_groups?    @relation(fields: [AUTHOR_GROUP_ID], references: [GROUP_ID])
 
   @@map("dummy-scenarios")
+}
+
+model dummy_groups {
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  GROUP_ID   String @unique
+  GROUP_NAME String
+  Scenario   dummy_scenarios?
+
+  @@map("dummy-groups")
 }

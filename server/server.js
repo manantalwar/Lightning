@@ -7,6 +7,19 @@ const app=express();
 app.listen(port, Ip)
 
 const collection = "dummy_node_data"
+/*
+FOR ISO-NE:
+THE FORMAT OF THIS INCLUDE OBJECT TAKES THE FORM OF THE RELATIONSHIPS
+IN THE PRISMA SCHEMA
+*/
+const include={
+    Generator:true,
+    Scenario: {
+        include:{
+            Group: true,
+        }
+    },
+}
 
 //Function returning the type of a field
 function getType(field){
@@ -63,26 +76,17 @@ For Fields within n objects
 app.get('/init', async (req, res, next)=>{
     res.setHeader('Access-Control-Allow-Origin', '*')
 
-    let filters = {
+    let InitFilter = {
         where:{
             MW: "500"
             //GENERATOR: {Fuel:"Oil"}, //[{OR:[{LMP:'30.1'},{LMP:'30.2'}]},{SCENARIO_ID:1}]
         },
-        include:{
-            Generator:true,
-            Scenario:true
-        }
+        include:include,
     }
 
-    await RESTful.GetOne(collection, filters).then(node => {
+    await RESTful.GetOne(collection, InitFilter).then(node => {
         res.send(classify(node))
     })
-
-    /*
-    await RESTful.GetOne(collection).then(node => {
-        res.send(classify(node))
-    })
-    */
 });
 
 const homepage_router=require('./routes/home_route')
@@ -93,17 +97,15 @@ app.use('/filter', async function(req, res, next){
     res.setHeader('Access-Control-Allow-Origin', '*')
     req.RESTful=RESTful
     req.collection=collection
+    req.include=include
 
     let InitFilter = {
         where:{
             MW: "500"
             //GENERATOR: {Fuel:"Oil"}, //[{OR:[{LMP:'30.1'},{LMP:'30.2'}]},{SCENARIO_ID:1}]
         },
-        include:{
-            Generator:true
-        }
+        include:include,
     }
-
 
     await RESTful.GetOne(req.collection, InitFilter).then((node) => {
         req.init=classify(node)
