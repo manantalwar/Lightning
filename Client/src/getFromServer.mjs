@@ -53,6 +53,7 @@ aggregateNode(q).then((obj) => {
 });
 */
 async function aggregateNodes(query = ''){
+    
     function flattenNode(node){
             let result = {};
             for (let i in node) {
