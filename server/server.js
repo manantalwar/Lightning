@@ -37,7 +37,7 @@ function getType(field){
 function classify(obj){
     let keys = {}
     Object.keys(obj).forEach(function(key) {
-        if(!keys.hasOwnProperty(key)){
+        if(!keys.hasOwnProperty(key) && obj[key] != null){
             keys[key.toString()] = getType(obj[key])
             //console.log(key + " : " + getType(obj[key]))
             if(keys[key] == "object"){
@@ -77,21 +77,24 @@ app.get('/init', async (req, res, next)=>{
     res.setHeader('Access-Control-Allow-Origin', '*')
 
     let InitFilter = {
-        where:{
-            MW: "500"
-            //GENERATOR: {Fuel:"Oil"}, //[{OR:[{LMP:'30.1'},{LMP:'30.2'}]},{SCENARIO_ID:1}]
-        },
         include:include,
     }
-
-    await RESTful.GetOne(collection, InitFilter).then(node => {
-        res.send(classify(node))
+    await RESTful.Get(collection, InitFilter).then(nodes => {
+        temp = {}
+        nodes.forEach((elem) => {
+            temp = {
+                ...classify(elem),
+                ...temp,
+            }
+        })
+        res.send(temp)
     })
 });
 
 const homepage_router=require('./routes/home_route')
 const filterPage_router=require('./routes/filter_route')
 const validationPage_router=require('./routes/validation_route')
+const getPage_router=require('./routes/get_route')
 
 app.use('/filter', async function(req, res, next){
     res.setHeader('Access-Control-Allow-Origin', '*')
@@ -100,15 +103,42 @@ app.use('/filter', async function(req, res, next){
     req.include=include
 
     let InitFilter = {
-        where:{
-            MW: "500"
-            //GENERATOR: {Fuel:"Oil"}, //[{OR:[{LMP:'30.1'},{LMP:'30.2'}]},{SCENARIO_ID:1}]
-        },
         include:include,
     }
-
-    await RESTful.GetOne(req.collection, InitFilter).then((node) => {
-        req.init=classify(node)
+    await RESTful.Get(collection, InitFilter).then(nodes => {
+        temp = {}
+        nodes.forEach((elem) => {
+            temp = {
+                ...classify(elem),
+                ...temp,
+            }
+        })
+        req.init = temp
     })
+
     next()
 },filterPage_router)
+
+
+app.use('/get', async function(req, res, next){
+res.setHeader('Access-Control-Allow-Origin', '*')
+    req.RESTful=RESTful
+    req.collection=collection
+    req.include=include
+
+    let InitFilter = {
+        include:include,
+    }
+    await RESTful.Get(collection, InitFilter).then(nodes => {
+        temp = {}
+        nodes.forEach((elem) => {
+            temp = {
+                ...classify(elem),
+                ...temp,
+            }
+        })
+        req.init = temp
+    })
+
+    next()
+},getPage_router)

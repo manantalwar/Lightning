@@ -2,7 +2,7 @@ const router = require("express").Router()
 
 //get: Returns Nodes according to a query
 //TODO: Parse Query Fields for Prismas filtration object
-//URL Query Form: /get?...
+//URL Query Form: /filter?...
 
 // Filters is a JSON object. Whichever category needs a range component, needs to have an empty object inside the where part. For example, LMP
 //

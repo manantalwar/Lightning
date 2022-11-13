@@ -7,23 +7,23 @@ let dbName="dummy-data-fixed";
 
 // Add your IP to mongo database !!!! Otherwise you will see some topology error (made public)
 
-function upload(localfilePath, databaseName, collectionName, uri){
+function upload(localfilePath, databaseName, collectionName, uri) {
     csvtojson() //converting csv file to JSON. To upload CSV file directly- we can us mongoimport. 
-    .fromFile(localfilePath)
-    .then(csvData => {
-        csvData.forEach((elem) => {
-            if(path === "dummy-node-data2.csv"){ elem["PERIOD_ID"] =  new Date(elem["PERIOD_ID"] + ": UTC") } //Correct Dates SPECIFY UTC
-        });
-        console.log(csvData)
-        
-        const client = new MongoClient(uri, { useUnifiedTopology: true,  useNewUrlParser: true, wtimeoutMS: 2500, keepAlive:true, maxPoolSize:30, socketTimeoutMS:360000, connectTimeoutMS:360000}); // establishing connection 
+        .fromFile(localfilePath)
+        .then(csvData => {
+            csvData.forEach((elem) => {
+                if (path === "dummy-node-data2.csv") { elem["PERIOD_ID"] = new Date(elem["PERIOD_ID"] + ": UTC") } //Correct Dates SPECIFY UTC
+            });
+            console.log(csvData)
+
+            const client = new MongoClient(uri, { useUnifiedTopology: true, useNewUrlParser: true, wtimeoutMS: 2500, keepAlive: true, maxPoolSize: 30, socketTimeoutMS: 360000, connectTimeoutMS: 360000 }); // establishing connection 
             const collection = client.db(databaseName)
-            .collection(collectionName)
-            .insertMany(csvData.slice(), {safe:true} , (err, res) => {
-                if (err) throw err;
-            })
-        client.close(); // Issue 1- connection not closing. Need to force quit
-      });
+                .collection(collectionName)
+                .insertMany(csvData.slice(), { safe: true }, (err, res) => {
+                    if (err) throw err;
+                })
+            client.close(); // Issue 1- connection not closing. Need to force quit
+        });
 }
 
 upload(path, dbName, colName, uri)
