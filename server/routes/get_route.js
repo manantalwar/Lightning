@@ -7,10 +7,9 @@ router.route('/*').get((req, res, next)=>{
     let init=req.init
 
     if(!Object.keys(init).includes(p.slice(1))){
-        throw new Error('Unkown Request');
-    }
-
-    if (!p.slice(1).includes("/")) { //Data is in Node and not nested DB has exclude funcctionality!
+        res.status(404).json('Error: Unknown Request');
+    } 
+    else if (!p.slice(1).includes("/")) { //Data is in Node and not nested DB has exclude funcctionality!
         let filters = {
             distinct: [p.slice(1)],
             select: {},
