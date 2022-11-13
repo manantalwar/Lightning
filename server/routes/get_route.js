@@ -34,13 +34,12 @@ router.route('/*').get((req, res, next)=>{
             let arr = field.split('/')
             let fieldname = arr[arr.length - 1]
     
-            arr.forEach((elem) => {
+            arr.forEach((elem) => { //creates the nested select query for linked db objects
                 if(elem != fieldname){
                     pointer[elem] = { select : {} };
                     pointer = pointer[elem].select;
                 }
             })
-
             pointer[fieldname] = true;
 
             return [obj , arr , fieldname]
@@ -52,8 +51,8 @@ router.route('/*').get((req, res, next)=>{
             select: obj[0],
         }
 
-        RESTful.Get(collection, filters).then((nodes) => {
-            let arr = []
+        RESTful.Get(collection, filters).then((nodes) => { //de dupes the nested query result
+            let arr = []                                   //discarding null sub objects
             nodes.forEach((elem) => {
                 try{
                     let temp = elem[obj[1][0]];

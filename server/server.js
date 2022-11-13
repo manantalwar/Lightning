@@ -53,7 +53,7 @@ function classify(obj){
 }
 
 
-//init: This Route supplies data to the Client For Filtration Initilization
+//init: Function supplies data for the Client For Filtration Initilization
 /*
 Take the object:
 {
@@ -73,13 +73,12 @@ Our Route Should Return:
 With form: obj1/obj2/.../objn/fieldname: "type"
 For Fields within n objects
 */
-app.get('/init', async (req, res, next)=>{
-    res.setHeader('Access-Control-Allow-Origin', '*')
 
+async function init(){
     let InitFilter = {
         include:include,
     }
-    await RESTful.Get(collection, InitFilter).then(nodes => {
+    return await RESTful.Get(collection, InitFilter).then(nodes => {
         temp = {}
         nodes.forEach((elem) => {
             temp = {
@@ -87,58 +86,43 @@ app.get('/init', async (req, res, next)=>{
                 ...temp,
             }
         })
-        res.send(temp)
+        return temp;
     })
-});
+}
 
-const homepage_router=require('./routes/home_route')
-const filterPage_router=require('./routes/filter_route')
-const validationPage_router=require('./routes/validation_route')
-const getPage_router=require('./routes/get_route')
+init().then((elem) => server(elem))
 
-app.use('/filter', async function(req, res, next){
-    res.setHeader('Access-Control-Allow-Origin', '*')
-    req.RESTful=RESTful
-    req.collection=collection
-    req.include=include
+function server(init) {
 
-    let InitFilter = {
-        include:include,
-    }
-    await RESTful.Get(collection, InitFilter).then(nodes => {
-        temp = {}
-        nodes.forEach((elem) => {
-            temp = {
-                ...classify(elem),
-                ...temp,
-            }
-        })
-        req.init = temp
-    })
+    app.get('/init', async (req, res, next) => {
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        res.send(init)
+    });
 
-    next()
-},filterPage_router)
+    const homepage_router = require('./routes/home_route')
+    const filterPage_router = require('./routes/filter_route')
+    const validationPage_router = require('./routes/validation_route')
+    const getPage_router = require('./routes/get_route')
+
+    app.use('/filter', async function (req, res, next) {
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        req.RESTful = RESTful
+        req.collection = collection
+        req.include = include
+        req.init = init
+
+        next()
+    }, filterPage_router)
 
 
-app.use('/get', async function(req, res, next){
-res.setHeader('Access-Control-Allow-Origin', '*')
-    req.RESTful=RESTful
-    req.collection=collection
-    req.include=include
+    app.use('/get', async function (req, res, next) {
+        res.setHeader('Access-Control-Allow-Origin', '*')
+        req.RESTful = RESTful
+        req.collection = collection
+        req.include = include
+        req.init = init
 
-    let InitFilter = {
-        include:include,
-    }
-    await RESTful.Get(collection, InitFilter).then(nodes => {
-        temp = {}
-        nodes.forEach((elem) => {
-            temp = {
-                ...classify(elem),
-                ...temp,
-            }
-        })
-        req.init = temp
-    })
+        next()
+    }, getPage_router)
 
-    next()
-},getPage_router)
+}
