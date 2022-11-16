@@ -13,7 +13,7 @@ model dummy_node_data {
   MW          String
   PERIOD_ID   DateTime          @db.Date
   PNODE_NAME  String
-  SCENARIO_ID String            @unique
+  SCENARIO_ID String            
   Scenario    dummy_scenarios?  @relation(fields: [SCENARIO_ID], references: [SCENARIO_ID])
   Generator   dummy_generators? @relation(fields: [PNODE_NAME], references: [PNODE])
 
@@ -39,7 +39,7 @@ model dummy_scenarios {
   AUTHOR_GROUP_ID String           @unique
   SCENARIO_NAME   String
   SCENARIO_ID     String           @unique
-  Node            dummy_node_data?
+  Node            dummy_node_data[]
   Group           dummy_groups?    @relation(fields: [AUTHOR_GROUP_ID], references: [GROUP_ID])
 
   @@map("dummy-scenarios")
@@ -49,7 +49,7 @@ model dummy_groups {
   id         String @id @default(auto()) @map("_id") @db.ObjectId
   GROUP_ID   String @unique
   GROUP_NAME String
-  Scenario   dummy_scenarios?
+  Scenario   dummy_scenarios[]
 
   @@map("dummy-groups")
 }
