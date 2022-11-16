@@ -2,17 +2,52 @@ import React, {useState} from 'react'
 import Navbar from './Navbar';
 import './Validate.css'
 import Modal from './Modal'
-
+import expand from './expand.jpeg'
+import {pullNodes} from './getFromServer.mjs'
 import { HeatMap, ScatterPlot, Histogram} from './Graphs';
 import LineChart from './Graphs';
 
 const Validation = () => {
     const page = "Validation"
-    const scenarios = ['a', 'b', 'c'];
+    const scenarios = ['1', '2', '3'];
     const [isOpen1, setIsOpen1] = useState(false)
     const [isOpen2, setIsOpen2] = useState(false)
     const [isOpen3, setIsOpen3] = useState(false)
     const [isOpen4, setIsOpen4] = useState(false)
+    const [startDate, setStartDate] = useState()
+    const [endDate, setEndDate] = useState()
+    const [startTime, setStartTime] = useState()
+    const [endTime, setEndTime] = useState()
+    const [scenario, setScenario] = useState()
+    const [nodes, setNodes] = useState()
+
+    const getNodes = () => {
+        let query = '?SCENARIO_ID=1'
+        if(scenario !== undefined){
+            query+='&SCENARIO_ID='+scenario
+        }
+        if(startDate !== undefined){
+            let queryDate
+            /* no end date */
+            if(endDate === undefined){
+                /* no start time */
+                if(startTime === undefined){
+                    queryDate='PERIOD_ID='+startDate+'T00:00:00.000'+'&PERIOD_ID='+startDate+'T23:59:59.999'
+                /* time but no end date */
+                } else{
+                    if(endTime === undefined){
+                        queryDate='PERIOD_ID='+startDate+'T'+startTime+':00.000'
+                    } else {
+                        queryDate='PERIOD_ID='+startDate+'T'+startTime+':00.000'+'&PERIOD_ID='+startDate+'T'+endTime+':00.000'
+                    }
+                }
+            }
+            query+='&'+queryDate
+        }
+        /* console.log(query) */
+        pullNodes(query).then((obj) => setNodes(obj))
+        console.log(nodes)
+    }
 
     return (  
         <div className="validation">
@@ -20,64 +55,75 @@ const Validation = () => {
             <div className="contentVal">
                 <div className='dateTime'>
                     <p className='titles'>Dates</p>
-                    <input className='inputs' type='date'></input>
-                    <input className='inputs' type='date'></input>
+                    <input className='inputs' type='date'
+                            onChange={(e) => setStartDate(e.target.value)}></input>
+                    <input className='inputs' type='date'
+                            onChange={(e) => setEndDate(e.target.value)}></input>
                     <p className='titles'>Times</p>
-                    <input className='inputs' type='time'></input>
-                    <input className='inputs' type='time'></input>
-                    <select className='scenarioSelector'>
+                    <input className='inputs' type='time'
+                            onChange={(e) => setStartTime(e.target.value)}></input>
+                    <input className='inputs' type='time'
+                            onChange={(e) => setEndTime(e.target.value)}></input>
+                    <select className='scenarioSelector'
+                            onChange={(e) => setScenario(e.target.value)}>
                         {scenarios.map((scenario) => (
                             <option value={scenario}>{scenario}</option>
                         ))}
                     </select>
-                    <button className='addB'>Update Filter</button>            
+                    <button className='addB'
+                            onClick={getNodes}>
+                            Update Filter</button>            
                 </div>
                 
                 <div className='graphs'>
                     <div className = 'graph'>
-                        <LineChart />
-                        <button class= "expand" onClick={() => setIsOpen1(true)}>Expand</button>
-                        <Modal open={isOpen1} onClose={() => setIsOpen1(false)}>
-                            <div>
-                                <LineChart />
-                            </div>
-                        </Modal>
+                        <div class="expanding"> 
+                            <LineChart />
+                            <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
+                            <Modal open={isOpen1} onClose={() => setIsOpen1(false)}>
+                                <div>
+                                    <LineChart />
+                                </div>
+                            </Modal>
+                        </div>
+
                     </div>
                     <div className = 'graph'>
+                        <div class="expanding"> 
                         <ScatterPlot />
-                        <button class= "expand" onClick={() => setIsOpen2(true)}>Expand</button>
+                        <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen2} onClose={() => setIsOpen2(false)}>
                             <div>
                                 <ScatterPlot />
                             </div>
-
-                     </Modal>  
+                        </Modal>  
+                        </div>
                     </div>
                     <div className = 'graph'>
+                    <div class="expanding"> 
                         <div style={{width: "100%", height: "100%"}}>
                             <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>         
                             <Histogram mainText={'Historgram: Scenario'} subText={'HUB Node Prices of Scenario that we are Validating'}/>  
                         </div>
-
-                        
-
-                            <button class= "expand" onClick={() => setIsOpen3(true)}>Expand</button> 
+                        <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
                             <Modal open={isOpen3} onClose={() => setIsOpen3(false)}>
                             <div>
                                 <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>         
                                 <Histogram mainText={'Historgram: Scenario'} subText={'HUB Node Prices of Scenario that we are Validating'}/> 
                             </div>
-                            </Modal>                                                  
+                            </Modal>      
+                        </div>                                            
                     </div>
                     <div className = 'graph'>
+                        <div class="expanding"> 
                         <HeatMap />
-                        <button class= "expand" onClick={() => setIsOpen4(true)}>Expand</button>
+                        <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen4} onClose={() => setIsOpen4(false)}>
                             <div>
                                 <HeatMap />
                             </div>
-
-                        </Modal>                        
+                        </Modal>    
+                        </div>                    
                     </div>
                     
                 </div>

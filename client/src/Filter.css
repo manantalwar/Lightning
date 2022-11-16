@@ -25,6 +25,19 @@
     border-radius: 4px; */
 }
 
+.link{
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 5%;
+    width: 30%;
+    font-size: 22px;
+    background-color: white;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
 .remove{
     float: right;
     margin-right: 1%;
