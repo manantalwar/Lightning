@@ -3,12 +3,13 @@
 // date2=takeIntoAccountDaylightSavings(date1)
 // filter on these dates
 
-function takeIntoAccountDaylightSavings(localTime){
-    const d = new Date()
+function takeIntoAccountDaylightSavings(localTimeString){
 
     // convert to msec since Jan 1 1970
-    //const localTime = d.getTime()
-
+    //const d = new Date()
+  
+    const d=stringToTime(localTimeString);
+    const localTime = d.getTime()
     // obtain local UTC offset and convert to msec
     const localOffset = d.getTimezoneOffset() * 60 * 1000
 
@@ -42,5 +43,20 @@ function takeIntoAccountDaylightSavings(localTime){
             return -5
         }
     }
+
+
+    const stringToDate = (localTimeString) => {
+        // input format is- 17-JUL-2020 01
+        // convert string to date 
+        // Date Syntax: new Date(year value, IndexOfMonth, day value, hours, minutes, seconds)
+        const [dateValues, timeValues] = localTimeString.split(' ');
+        const [day, month, year] = dateValues.split('-');
+        var months = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
+        monthNum = months.indexOf(month.toLowerCase());
+        const date = new Date(year,monthNum,day, timeValues);
+  
+        return date;
+    }
     return nd;
 }
+
