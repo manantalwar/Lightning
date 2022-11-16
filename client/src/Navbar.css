@@ -1,10 +1,8 @@
 .navbar{
+    display:flex;
     width: 100%;
-}
-
-.notHome{
-    height: 100%;
-    width: 100%;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .title{
@@ -17,4 +15,15 @@
 .homeBtn{
     float: right;
     margin-right: 2%;
+    border: none;
+    background-color: white;
+    font-size: 30px;
+    color: #9da5a9;
+}
+.homeBtn:hover {
+    color:black;
+}
+
+.isologo {
+    height:100%;
 }

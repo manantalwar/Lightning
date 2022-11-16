@@ -6,17 +6,12 @@ import './Navbar.css'
 const Navbar = ({page}) => {
     return (  
         <div className='header'>
-            <img src={logo} className="isologo" alt="logo" />
             <div className = 'navbar'>
-                {page !== "Home" &&
-                    <div className="notHome"> 
-                        <p className='title'>{page}</p> 
-                        <button className="homeBtn" onClick={() => openInNewTab('./')}>Home</button>
-                    </div>
-                }
+                <img src={logo} className="isologo" alt="logo" />
+                {page !== "Home" && <p className='title'>{page}</p>} 
+                {page !== "Home" && <button className="homeBtn" onClick={() => openInNewTab('./')}>Home</button>}
             </div>
         </div>
-
     );
 }
  
