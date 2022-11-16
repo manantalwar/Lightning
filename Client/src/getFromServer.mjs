@@ -22,7 +22,7 @@ const getPath = '/get/'
 */
 
 //returns a promise of nodes pullnodes().then((data) => //do something) where data : [nodes]
-async function pullNodes(query = ''){ 
+export async function pullNodes(query = ''){ 
     const url = protocol + serverUrl + port + filterPath + query
     return await fetch(url)
         .then((response) => response.json())
@@ -52,7 +52,7 @@ aggregateNode(q).then((obj) => {
     })
 });
 */
-async function aggregateNodes(query = ''){
+export async function aggregateNodes(query = ''){
     
     function flattenNode(node){
             let result = {};
