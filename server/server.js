@@ -37,7 +37,7 @@ function getType(field){
 function classify(obj){
     let keys = {}
     Object.keys(obj).forEach(function(key) {
-        if(!keys.hasOwnProperty(key) && obj[key] != null){
+        if(!keys.hasOwnProperty(key) && obj[key] != null && obj[key] != undefined){
             keys[key.toString()] = getType(obj[key])
             //console.log(key + " : " + getType(obj[key]))
             if(keys[key] == "object"){

@@ -22,7 +22,7 @@ const getPath = '/get/'
 */
 
 //returns a promise of nodes pullnodes().then((data) => //do something) where data : [nodes]
-async function pullNodes(query = ''){ 
+export async function pullNodes(query = ''){ 
     const url = protocol + serverUrl + port + filterPath + query
     return await fetch(url)
         .then((response) => response.json())
@@ -52,7 +52,7 @@ aggregateNode(q).then((obj) => {
     })
 });
 */
-async function aggregateNodes(query = ''){
+export async function aggregateNodes(query = ''){
     
     function flattenNode(node){
             let result = {};
@@ -89,7 +89,7 @@ get(initField) for /get/ :O ;)
 Pass any init field into this function to get a list of all possible values
 for that field!
 */
-async function get(fieldName){
+export async function get(fieldName){
     const url = protocol + serverUrl + port + getPath + fieldName
     return await fetch(url)
         .then((response) => response.json())

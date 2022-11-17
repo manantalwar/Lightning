@@ -25,6 +25,19 @@
     border-radius: 4px; */
 }
 
+.link{
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
+    height: 5%;
+    width: 30%;
+    font-size: 22px;
+    background-color: white;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}
+
 .remove{
     float: right;
     margin-right: 1%;
@@ -59,6 +72,31 @@
     border: 1vw solid white;
     margin-left: 5%;
     overflow-y: auto;
+}
+
+.getList{
+    height: 50%;
+    width: 85%;
+    background-color: #26303A;
+    border: 0.5vw solid white;
+    margin-right: 5%;
+    margin-bottom: 5%;
+    overflow-y: auto;
+}
+
+.getTitle{
+    color: white;
+    margin-top: 30%;
+    margin-bottom: 1%;
+    font-size: 20px;
+    text-align: center;
+}
+
+.getText{
+    color: white;
+    margin-left: 2%;
+    /* border-style: solid;
+    border-radius: 4px; */
 }
 
 .topTitle{

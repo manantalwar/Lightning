@@ -1,13 +1,15 @@
 import Navbar from './Navbar'
 import { useEffect, useState } from 'react'
 import './Filter.css'
-import {pullInit} from './getFromServer.mjs'
+import {pullInit, get} from './getFromServer.mjs'
+import { Link } from 'react-router-dom'
+//import {get} from './getFromServer.mjs'
 
 const Filter = () => {
     const page = "Node Selector"
     const [filters, setFilters] = useState([])
     const [queries, setQueries] = useState([])
-    const scenarios = ['a', 'b', 'c'];
+    const scenarios = ['1', '2', '3'];
     const [keys, setKeys] = useState({})
     const [startLMP, setStartLMP] = useState()
     const [endLMP, setEndLMP] = useState()
@@ -21,44 +23,121 @@ const Filter = () => {
     const [customOne, setCustomOne] = useState()
     const [customStart, setCustomStart] = useState()
     const [customEnd, setCustomEnd] = useState()
+    const [getList, setGetList] = useState([])
+
+    const createQuery = () => {
+        let query = '?'
+        queries.map((cur) => (
+            query += '&'+cur
+        ))
+        return query
+    }
 
     const addLMP = () => {
-        /* if(startLMP !== undefined && endLMP !== undefined){} */
-        const filter = {key:'LMP', start:startLMP, end:endLMP}
-            /* if(end !== undefined){
-                const query = filter.key + '=' + filter.start + '&' + filter.end
-            } */
-        setFilters(filters.concat(filter))
-        /* } */
+        if((startLMP !== '' || endLMP !== '') && (startLMP !== undefined || endLMP !== undefined) && (startLMP !== undefined || endLMP !== '') &&(startLMP !== '' || endLMP !== undefined)){
+            let filter
+            let query
+            if(startLMP === '' || startLMP === undefined){
+                filter = {key:'LMP', value:endLMP}
+                query = 'LMP=' + endLMP
+            } else if (endLMP === '' || endLMP === undefined){
+                filter = {key:'LMP', value:startLMP}
+                query = 'LMP=' + startLMP
+            } else{
+                filter = {key:'LMP', start:startLMP, end:endLMP}
+                query = 'LMP=range&LMP=' + startLMP + '&LMP=' + endLMP
+            }
+            setFilters(filters.concat(filter))
+            setQueries(queries.concat(query))
+        }
     }
     const addDate = () => {
-        const filter = {key:'date', startDate: startDate, endDate: endDate, startTime: startTime, endTime: endTime, period: period}
-        setFilters(filters.concat(filter))
+        if(startDate !== undefined){
+            let filter
+            let query
+            /* no end date */
+            if(endDate === undefined){
+                /* no start time */
+                if(startTime === undefined){
+                    if(period === '' || period === undefined){
+                        filter = {key: 'date', start: startDate}
+                    } else filter = {key:'date', start: startDate, period: period}
+                    query='PERIOD_ID='+startDate+'T00:00:00.000Z'+'&PERIOD_ID='+startDate+'T23:59:59.999Z'
+                /* time but no end date */
+                } else{
+                    if(endTime === undefined){
+                        filter = {key:'date', day:startDate, time:startTime}
+                        query='PERIOD_ID='+startDate+'T'+startTime+':00.000Z'
+                    } else {
+                        filter = {key:'date', day:startDate, startTime:startTime,endTime:endTime}
+                        query='PERIOD_ID='+startDate+'T'+startTime+':00.000Z'+'&PERIOD_ID='+startDate+'T'+endTime+':00.000Z'
+                    }
+                }
+            }
+            /* filter = {key:'date', start: startDate, end: endDate, startTime: startTime, endTime: endTime, period: period}
+             query   */
+            setFilters(filters.concat(filter))
+            setQueries(queries.concat(query))
+        }
     }
     const addScenario = () => {
-        const filter = {key:'scenario', scenario: scenario}
-        setFilters(filters.concat(filter))
+        if(scenario !== undefined){
+            const filter = {key:'scenario', scenario: scenario}
+            const query = 'SCENARIO_ID='+scenario
+            setFilters(filters.concat(filter))
+            setQueries(queries.concat(query))
+        }
     }
     const addCustom = () => {
-        let filter
         if(keys[customKey] === 'string'){
-            filter = {key:customKey, value: customOne}
-        } else{ 
-            filter = {key:customKey, start:customStart, end:customEnd}
+            if(customOne !== undefined && customOne !== ''){
+                const filter = {key:customKey, value: customOne}
+                const query = customKey+'='+customOne
+                setFilters(filters.concat(filter))
+                setQueries(queries.concat(query))
+            }
+        } else{
+            if(customStart !== undefined && customStart !== ''){
+                let filter
+                let query
+                if(customEnd !== undefined && customEnd !== ''){
+                    filter = {key:customKey, start: customStart, end: customEnd}
+                    query = customKey+'=range&'+customKey+'='+customStart+'&'+customKey+'='+customEnd
+                } else{
+                    filter = {key:customKey, value: customStart}
+                    query = customKey+'='+customStart
+                }
+                setFilters(filters.concat(filter))
+                setQueries(queries.concat(query))
+            } else if(customEnd !== undefined && customEnd !== ''){
+                const filter = {key:customKey, value: customEnd}
+                const query = customKey+'='+customEnd
+                setFilters(filters.concat(filter))
+                setQueries(queries.concat(query))
+            }
         }
-        setFilters(filters.concat(filter))
     }
     const remove = (index) => {
         setFilters(filters.filter((el, i) => i !== index))
         setQueries(queries.filter((el, i) => i !== index))
     }
 
+    const setGetListKey = (key) => {
+        get(key).then((nodes) => {
+            setGetList(nodes)
+        }).catch(() => "")
+    }
+
     useEffect(() => {
-        pullInit().then((obj) => setKeys(obj))
+        pullInit().then((obj) => { 
+            Object.keys(obj).map((key) => {
+                if(obj[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
+                    delete obj[key]  
+                }
+                setKeys(obj)
+        })
+    })
     }, [])
-
-
-    
 
     return (  
         <div className="filter">
@@ -79,14 +158,19 @@ const Filter = () => {
                             
                         ))}
                     </div>
-                    <button className="submit">Submit</button>
+                    {/* <button className="submit">Submit</button> */}
+                    <Link
+                        className = 'link'
+                        to = '/UC2'
+                        state={createQuery()}
+                    >Submit</Link>
                 </div>
                 {/* Div containing custom filters and scenario */}
                 <div className='filters'> 
                     {/* Custom Filters */}
                     <p className='topTitle'>Unique Descriptors</p> 
                     <select className='filterInputs'
-                        onChange={(e) => setCustomKey(e.target.value)}
+                        onChange={(e) => {setCustomKey(e.target.value); setGetListKey(e.target.value);}}
                         defaultValue='key'>
                         {Object.keys(keys).map((key) => (
                             <option value={key}>{key}</option>
@@ -106,7 +190,7 @@ const Filter = () => {
                             </div>
                         }
                     </div>
-                    
+
                     <button className='add'
                         onClick={addCustom}>Add Filter</button>
                     {/* Scenario Filters */}
@@ -151,6 +235,10 @@ const Filter = () => {
                     />
                     <button className='add' 
                         onClick={addLMP}>Add Filter </button>
+                    <p className='getTitle'>Values:</p>
+                    <div className="getList">
+                    {getList.map((elem) => (<p className='getText'>{elem}</p>))}
+                    </div>
                 </div>
             </div> 
         </div>
