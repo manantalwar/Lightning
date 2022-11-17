@@ -77,7 +77,7 @@ const Validation = () => {
                 
                 <div className='graphs'>
                     <div className = 'graph'>
-                        <div class="expanding"> 
+                        <div className="expanding"> 
                             <LineChart />
                             <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
                             <Modal open={isOpen1} onClose={() => setIsOpen1(false)}>
@@ -89,9 +89,9 @@ const Validation = () => {
 
                     </div>
                     <div className = 'graph'>
-                        <div class="expanding"> 
+                        <div className="expanding"> 
                         <ScatterPlot />
-                        <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
+                        <button className= "expandpos" onClick={() => setIsOpen2(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen2} onClose={() => setIsOpen2(false)}>
                             <div>
                                 <ScatterPlot />
@@ -100,12 +100,12 @@ const Validation = () => {
                         </div>
                     </div>
                     <div className = 'graph'>
-                    <div class="expanding"> 
+                    <div className="expanding"> 
                         <div style={{width: "100%", height: "100%"}}>
                             <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>         
                             <Histogram mainText={'Historgram: Scenario'} subText={'HUB Node Prices of Scenario that we are Validating'}/>  
                         </div>
-                        <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
+                        <button className= "expandpos" onClick={() => setIsOpen3(true)}><img className="expanding" src={expand} alt="expand"/></button>
                             <Modal open={isOpen3} onClose={() => setIsOpen3(false)}>
                             <div>
                                 <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>         
@@ -115,9 +115,9 @@ const Validation = () => {
                         </div>                                            
                     </div>
                     <div className = 'graph'>
-                        <div class="expanding"> 
+                        <div className="expanding"> 
                         <HeatMap />
-                        <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
+                        <button className= "expandpos" onClick={() => setIsOpen4(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen4} onClose={() => setIsOpen4(false)}>
                             <div>
                                 <HeatMap />
