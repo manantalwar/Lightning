@@ -2,7 +2,7 @@
 
 const protocol = 'http://'
 const serverUrl = 'localhost:'
-const port = '3000'
+const port = '3001'
 const filterPath = '/filter'
 const initPath = '/init'
 const getPath = '/get/'

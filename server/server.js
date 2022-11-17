@@ -2,7 +2,7 @@ const express= require("express");
 const RESTful = require("./prisma/RESTful.js");
 
 const Ip = 'localhost'
-const port = 3000
+const port = 3001
 const app=express();
 app.listen(port, Ip)
 

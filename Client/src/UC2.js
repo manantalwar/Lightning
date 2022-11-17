@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom"
 import { useEffect, useState } from 'react'
 
 const UC2 = () => {
-    const page = 'UC2'
+    const page = 'Statistics'
     const location = useLocation()
     /* const { state } = this.props.location */
     const [nodes, setNodes] = useState([])
@@ -20,7 +20,7 @@ const UC2 = () => {
             <Navbar page={page}/>
             <div className="content">
                 {/* <div>{nodes[0]</div> */}
-                <div>{nodes.map((node) => (JSON.stringify(node)))}</div>
+                <div className="values">{nodes.map((node) => (JSON.stringify(node)))}</div>
             </div>
         </div>
     )
