@@ -89,7 +89,7 @@ get(initField) for /get/ :O ;)
 Pass any init field into this function to get a list of all possible values
 for that field!
 */
-async function get(fieldName){
+export async function get(fieldName){
     const url = protocol + serverUrl + port + getPath + fieldName
     return await fetch(url)
         .then((response) => response.json())
