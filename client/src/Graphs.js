@@ -20,7 +20,7 @@ export class ScatterPlot extends React.Component {
             },
             xAxis: {
                 min: 0,
-                max: 5
+                //max: 5
             },
             yAxis: {
                 min: 0
@@ -45,7 +45,21 @@ export class ScatterPlot extends React.Component {
                 marker: {
                     radius: 4
                 }
-            }]
+            },
+            {
+                type: 'scatter',
+                name: 'Plobservations',
+                data: [
+                    [1,1.8],
+                    [4,3.5],
+                    [3,3],
+                    [2,2],
+                    [2.5,2.6],
+                ],
+                marker: {
+                    radius: 3
+                }
+            },]
         }
         return (
             <div
