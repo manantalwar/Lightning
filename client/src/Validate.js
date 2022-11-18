@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Navbar from './Navbar';
 import './Validate.css'
 import Modal from './Modal'
 import expand from './expand.jpeg'
-import {pullNodes} from './getFromServer.mjs'
+import {pullNodes, aggregateNodes} from './getFromServer.mjs'
 import { HeatMap, ScatterPlot, Histogram} from './Graphs';
 import LineChart from './Graphs';
 
@@ -14,12 +14,16 @@ const Validation = () => {
     const [isOpen2, setIsOpen2] = useState(false)
     const [isOpen3, setIsOpen3] = useState(false)
     const [isOpen4, setIsOpen4] = useState(false)
-    const [startDate, setStartDate] = useState(undefined)
-    const [endDate, setEndDate] = useState(undefined)
-    const [startTime, setStartTime] = useState(undefined)
-    const [endTime, setEndTime] = useState(undefined)
-    const [scenario, setScenario] = useState(undefined)
-    const [nodes, setNodes] = useState();
+    const [startDate, setStartDate] = useState()
+    const [endDate, setEndDate] = useState()
+    const [startTime, setStartTime] = useState()
+    const [endTime, setEndTime] = useState()
+    const [scenario, setScenario] = useState()
+    const [nodes, setNodes] = useState({})
+
+    useEffect(() => {
+        getNodes();
+    }, [])
 
     const getNodes = () => {
         let query = '?SCENARIO_ID=1'
@@ -44,10 +48,12 @@ const Validation = () => {
             }
             query+='&'+queryDate
         }
-        console.log(query)
+        /* console.log(query) */
+        aggregateNodes(query).then((obj) => {
+            setNodes(obj);
+            //console.log(nodes)
+        })
         
-        pullNodes(query).then((obj) => setNodes(obj))
-        console.log(nodes)
     }
     
 
@@ -80,11 +86,11 @@ const Validation = () => {
                 <div className='graphs'>
                     <div className = 'graph'>
                         <div className="expanding"> 
-                            <LineChart />
+                            <LineChart data={nodes}/>
                             <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
                             <Modal open={isOpen1} onClose={() => setIsOpen1(false)}>
                                 <div>
-                                    <LineChart />
+                                    <LineChart data={nodes}/>
                                 </div>
                             </Modal>
                         </div>
