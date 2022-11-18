@@ -3,13 +3,13 @@ import Navbar from './Navbar';
 import './Validate.css'
 import Modal from './Modal'
 import expand from './expand.jpeg'
-import {pullNodes, aggregateNodes} from './getFromServer.mjs'
+import {pullNodes, aggregateNodes, get} from './getFromServer.mjs'
 import { HeatMap, ScatterPlot, Histogram} from './Graphs';
 import LineChart from './Graphs';
 
 const Validation = () => {
     const page = "Validation"
-    const scenarios = ['1', '2', '3'];
+    const [scenarios, setScenarios] = useState([])
     const [isOpen1, setIsOpen1] = useState(false)
     const [isOpen2, setIsOpen2] = useState(false)
     const [isOpen3, setIsOpen3] = useState(false)
@@ -20,9 +20,17 @@ const Validation = () => {
     const [endTime, setEndTime] = useState()
     const [scenario, setScenario] = useState()
     const [nodes, setNodes] = useState({})
+    const [allNodeNames, setAllNodeNames] = useState(["All"])
+    const [nodeName, setNodeName] = useState()
 
     useEffect(() => {
         getNodes();
+        get('PNODE_NAME').then((names) => {
+            setAllNodeNames(allNodeNames.concat(names))
+        }).catch(() => "")
+        get('SCENARIO_ID').then((scen) => (
+            setScenarios(scen)
+        )).catch(() => '')
     }, [])
 
     const getNodes = () => {
@@ -48,15 +56,18 @@ const Validation = () => {
             }
             query+='&'+queryDate
         }
-        /* console.log(query) */
+        if(nodeName !== undefined && nodeName !== "All"){
+            query+='&PNODE_NAME='+nodeName
+        }
+
         aggregateNodes(query).then((obj) => {
             setNodes(obj);
-            //console.log(nodes)
         })
-        
     }
     
 
+    console.log(nodes)
+    
     return (  
         <div className="validation">
             <Navbar page={page}/>
@@ -76,6 +87,12 @@ const Validation = () => {
                             onChange={(e) => setScenario(e.target.value)}>
                         {scenarios.map((scenario) => (
                             <option key= {scenario.toString()} value={scenario}>{scenario}</option>
+                        ))}
+                    </select>
+                    <select className='nodeSelector'
+                            onChange={(e)=> setNodeName(e.target.value)}>
+                        {allNodeNames.map((name) => (
+                            <option value={name}>{name}</option>
                         ))}
                     </select>
                     <button className='addB'
@@ -98,11 +115,11 @@ const Validation = () => {
                     </div>
                     <div className = 'graph'>
                         <div className="expanding"> 
-                        <ScatterPlot />
+                        <ScatterPlot data={nodes}/>
                         <button className= "expandpos" onClick={() => setIsOpen2(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen2} onClose={() => setIsOpen2(false)}>
                             <div>
-                                <ScatterPlot />
+                                <ScatterPlot data={nodes}/>
                             </div>
                         </Modal>  
                         </div>
