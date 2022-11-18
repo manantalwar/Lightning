@@ -25,11 +25,16 @@
 }
 
 .inputs{
-    width: 15%;
+    width: 10%;
     height: 60%;
     margin: 1%;
 }
 
+.nodeSelector{
+    width: 20%;
+    height: 60%;
+    margin: 1%;
+}
 
 .addB{
     width: 10%;

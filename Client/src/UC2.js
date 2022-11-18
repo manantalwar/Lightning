@@ -9,9 +9,11 @@ const UC2 = () => {
     const location = useLocation()
     /* const { state } = this.props.location */
     const [nodes, setNodes] = useState([])
+    const [agr, setAgr] = useState([])
     /* console.log(location.state) */
     useEffect(() => {
         pullNodes(location.state).then((obj) => setNodes(obj))
+        
     }, [])
     /* console.log(nodes) */
 

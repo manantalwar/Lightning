@@ -5,12 +5,26 @@ import HighchartsReact from 'highcharts-react-official';
 const heat = require('highcharts/modules/heatmap');
 heat(Highcharts);
 
-export class ScatterPlot extends React.Component {
-    constructor(props) {
+export /* class */ function ScatterPlot(props) /* extends React.Component */ {
+    /* constructor(props) {
         super(props);
+    } */
+    function grabData(obj){
+        let ret = {}
+        let cap = 0;
+        try{cap = obj.PNODE_NAME.length}catch{cap = 0}
+        for(let i = 0; i < cap; i++){
+            let index = obj["PNODE_NAME"][i].toString() + obj["PERIOD_ID"][i].toString();
+            if(!ret.hasOwnProperty(index)){ret[index] = {x: parseFloat(obj["LMP"][i]), y: parseFloat(obj["LMP"][i]), z: obj["PNODE_NAME"][i], time: new Date(obj["PERIOD_ID"][i]).getTime()}}
+            if(obj["SCENARIO_ID"][i] === '1') {ret[index].x = parseFloat(obj["LMP"][i])}
+            else {ret[index].y = parseFloat(obj["LMP"][i])}
+        }
+        return Object.values(ret);
     }
+    let dat = grabData(props.data);
+    console.log(dat) 
 
-    render() {
+    /* render() { */
         const options = {
             chart: {
                 height: '110%'
@@ -19,18 +33,34 @@ export class ScatterPlot extends React.Component {
                 text: 'Scatter Plot with Regression Line'
             },
             xAxis: {
-                min: 0,
-                //max: 5
+                title: {
+                    text: 'Base Case LMP'
+                },
             },
             yAxis: {
-                min: 0,
+                title: {
+                    text: 'Simulation Case LMP'
+                },
                 lineWidth: 1,
                 lineColor: '#E2E7FF'
             },
-            series: [{
+        series: [
+            {
+                type: 'scatter',
+                name: 'Base Case',
+                data: dat
+                    /*[{x: 30 , y : 30 , z: "help"},]  or  [1, 1.5, 2.8, 3.5, 3.9, 4.2] */,
+                marker: {
+                    radius: 4
+                },
+                tooltip: {
+                    pointFormat: 'Base Case: {point.x} <br/> Scenario: {point.y} <br/> Name: {point.z} <br/> Time: {point.time:%Y-%m-%d %H:%M:%S}'
+                },
+            },
+            {
                 type: 'line',
                 name: 'Regression Line',
-                data: [[0, 1.11], [5, 4.51]],
+                data: [dat[0], dat[dat.length-1]],
                 marker: {
                     enabled: false
                 },
@@ -40,33 +70,30 @@ export class ScatterPlot extends React.Component {
                     }
                 },
                 enableMouseTracking: false
-            }, {
-                type: 'scatter',
-                name: 'Observations',
-                data: [1, 1.5, 2.8, 3.5, 3.9, 4.2],
-                marker: {
-                    radius: 4
-                }
             },
+            /*
             {
                 type: 'scatter',
-                name: 'Plobservations',
-                data: [
+                name: 'Simulation Case',
+                data: dat.set2
+                // [
                     [1,1.8],
                     [4,3.5],
                     [3,3],
                     [2,2],
                     [2.5,2.6],
-                ],
+                ] //,
                 marker: {
                     radius: 2,
                 },
                 color:"#19B5D5",
                 visible:false
-            },]
-        }
-        return (
-            <div
+            },
+            */
+        ]
+    }
+    return (
+        <div
             style={{
                 width: "100%",
                 height: "100%"
@@ -74,15 +101,17 @@ export class ScatterPlot extends React.Component {
                 // padding: "10px",
                 // cursor: "pointer"
             }}
-            >
+        >
             <HighchartsReact
-                containerProps={{ style: { height: "100%"}}}
+                containerProps={{ style: { height: "100%" } }}
                 highcharts={Highcharts}
                 options={options}
+                allowChartUpdate={true}
+            /* ref={chartComponent} */
             />
-            </div>
-        );
-    }
+        </div>
+    );
+    /* } */
 }
 
 export class Histogram extends React.Component {
@@ -103,7 +132,7 @@ export class Histogram extends React.Component {
                 text: subText
             },
             xAxis: {
-                categories: [
+                /*categories: [
                 2.5,
                 17.5,
                 32.5,
@@ -118,6 +147,7 @@ export class Histogram extends React.Component {
                 182.5,
                 197.5
                 ],
+                */
                 crosshair: true
             },
             yAxis: {
@@ -295,17 +325,18 @@ export default function LineChart(props) {
         let cap = 0;
         try{cap = obj.PERIOD_ID.length}catch{cap = 0}
         for(let i = 0; i < cap; i++){
+            let toPush = {x: new Date(obj["PERIOD_ID"][i]).getTime(), y:  parseFloat(obj["MW"][i]), z: (obj['PNODE_NAME'][i])}
             if(obj["SCENARIO_ID"][i] === '1'){
-                ret.set1.push([new Date(obj["PERIOD_ID"][i]).getTime(), parseFloat(obj["MW"][i])])
+                ret.set1.push(toPush)
             }
             else{
-                ret.set2.push([new Date(obj["PERIOD_ID"][i]).getTime(), parseFloat(obj["MW"][i])])
+                ret.set2.push(toPush)
             }
         }
         return ret;
     }
     let dat = grabData(props.data);
-    console.log(dat)
+    /* console.log(dat) */
 
     const options = {
         chart: {
@@ -337,7 +368,7 @@ export default function LineChart(props) {
         },
         tooltip: {
             headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '{point.x:%H:%M}: {point.y:.2f} MW'
+            pointFormat: 'Time: {point.x:%Y-%m-%d %H:%M:%S} <br/> MW: {point.y:.2f} <br/> Name: {point.z}'
         },
         plotOptions: {
             series: {
