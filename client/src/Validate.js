@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Navbar from './Navbar';
 import './Validate.css'
 import Modal from './Modal'
@@ -20,6 +20,10 @@ const Validation = () => {
     const [endTime, setEndTime] = useState()
     const [scenario, setScenario] = useState()
     const [nodes, setNodes] = useState({})
+
+    useEffect(() => {
+        getNodes();
+    }, [])
 
     const getNodes = () => {
         let query = '?SCENARIO_ID=1'

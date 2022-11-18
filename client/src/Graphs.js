@@ -396,16 +396,21 @@ export default function LineChart(props) {
     */
 
     function grabData(obj){ //Probably needs period filtering
-        let ret = []
+        let ret = {set1:[], set2:[]}
         let cap = 0;
         try{cap = obj.PERIOD_ID.length}catch{cap = 0}
         for(let i = 0; i < cap; i++){
-            ret.push([new Date(obj["PERIOD_ID"][i]).getTime(), parseFloat(obj["MW"][i])])
+            if(obj["SCENARIO_ID"][i] === '1'){
+                ret.set1.push([new Date(obj["PERIOD_ID"][i]).getTime(), parseFloat(obj["MW"][i])])
+            }
+            else{
+                ret.set2.push([new Date(obj["PERIOD_ID"][i]).getTime(), parseFloat(obj["MW"][i])])
+            }
         }
         return ret;
     }
     let dat = grabData(props.data);
-    //console.log(dat)
+    console.log(dat)
 
     const options = {
         chart: {
@@ -455,8 +460,8 @@ export default function LineChart(props) {
         // at 0 for January, 1 for February etc.
         series: [
             {
-                name: "Forecasted (MW)",
-                data: dat
+                name: "Actual (MW)",
+                data: dat.set1
                 /*[
                     [Date.UTC(2022, 9, 19, 0, 0), 8250],
                     [Date.UTC(2022, 9, 19, 1, 0), 7777],
@@ -484,8 +489,8 @@ export default function LineChart(props) {
                     [Date.UTC(2022, 9, 19, 23, 0), 8950],
                 ]*/
             }, {
-                name: "Actual (MW)",
-                data: []
+                name: "Forecasted (MW)",
+                data: dat.set2
                 /*
                 [
                     [Date.UTC(2022, 9, 19, 0, 0), 8350],
