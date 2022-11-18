@@ -26,16 +26,9 @@ export class ScatterPlot extends React.Component {
                 //max: 5
             },
             yAxis: {
-<<<<<<< HEAD
-                title: {
-                    text: 'LMQ'
-                },
-                min: 0
-=======
                 min: 0,
                 lineWidth: 1,
                 lineColor: '#E2E7FF'
->>>>>>> ffdefa2f029ecc3e9edab3bf1af00351b0a6794f
             },
             series: [{
                 type: 'line',
