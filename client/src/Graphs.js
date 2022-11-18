@@ -262,6 +262,114 @@ export class HeatMap extends React.Component {
     }
 }
 
+export default function LineChart(props) {
+
+    /*
+    Have some function receive Data as a Constructor/Parameter
+    Format for Specific Graph
+    Display
+    */
+
+    function grabData(obj){
+        let ret = {set1:[], set2:[]}
+        let cap = 0;
+        try{cap = obj.PERIOD_ID.length}catch{cap = 0}
+        for(let i = 0; i < cap; i++){
+            if(obj["SCENARIO_ID"][i] === '1'){
+                ret.set1.push([new Date(obj["PERIOD_ID"][i]).getTime(), parseFloat(obj["MW"][i])])
+            }
+            else{
+                ret.set2.push([new Date(obj["PERIOD_ID"][i]).getTime(), parseFloat(obj["MW"][i])])
+            }
+        }
+        return ret;
+    }
+    let dat = grabData(props.data);
+    console.log(dat)
+
+    const options = {
+        chart: {
+            height: '110%',
+            type: 'spline'
+        },
+        title: {
+            text: 'System Demand'
+        },
+        subtitle: {
+            text: 'Forecasted & Actual'
+        },
+        xAxis: {
+            type: 'datetime',
+            dateTimeLabelFormats: { // don't display the dummy year
+                hour: '%H:%M',
+                year: '%b'
+            },
+            title: {
+                text: 'Hour'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'MW'
+            },
+        },
+        tooltip: {
+            headerFormat: '<b>{series.name}</b><br>',
+            pointFormat: '{point.x:%H:%M}: {point.y:.2f} MW'
+        },
+        plotOptions: {
+            series: {
+                marker: {
+                    enabled: true,
+                    radius: 2.5
+                }
+            }
+        },
+
+        colors: ['Crimson', 'DeepSkyBlue'],
+        // colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
+
+        // Define the data points. All series have a dummy year of 1970/71 in order
+        // to be compared on the same x axis. Note that in JavaScript, months start
+        // at 0 for January, 1 for February etc.
+        series: [
+            {
+                name: "Actual (MW)",
+                data: dat.set1
+                /*[
+                    [Date.UTC(2022, 9, 19, 0, 0), 8250],
+                    [Date.UTC(2022, 9, 19, 1, 0), 7777],
+                    [Date.UTC(2022, 9, 19, 2, 0), 5677],
+                ]*/
+            }, {
+                name: "Forecasted (MW)",
+                data: dat.set2
+            },
+        ]
+    }
+
+    const chartComponent = useRef(null);
+
+    return (
+        <div
+            style={{
+                width: "100%",
+                height: "100%",
+                // border: "1px solid #ccc",
+                // padding: "10px",
+                // cursor: "pointer"
+            }}
+        >
+            <HighchartsReact
+                containerProps={{ style: { height: "100%" } }}
+                ref={chartComponent}
+                highcharts={Highcharts}
+                options={options}
+                allowChartUpdate={true}
+            />
+        </div>
+    );
+}
 
 // export class LineChart extends React.Component {
 //     constructor(props) {
@@ -387,112 +495,3 @@ export class HeatMap extends React.Component {
 //     }
 // }
 
-export default function LineChart(props) {
-
-    /*
-    Have some function receive Data as a Constructor/Parameter
-    Format for Specific Graph
-    Display
-    */
-
-    function grabData(obj){
-        let ret = {set1:[], set2:[]}
-        let cap = 0;
-        try{cap = obj.PERIOD_ID.length}catch{cap = 0}
-        for(let i = 0; i < cap; i++){
-            if(obj["SCENARIO_ID"][i] === '1'){
-                ret.set1.push([new Date(obj["PERIOD_ID"][i]).getTime(), parseFloat(obj["MW"][i])])
-            }
-            else{
-                ret.set2.push([new Date(obj["PERIOD_ID"][i]).getTime(), parseFloat(obj["MW"][i])])
-            }
-        }
-        return ret;
-    }
-    let dat = grabData(props.data);
-    console.log(dat)
-
-    const options = {
-        chart: {
-            height: '110%',
-            type: 'spline'
-        },
-        title: {
-            text: 'System Demand'
-        },
-        subtitle: {
-            text: 'Forecasted & Actual'
-        },
-        xAxis: {
-            type: 'datetime',
-            dateTimeLabelFormats: { // don't display the dummy year
-                hour: '%H:%M',
-                year: '%b'
-            },
-            title: {
-                text: 'Hour'
-            }
-        },
-        yAxis: {
-            title: {
-                text: 'MW'
-            },
-        },
-        tooltip: {
-            headerFormat: '<b>{series.name}</b><br>',
-            pointFormat: '{point.x:%H:%M}: {point.y:.2f} MW'
-        },
-
-        plotOptions: {
-            series: {
-                marker: {
-                    enabled: true,
-                    radius: 2.5
-                }
-            }
-        },
-
-        colors: ['Crimson', 'DeepSkyBlue'],
-        // colors: ['#6CF', '#39F', '#06C', '#036', '#000'],
-
-        // Define the data points. All series have a dummy year of 1970/71 in order
-        // to be compared on the same x axis. Note that in JavaScript, months start
-        // at 0 for January, 1 for February etc.
-        series: [
-            {
-                name: "Actual (MW)",
-                data: dat.set1
-                /*[
-                    [Date.UTC(2022, 9, 19, 0, 0), 8250],
-                    [Date.UTC(2022, 9, 19, 1, 0), 7777],
-                    [Date.UTC(2022, 9, 19, 2, 0), 5677],
-                ]*/
-            }, {
-                name: "Forecasted (MW)",
-                data: dat.set2
-            },
-        ]
-    }
-
-    const chartComponent = useRef(null);
-
-    return (
-        <div
-            style={{
-                width: "100%",
-                height: "100%",
-                // border: "1px solid #ccc",
-                // padding: "10px",
-                // cursor: "pointer"
-            }}
-        >
-            <HighchartsReact
-                containerProps={{ style: { height: "100%" } }}
-                ref={chartComponent}
-                highcharts={Highcharts}
-                options={options}
-                allowChartUpdate={true}
-            />
-        </div>
-    );
-}
