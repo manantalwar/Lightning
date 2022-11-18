@@ -14,12 +14,12 @@ const Validation = () => {
     const [isOpen2, setIsOpen2] = useState(false)
     const [isOpen3, setIsOpen3] = useState(false)
     const [isOpen4, setIsOpen4] = useState(false)
-    const [startDate, setStartDate] = useState()
-    const [endDate, setEndDate] = useState()
-    const [startTime, setStartTime] = useState()
-    const [endTime, setEndTime] = useState()
-    const [scenario, setScenario] = useState()
-    const [nodes, setNodes] = useState()
+    const [startDate, setStartDate] = useState(undefined)
+    const [endDate, setEndDate] = useState(undefined)
+    const [startTime, setStartTime] = useState(undefined)
+    const [endTime, setEndTime] = useState(undefined)
+    const [scenario, setScenario] = useState(undefined)
+    const [nodes, setNodes] = useState();
 
     const getNodes = () => {
         let query = '?SCENARIO_ID=1'
@@ -44,10 +44,12 @@ const Validation = () => {
             }
             query+='&'+queryDate
         }
-        /* console.log(query) */
+        console.log(query)
+        
         pullNodes(query).then((obj) => setNodes(obj))
         console.log(nodes)
     }
+    
 
     return (  
         <div className="validation">
@@ -67,7 +69,7 @@ const Validation = () => {
                     <select className='scenarioSelector'
                             onChange={(e) => setScenario(e.target.value)}>
                         {scenarios.map((scenario) => (
-                            <option value={scenario}>{scenario}</option>
+                            <option key= {scenario.toString()} value={scenario}>{scenario}</option>
                         ))}
                     </select>
                     <button className='addB'

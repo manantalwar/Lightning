@@ -18,10 +18,16 @@ export class ScatterPlot extends React.Component {
                 text: 'Scatter Plot with Regression Line'
             },
             xAxis: {
+                title: {
+                    text: 'Hour'
+                },
                 min: 0,
                 max: 5
             },
             yAxis: {
+                title: {
+                    text: 'LMQ'
+                },
                 min: 0
             },
             series: [{
