@@ -23,7 +23,9 @@ export class ScatterPlot extends React.Component {
                 //max: 5
             },
             yAxis: {
-                min: 0
+                min: 0,
+                lineWidth: 1,
+                lineColor: '#E2E7FF'
             },
             series: [{
                 type: 'line',
@@ -57,8 +59,10 @@ export class ScatterPlot extends React.Component {
                     [2.5,2.6],
                 ],
                 marker: {
-                    radius: 3
-                }
+                    radius: 2,
+                },
+                color:"#19B5D5",
+                visible:false
             },]
         }
         return (
@@ -120,7 +124,9 @@ export class Histogram extends React.Component {
                 min: 0,
                 title: {
                     text: 'Percent'
-                }
+                },
+                lineWidth: 1,
+                lineColor: '#E2E7FF'
             },
             tooltip: {
                 headerFormat: '<span style="font-size:12px">Price: {point.key}</span><table>',
@@ -326,6 +332,8 @@ export default function LineChart(props) {
             title: {
                 text: 'MW'
             },
+            lineWidth: 1,
+            lineColor: '#E2E7FF'
         },
         tooltip: {
             headerFormat: '<b>{series.name}</b><br>',
