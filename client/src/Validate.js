@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 import './Validate.css'
 import Modal from './Modal'
 import expand from './expand.jpeg'
-import {pullNodes} from './getFromServer.mjs'
+import {pullNodes, aggregateNodes} from './getFromServer.mjs'
 import { HeatMap, ScatterPlot, Histogram} from './Graphs';
 import LineChart from './Graphs';
 
@@ -19,7 +19,7 @@ const Validation = () => {
     const [startTime, setStartTime] = useState()
     const [endTime, setEndTime] = useState()
     const [scenario, setScenario] = useState()
-    const [nodes, setNodes] = useState()
+    const [nodes, setNodes] = useState({})
 
     const getNodes = () => {
         let query = '?SCENARIO_ID=1'
@@ -45,8 +45,11 @@ const Validation = () => {
             query+='&'+queryDate
         }
         /* console.log(query) */
-        pullNodes(query).then((obj) => setNodes(obj))
-        console.log(nodes)
+        aggregateNodes(query).then((obj) => {
+            setNodes(obj);
+            //console.log(nodes)
+        })
+        
     }
 
     return (  
@@ -78,11 +81,11 @@ const Validation = () => {
                 <div className='graphs'>
                     <div className = 'graph'>
                         <div className="expanding"> 
-                            <LineChart />
+                            <LineChart data={nodes}/>
                             <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
                             <Modal open={isOpen1} onClose={() => setIsOpen1(false)}>
                                 <div>
-                                    <LineChart />
+                                    <LineChart data={nodes}/>
                                 </div>
                             </Modal>
                         </div>
