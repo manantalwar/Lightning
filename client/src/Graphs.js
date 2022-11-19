@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
 
@@ -9,6 +9,10 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     /* constructor(props) {
         super(props);
     } */
+    const [dat, setDat] = useState({})
+    const [linepoints, setLinePoints] = useState([])
+    const {data} = props;
+
     function grabData(obj){
         let ret = {}
         let cap = 0;
@@ -21,8 +25,42 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
         }
         return Object.values(ret);
     }
-    let dat = grabData(props.data);
-    /*console.log(dat)*/
+
+    useEffect(() => {
+
+        setDat(grabData(data)); 
+
+        setLinePoints(startEndPoints(dat))
+
+        console.log(linepoints)
+
+    }, [data])
+    
+
+
+    function startEndPoints(data){
+        let n = data.length
+        let sumxy = 0;
+        let sumx = 0;
+        let sumy = 0;
+        let sumxsqure = 0
+        let minx = Infinity;
+        let maxx = -Infinity;
+        for(let i = 0; i < n; ++i){
+            minx = Math.min(minx, data[i].x)
+            maxx = Math.max(maxx, data[i].x)
+            sumxy += data[i].x * data[i].y;
+            sumx += data[i].x;
+            sumy += data[i].y;
+            sumxsqure += (data[i].x * data[i].x);
+        }
+        let slope = ((n * sumxy) - (sumx * sumy)) / ((n * sumxsqure) - (sumx * sumx))
+        let yinter = (sumy / n) - (slope * (sumx / n))
+        function getPoint(xval){
+            return {x: xval, y: (xval*slope+yinter) }
+        }
+        return [ getPoint(minx), getPoint(maxx)]
+    }   
 
     /* render() { */
         const options = {
@@ -60,7 +98,8 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
             {
                 type: 'line',
                 name: 'Regression Line',
-                data: [dat[0], dat[dat.length-1]],
+                data: linepoints, //[dat[0], dat[dat.length-1]],
+                color: "#0063E1",
                 marker: {
                     enabled: false
                 },
@@ -69,7 +108,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
                         lineWidth: 0
                     }
                 },
-                enableMouseTracking: false
+                enableMouseTracking: true
             },
             /*
             {
