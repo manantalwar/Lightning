@@ -121,7 +121,7 @@ const Validation = () => {
                             <div>
                                 <ScatterPlot data={nodes}/>
                             </div>
-                        </Modal>  
+                        </Modal> 
                         </div>
                     </div>
                     <div className = 'graph'>
