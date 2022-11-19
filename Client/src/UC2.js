@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom"
 import { useEffect, useState } from 'react'
 
 const UC2 = (props) => {
+    props = props;
     const page = 'Statistics'
     const location = useLocation()
     /* const { state } = this.props.location */
