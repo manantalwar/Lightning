@@ -120,7 +120,7 @@ router.route('/').get((req, res, next)=>{
                     filters.where.AND.push(toPush)
                 }
             }
-            else if (typeof(q[key]) === "string"){
+            else if(typeof(q[key]) === "string"){
                 let date = new Date(q[key])
                 if(!isNaN(date)){
                     assign(empty, newKey.toString(), date)
