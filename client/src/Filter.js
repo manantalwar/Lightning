@@ -237,7 +237,7 @@ const Filter = () => {
                         onClick={addLMP}>Add Filter </button>
                     <p className='getTitle'>Values:</p>
                     <div className="getList">
-                    {getList.map((elem) => (<p className='getText'>{elem}</p>))}
+                    {getList.map((elem) => (<p className='getText'><pre>{elem}</pre></p>))}
                     </div>
                 </div>
             </div> 
