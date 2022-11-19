@@ -51,6 +51,7 @@ const Filter = (props) => {
             }
         });
         setKeys(temp)
+
     }, [init])
 
     const createQuery = () => {

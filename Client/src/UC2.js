@@ -5,22 +5,23 @@ import { useLocation } from "react-router-dom"
 import { useEffect, useState } from 'react'
 
 const UC2 = (props) => {
-    const {init} = props;
+
     const page = 'Statistics'
-    const location = useLocation()
-    /* const { state } = this.props.location */
     const [nodes, setNodes] = useState([])
     const [agr, setAgr] = useState([])
-    /* console.log(location.state) */
+    const {init} = props;
+    const location = useLocation()
+
     
     useEffect(() => {
         
         pullNodes(location.state).then((obj) => setNodes(obj))
-
+        
     }, [init, location.state])
-    /* console.log(nodes) */
-
     
+    /* console.log(nodes) */
+    /* console.log(location.state) */
+
     return (  
         <div className="UC2">
             <Navbar page={page}/>
