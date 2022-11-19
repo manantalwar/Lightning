@@ -51,7 +51,7 @@
 
 .graph{
     width: 27%;
-    height: 60%;
+    height: 67%;
     margin: 2%;
     padding: 1%;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
@@ -60,6 +60,7 @@
     display:flex;
     flex-direction: column;
     justify-content: center;
+    overflow: auto;
     
 }
 
