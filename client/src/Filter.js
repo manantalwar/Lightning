@@ -1,12 +1,12 @@
 import Navbar from './Navbar'
 import { useEffect, useState } from 'react'
 import './Filter.css'
-import {get} from './getFromServer.mjs'
+import {get, pullInit} from './getFromServer.mjs'
 import { Link } from 'react-router-dom'
 //import {get} from './getFromServer.mjs'
 
 const Filter = (props) => {
-    
+
     const page = "Node Selector"
     const [filters, setFilters] = useState([])
     const [queries, setQueries] = useState([])
@@ -26,6 +26,7 @@ const Filter = (props) => {
     const [customEnd, setCustomEnd] = useState()
     const [getList, setGetList] = useState([])
     const [init, setInit] = useState()
+    
 
     const createQuery = () => {
         let query = '?'
@@ -131,19 +132,26 @@ const Filter = (props) => {
     }
 
 
-    useEffect(() => {
-        
+    function intitialize(){
         setInit(props.init)
 
-        let tempInit = { ...init };
-        Object.keys(tempInit).map((key) => {
-            if(tempInit[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
-                delete tempInit[key]  
-            }
-            setKeys(tempInit)
-        })
-           
+        pullInit().then((data) => {
+            Object.keys(data).map((key) => {
+                if(data[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
+                    delete data[key]  
+                }
+            });
+            setKeys(data)
+        });
+
+    }
+
+    useEffect(() => {
+        
+        intitialize();
+
     }, [])
+
 
     return (  
         <div className="filter">
