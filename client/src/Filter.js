@@ -1,7 +1,7 @@
 import Navbar from './Navbar'
 import { useEffect, useState } from 'react'
 import './Filter.css'
-import {get, pullInit} from './getFromServer.mjs'
+import {get} from './getFromServer.mjs'
 import { Link } from 'react-router-dom'
 //import {get} from './getFromServer.mjs'
 
@@ -25,8 +25,33 @@ const Filter = (props) => {
     const [customStart, setCustomStart] = useState()
     const [customEnd, setCustomEnd] = useState()
     const [getList, setGetList] = useState([])
-    const [init, setInit] = useState()
-    
+    const {init} = props;
+
+
+    /*
+    function intitialize(){
+        pullInit().then((data) => {
+            Object.keys(data).map((key) => {
+                if(data[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
+                    delete data[key]  
+                }
+            });
+            setKeys(data)
+        });
+
+    }
+    */
+
+    useEffect(() => {
+        
+        let temp = { ...init }
+        Object.keys(temp).map((key) => {
+            if(temp[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
+                delete temp[key]  
+            }
+        });
+        setKeys(temp)
+    }, [init])
 
     const createQuery = () => {
         let query = '?'
@@ -130,27 +155,6 @@ const Filter = (props) => {
             setGetList(nodes)
         }).catch(() => "")
     }
-
-
-    function intitialize(){
-        setInit(props.init)
-
-        pullInit().then((data) => {
-            Object.keys(data).map((key) => {
-                if(data[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
-                    delete data[key]  
-                }
-            });
-            setKeys(data)
-        });
-
-    }
-
-    useEffect(() => {
-        
-        intitialize();
-
-    }, [])
 
 
     return (  

@@ -3,7 +3,7 @@ import Navbar from './Navbar';
 import './Validate.css'
 import Modal from './Modal'
 import expand from './expand.jpeg'
-import {pullNodes, aggregateNodes, get} from './getFromServer.mjs'
+import {aggregateNodes, get} from './getFromServer.mjs'
 import { HeatMap, ScatterPlot, Histogram} from './Graphs';
 import LineChart from './Graphs';
 
@@ -66,7 +66,7 @@ const Validation = () => {
     }
     
 
-    console.log(nodes)
+    //console.log(nodes)
     
     return (  
         <div className="validation">

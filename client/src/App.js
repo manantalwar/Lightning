@@ -19,9 +19,9 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />}></Route>
-          <Route path="/filter" element={<Filter />}></Route>
+          <Route path="/filter" element={<Filter init={init} />}></Route>
           <Route path="/validate"element={<Validation />}></Route>
-          <Route path='/UC2'element={<UC2 />}></Route>
+          <Route path='/UC2'element={<UC2 init={init} />}></Route>
         </Routes>
       </div>
     </Router>

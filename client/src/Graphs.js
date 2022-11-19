@@ -22,7 +22,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
         return Object.values(ret);
     }
     let dat = grabData(props.data);
-    console.log(dat) 
+    /*console.log(dat)*/
 
     /* render() { */
         const options = {
@@ -115,9 +115,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
 }
 
 export class Histogram extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    
     render() {
         const { mainText, subText } = this.props;
         const options = {
@@ -211,9 +209,7 @@ function makeCells() {
 }
 
 export class HeatMap extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    
     render() {
         const options = {
             chart: {

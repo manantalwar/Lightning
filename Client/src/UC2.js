@@ -5,20 +5,19 @@ import { useLocation } from "react-router-dom"
 import { useEffect, useState } from 'react'
 
 const UC2 = (props) => {
-    props = props;
+    const {init} = props;
     const page = 'Statistics'
     const location = useLocation()
     /* const { state } = this.props.location */
     const [nodes, setNodes] = useState([])
     const [agr, setAgr] = useState([])
-    const [init, setInit] = useState()
     /* console.log(location.state) */
     
     useEffect(() => {
-        setInit(props.init)
+        
         pullNodes(location.state).then((obj) => setNodes(obj))
 
-    }, [])
+    }, [init, location.state])
     /* console.log(nodes) */
 
     
