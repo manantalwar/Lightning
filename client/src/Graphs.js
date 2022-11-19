@@ -11,6 +11,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     } */
     const [dat, setDat] = useState({})
     const [linepoints, setLinePoints] = useState([])
+    const [slope, setSlope] = useState();
     const {data} = props;
 
     function grabData(obj){
@@ -21,7 +22,9 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
             let index = obj["PNODE_NAME"][i].toString() + obj["PERIOD_ID"][i].toString();
             if(!ret.hasOwnProperty(index)){ret[index] = {x: parseFloat(obj["LMP"][i]), y: parseFloat(obj["LMP"][i]), z: obj["PNODE_NAME"][i], time: new Date(obj["PERIOD_ID"][i]).getTime()}}
             if(obj["SCENARIO_ID"][i] === '1') {ret[index].x = parseFloat(obj["LMP"][i])}
-            else {ret[index].y = parseFloat(obj["LMP"][i])}
+            else {
+                ret[index].y = parseFloat(obj["LMP"][i])
+            }
         }
         return Object.values(ret);
     }
@@ -57,6 +60,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
         function getPoint(xval){
             return {x: xval, y: (xval*slope+yinter) }
         }
+        setSlope(slope);
         return [ getPoint(minx), getPoint(maxx)]
     }   
 
@@ -97,7 +101,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
                 type: 'line',
                 name: 'Regression Line',
                 data: linepoints, //[dat[0], dat[dat.length-1]],
-                color: "#0063E1",
+                color: "#60A4FC",
                 marker: {
                     enabled: false
                 },
@@ -106,7 +110,11 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
                         lineWidth: 0
                     }
                 },
-                enableMouseTracking: true
+                enableMouseTracking: true,
+                tooltip: {
+                    headerFormat: "x: ",
+                    pointFormat: '{point.x} <br/> y : {point.y} <br/> Slope: ' + slope,
+                },
             },
             /*
             {
