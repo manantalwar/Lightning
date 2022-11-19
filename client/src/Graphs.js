@@ -32,8 +32,6 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
 
         setLinePoints(startEndPoints(dat))
 
-        console.log(linepoints)
-
     }, [data])
     
 
