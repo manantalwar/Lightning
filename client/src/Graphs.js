@@ -47,7 +47,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
         series: [
             {
                 type: 'scatter',
-                name: 'Base Case',
+                name: 'Node Data',
                 data: dat
                     /*[{x: 30 , y : 30 , z: "help"},]  or  [1, 1.5, 2.8, 3.5, 3.9, 4.2] */,
                 marker: {
