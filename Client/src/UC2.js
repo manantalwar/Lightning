@@ -4,19 +4,23 @@ import {pullNodes} from './getFromServer.mjs'
 import { useLocation } from "react-router-dom"
 import { useEffect, useState } from 'react'
 
-const UC2 = () => {
+const UC2 = (props) => {
     const page = 'Statistics'
     const location = useLocation()
     /* const { state } = this.props.location */
     const [nodes, setNodes] = useState([])
     const [agr, setAgr] = useState([])
+    const [init, setInit] = useState()
     /* console.log(location.state) */
+    
     useEffect(() => {
+        setInit(props.init)
         pullNodes(location.state).then((obj) => setNodes(obj))
-        
+
     }, [])
     /* console.log(nodes) */
 
+    
     return (  
         <div className="UC2">
             <Navbar page={page}/>

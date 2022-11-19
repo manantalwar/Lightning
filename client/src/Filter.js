@@ -1,11 +1,12 @@
 import Navbar from './Navbar'
 import { useEffect, useState } from 'react'
 import './Filter.css'
-import {pullInit, get} from './getFromServer.mjs'
+import {get} from './getFromServer.mjs'
 import { Link } from 'react-router-dom'
 //import {get} from './getFromServer.mjs'
 
-const Filter = () => {
+const Filter = (props) => {
+    
     const page = "Node Selector"
     const [filters, setFilters] = useState([])
     const [queries, setQueries] = useState([])
@@ -24,6 +25,7 @@ const Filter = () => {
     const [customStart, setCustomStart] = useState()
     const [customEnd, setCustomEnd] = useState()
     const [getList, setGetList] = useState([])
+    const [init, setInit] = useState()
 
     const createQuery = () => {
         let query = '?'
@@ -128,15 +130,19 @@ const Filter = () => {
         }).catch(() => "")
     }
 
+
     useEffect(() => {
-        pullInit().then((obj) => { 
-            Object.keys(obj).map((key) => {
-                if(obj[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
-                    delete obj[key]  
-                }
-                setKeys(obj)
+        
+        setInit(props.init)
+
+        let tempInit = { ...init };
+        Object.keys(tempInit).map((key) => {
+            if(tempInit[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
+                delete tempInit[key]  
+            }
+            setKeys(tempInit)
         })
-    })
+           
     }, [])
 
     return (  
@@ -237,7 +243,7 @@ const Filter = () => {
                         onClick={addLMP}>Add Filter </button>
                     <p className='getTitle'>Values:</p>
                     <div className="getList">
-                    {getList.map((elem) => (<p className='getText'><pre>{elem}</pre></p>))}
+                    {getList.map((elem) => (<pre><p className='getText'>{elem}</p></pre>))}
                     </div>
                 </div>
             </div> 

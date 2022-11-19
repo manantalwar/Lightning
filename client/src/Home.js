@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import Navbar from './Navbar';
 import './Home.css';
 import './App.css';
-
 // const path = require('path');
 
 const Home = () => {
+
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);
     const page = "Home"
