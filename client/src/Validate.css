@@ -69,10 +69,11 @@
 }
 
 .graphs{
-    display: flex;
+    display: inline-block;
+    /* display: flex;
     flex-grow: 1;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
     width:100%;
     height: 100%;
     justify-content: space-between;
