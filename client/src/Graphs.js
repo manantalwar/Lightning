@@ -577,7 +577,7 @@ export function DataTable(props){
     }, [data])
 
     useEffect(() => {
-        console.log(stateData)
+        /* console.log(stateData) */
     }, [stateData])
 
     return (
