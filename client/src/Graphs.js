@@ -9,38 +9,97 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     /* constructor(props) {
         super(props);
     } */
-    const [dat, setDat] = useState({})
+    const [stateData, setStateData] = useState({})
     const [linepoints, setLinePoints] = useState([])
     const [slope, setSlope] = useState();
     const {data} = props;
+    const [graphData, setGraphData] = useState();
 
     function grabData(obj){
         let ret = {}
         let cap = 0;
         try{cap = obj.PNODE_NAME.length}catch{cap = 0}
+
+        let n = cap;
+        let sumxy = 0;
+        let sumx = 0;
+        let sumy = 0;
+        let sumxsqure = 0
+        let minx = Infinity;
+        let maxx = -Infinity;
+
+        let entered = false;
+
         for(let i = 0; i < cap; i++){
             let index = obj["PNODE_NAME"][i].toString() + obj["PERIOD_ID"][i].toString();
-            if(!ret.hasOwnProperty(index)){ret[index] = {x: parseFloat(obj["LMP"][i]), y: parseFloat(obj["LMP"][i]), z: obj["PNODE_NAME"][i], time: new Date(obj["PERIOD_ID"][i]).getTime()}}
-            if(obj["SCENARIO_ID"][i] === '1') {ret[index].x = parseFloat(obj["LMP"][i])}
+            if(!ret.hasOwnProperty(index)){ret[index] = {x: null, y: null, z: obj["PNODE_NAME"][i], time: new Date(obj["PERIOD_ID"][i]).getTime(), yset: false}}
+            if(obj["SCENARIO_ID"][i] === '1') {
+                ret[index].x = parseFloat(obj["LMP"][i])
+                ret[index].y = parseFloat(obj["LMP"][i])
+
+                minx = Math.min(minx, ret[index].x)
+                maxx = Math.max(maxx, ret[index].x)
+
+                sumx += ret[index].x;
+                sumxsqure += (ret[index].x * ret[index].x);
+            }
             else {
                 ret[index].y = parseFloat(obj["LMP"][i])
+                ret[index].yset = true;
+                entered=true;
+                sumy += ret[index].y;
+            }
+            if(ret[index].x !== null && ret[index].yset){
+                sumxy += ret[index].x * ret[index].y;
             }
         }
-        return Object.values(ret);
+
+        ret = Object.values(ret)
+
+        let points = [[minx,minx],[maxx,maxx]]
+        
+        if(!entered){
+            setSlope(1)
+        }else{
+            let slope = ((n * sumxy) - (sumx * sumy)) / ((n * sumxsqure) - (sumx * sumx))
+            let yinter = (sumy / n) - (slope * (sumx / n))
+            
+            function getPoint(xval){
+                return {x: xval, y: (xval*slope+yinter) }
+            }
+
+            setSlope(slope);
+            points = [getPoint(minx), getPoint(maxx)];
+        }
+        
+        return [ret, points];
     }
 
     useEffect(() => {
-
-        setDat(grabData(data)); 
-
-        setLinePoints(startEndPoints(dat))
-
+        setStateData(data)
     }, [data])
-    
 
+    useEffect(() => {
+        const grab = grabData(stateData)
 
+        setGraphData(grab[0]);
+
+        setLinePoints(grab[1])
+
+        //setLinePoints(grab[1].sort((a,b)=> {console.log(a); console.log(b); return -1}));
+        //console.log(graphData)
+
+    }, [stateData])
+
+    /*
+    useEffect(() => {
+        setLinePoints(startEndPoints(graphData))
+        console.log(linepoints)
+    }, [graphData])
+    */
+    /*
     function startEndPoints(data){
-        let n = data.length
+        let n = data?.length
         let sumxy = 0;
         let sumx = 0;
         let sumy = 0;
@@ -61,8 +120,9 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
             return {x: xval, y: (xval*slope+yinter) }
         }
         setSlope(slope);
-        return [ getPoint(minx), getPoint(maxx)]
-    }   
+        return [ getPoint(minx), getPoint(maxx) ]
+    }  
+    */
 
     /* render() { */
         const options = {
@@ -88,7 +148,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
             {
                 type: 'scatter',
                 name: 'Node Data',
-                data: dat
+                data: graphData
                     /*[{x: 30 , y : 30 , z: "help"},]  or  [1, 1.5, 2.8, 3.5, 3.9, 4.2] */,
                 marker: {
                     radius: 4

@@ -49,6 +49,7 @@ const Filter = (props) => {
             if(temp[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
                 delete temp[key]  
             }
+            return null;
         });
         setKeys(temp)
 
@@ -91,7 +92,7 @@ const Filter = (props) => {
                     if(period === '' || period === undefined){
                         filter = {key: 'date', start: startDate}
                     } else filter = {key:'date', start: startDate, period: period}
-                    query='PERIOD_ID='+startDate+'T00:00:00.000Z'+'&PERIOD_ID='+startDate+'T23:59:59.999Z'
+                    query='PERIOD_ID='+startDate+'T00:00:00.000Z&PERIOD_ID='+startDate+'T23:59:59.999Z'
                 /* time but no end date */
                 } else{
                     if(endTime === undefined){
@@ -99,7 +100,7 @@ const Filter = (props) => {
                         query='PERIOD_ID='+startDate+'T'+startTime+':00.000Z'
                     } else {
                         filter = {key:'date', day:startDate, startTime:startTime,endTime:endTime}
-                        query='PERIOD_ID='+startDate+'T'+startTime+':00.000Z'+'&PERIOD_ID='+startDate+'T'+endTime+':00.000Z'
+                        query='PERIOD_ID='+startDate+'T'+startTime+':00.000Z&PERIOD_ID='+startDate+'T'+endTime+':00.000Z'
                     }
                 }
             }
