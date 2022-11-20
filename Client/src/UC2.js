@@ -1,6 +1,6 @@
 import Navbar from "./Navbar"
 import './UC2.css'
-import {pullNodes} from './getFromServer.mjs'
+import {aggregateNodes, pullNodes} from './getFromServer.mjs'
 import { useLocation } from "react-router-dom"
 import { useEffect, useState } from 'react'
 
@@ -9,6 +9,7 @@ const UC2 = (props) => {
     const page = 'Statistics'
     const [nodes, setNodes] = useState([])
     const [agr, setAgr] = useState([])
+    const [mean, setMean] = useState([])
     const {init} = props;
     const location = useLocation()
 
@@ -16,11 +17,28 @@ const UC2 = (props) => {
     useEffect(() => {
         
         pullNodes(location.state).then((obj) => setNodes(obj))
-        
+        aggregateNodes(location.state).then((obj => setAgr(obj)))
+        getMean()
     }, [init, location.state])
+
+    function getMean() {
+        if(agr !== undefined){
+            let arr = []
+            Object.keys(agr).forEach((key) => {
+                
+                if(init[key] === 'number'){
+                    let sum = 0
+                    for(let i = 0; i < agr[key].length; ++i){
+                        sum += parseFloat(agr[key][i])
+                    }
+                    let ret = sum/agr[key].length
+                    arr = arr.concat({key: ret})
+                }     
+            })
+            setMean(arr)
+        }
+    }
     
-    /* console.log(nodes) */
-    /* console.log(location.state) */
 
     return (  
         <div className="UC2">
