@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import './Graphs.css'
 
 const heat = require('highcharts/modules/heatmap');
 heat(Highcharts);
@@ -13,7 +14,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     const [linepoints, setLinePoints] = useState([])
     const [slope, setSlope] = useState();
     const [yint, setYint] = useState();
-    const {data} = props;
+    const {data, height} = props;
     const [graphData, setGraphData] = useState();
 
     function grabData(obj){
@@ -125,7 +126,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     /* render() { */
         const options = {
             chart: {
-                //height: '110%',
+                height: height+'%',
             },
             title: {
                 text: 'Scatter Plot with Regression Line'
@@ -260,10 +261,8 @@ export class Histogram extends React.Component {
                 lineColor: '#E2E7FF'
             },
             tooltip: {
-                headerFormat: '<span style="font-size:12px">Price: {point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">Percent: </td>' +
-                '<td style="padding:0">{point.y:.1f} %<b></b></td></tr>',
-                footerFormat: '</table>',
+                headerFormat: '<span style="font-size:12px">Price: {point.key}</span><br/>',
+                pointFormat: 'Percent: : {point.y:.1f} ',
                 shared: true,
                 useHTML: true
             },
@@ -418,6 +417,7 @@ export default function LineChart(props) {
     Format for Specific Graph
     Display
     */
+    const {data, height} = props
 
     function grabData(obj){
         let ret = {set1:[], set2:[]}
@@ -428,18 +428,18 @@ export default function LineChart(props) {
             if(obj["SCENARIO_ID"][i] === '1'){
                 ret.set1.push(toPush)
             }
-            else{
+            else{   
                 ret.set2.push(toPush)
             }
         }
         return ret;
     }
-    let dat = grabData(props.data);
+    let dat = grabData(data);
     /* console.log(dat) */
 
     const options = {
         chart: {
-            //height: '110%',
+            height: height+'%',
             type: 'spline'
         },
         title: {
@@ -522,6 +522,92 @@ export default function LineChart(props) {
         </div>
     );
 }
+
+
+export function PeroidButton(props){
+    const [period, setPeriod] = useState("All")
+    const {setParentPeriod} = props;
+    const [allButton, setAllButton] = useState("blackButton")
+    const [yearButton, setYearButton] = useState("blackButton")
+    const [monthButton, setMonthButton] = useState("blackButton")
+    const [weekButton, setWeekButton] = useState("blackButton")
+    const [dayButton, setDayButton] = useState("blackButton")
+
+    const handleChange = (str) => {
+        setPeriod(str);
+    };
+    
+    useEffect(() => {
+        if(period === "All") {setAllButton("whiteButton")}
+        else{setAllButton("blackButton")}
+
+        if(period === "Year") {setYearButton("whiteButton")}
+        else{setYearButton("blackButton")}
+
+        if(period === "Month") {setMonthButton("whiteButton")}
+        else{setMonthButton("blackButton")}
+
+        if(period === "Week") {setWeekButton("whiteButton")}
+        else{setWeekButton("blackButton")}
+
+        if(period === "Day") {setDayButton("whiteButton")}
+        else{setDayButton("blackButton")}
+
+        setParentPeriod(period);
+    }, [period])
+
+    return (
+    <div style={{margin: "auto"}}>
+      <button className={allButton} onClick={() => handleChange('All')}>All</button>
+      <button className={yearButton} onClick={() => handleChange('Year')}>Yearly</button>
+      <button className={monthButton} onClick={() => handleChange('Month')}>Monthly</button>
+      <button className={weekButton} onClick={() => handleChange('Week')}>Weekly</button>
+      <button className={dayButton} onClick={() => handleChange('Day')}>Daily</button>
+    </div>
+
+    );
+}
+
+export function DataTable(props){
+    const {period, data} = props
+    const [stateData, setStateData] = useState();
+    
+    useEffect(() => {
+        setStateData(data)
+    }, [data])
+
+    useEffect(() => {
+        console.log(stateData)
+    }, [stateData])
+
+    return (
+    <div className='DataTable'>
+        <table>
+        <tr>
+          <th>Period Start</th>
+          <th>STD</th>
+          <th>R^2</th>
+        </tr>
+        <tr>
+          <td>Date 1</td>
+          <td>Some Std</td>
+          <td>Some R^2</td>
+        </tr>
+        <tr>
+          <td>Date 2</td>
+          <td>Some Std</td>
+          <td>Some R^2</td>
+        </tr>
+        <tr>
+          <td>Date 3</td>
+          <td>Some Std</td>
+          <td>Some R^2</td>
+        </tr>
+      </table>
+    </div>
+    );
+}
+
 
 // export class LineChart extends React.Component {
 //     constructor(props) {

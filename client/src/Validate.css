@@ -50,16 +50,20 @@
 }
 
 .graph{
-    width: 27%;
-    height: 60%;
+    /* width: 27%;
+    height: 60%; */
+    width: 520px;
+    height: 500px;
     margin: 2%;
     padding: 1%;
     box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
     background-color: white;
     border-radius: 6px;
-    display:flex;
+    display:inline-block;
     flex-direction: column;
-    justify-content: center;
+    
+    /* justify-content: center; */
+    
     overflow: auto;
     
 }
@@ -82,9 +86,14 @@
     font-style: normal;
     font-weight: 400;
     font-size: 20px;
-    color: #FFFFFF;
-    margin-top: 5%;
-    margin-left: 60%;
+    color: #000000;
+    margin-top: 0%;
+    margin-left: 0%;
+    align-content: top;
+}
+
+.metrics{
+    color: #000000;
 }
 
 .expandpos {

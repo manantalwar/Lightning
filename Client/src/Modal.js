@@ -26,7 +26,7 @@ const MODAL_STYLES = {
 
 export default function Modal({ open, children, onClose }) {
     if (!open) return null
-    console.log(children)
+    //console.log(children)
     return(
       <>
       <div style={OVERLAY_STYLES} />

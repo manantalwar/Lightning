@@ -4,7 +4,7 @@ import './Validate.css'
 import Modal from './Modal'
 import expand from './expand.jpeg'
 import {aggregateNodes, get} from './getFromServer.mjs'
-import { HeatMap, ScatterPlot, Histogram} from './Graphs';
+import { HeatMap, ScatterPlot, Histogram, PeroidButton, DataTable} from './Graphs';
 import LineChart from './Graphs';
 
 const Validation = () => {
@@ -22,6 +22,7 @@ const Validation = () => {
     const [nodes, setNodes] = useState({})
     const [allNodeNames, setAllNodeNames] = useState(["All"])
     const [nodeName, setNodeName] = useState()
+    const [period, setPeriod] = useState("All")
 
     useEffect(() => {
         getNodes();
@@ -65,6 +66,11 @@ const Validation = () => {
         })
     }
     
+    /*
+    useEffect(() => {
+        console.log(period);
+    }, [period])
+    */
 
     //console.log(nodes)
     
@@ -103,11 +109,11 @@ const Validation = () => {
                 <div className='graphs'>
                     <div className = 'graph'>
                         <div className="expanding"> 
-                            <LineChart data={nodes}/>
+                            <LineChart height={95} data={nodes}/>
                             <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
                             <Modal open={isOpen1} onClose={() => setIsOpen1(false)}>
                                 <div>
-                                    <LineChart data={nodes}/>
+                                    <LineChart height={50} data={nodes}/>
                                 </div>
                             </Modal>
                         </div>
@@ -115,11 +121,11 @@ const Validation = () => {
                     </div>
                     <div className = 'graph'>
                         <div className="expanding"> 
-                        <ScatterPlot data={nodes}/>
+                        <ScatterPlot height={95} data={nodes}/>
                         <button className= "expandpos" onClick={() => setIsOpen2(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen2} onClose={() => setIsOpen2(false)}>
                             <div>
-                                <ScatterPlot data={nodes}/>
+                                <ScatterPlot height={50} data={nodes}/>
                             </div>
                         </Modal> 
                         </div>
@@ -144,19 +150,22 @@ const Validation = () => {
                         <HeatMap />
                         <button className= "expandpos" onClick={() => setIsOpen4(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen4} onClose={() => setIsOpen4(false)}>
-                            <div>
+                            <div> 
                                 <HeatMap />
                             </div>
                         </Modal>    
                         </div>                    
                     </div>
-                    
+
+                    <div className = 'graph'>
+                        <header className='StatsTitle'>Statistics</header>
+                        <br/>
+                        <PeroidButton setParentPeriod={(per) => setPeriod(per)}/> 
+                        <br/>
+                        <DataTable period={period} data={nodes}/>
+                    </div>
+
                 </div>
-
-                {/* <div className ="data">
-                    <p className="metrics">Useful Information:<br /> Maximum Difference: <br /> Minimum Difference: <br /> Average Difference:  </p>
-                </div>   */}
-
             </div>
         </div>
 
