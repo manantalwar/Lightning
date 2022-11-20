@@ -30,7 +30,6 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
         let maxx = -Infinity;
 
         let entered = false;
-
         for(let i = 0; i < cap; i++){
             let index = obj["PNODE_NAME"][i].toString() + obj["PERIOD_ID"][i].toString();
             if(!ret.hasOwnProperty(index)){ret[index] = {x: null, y: null, z: obj["PNODE_NAME"][i], time: new Date(obj["PERIOD_ID"][i]).getTime(), yset: false}}
@@ -86,9 +85,8 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
 
         setGraphData(grab[0]);
 
-        setLinePoints(grab[1])
-
-        //setLinePoints(grab[1].sort((a,b)=> {console.log(a); console.log(b); return -1}));
+        setLinePoints(grab[1]);
+        
         //console.log(graphData)
 
     }, [stateData])
