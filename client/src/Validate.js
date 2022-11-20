@@ -92,7 +92,7 @@ const Validation = () => {
                     <select className='scenarioSelector'
                             onChange={(e) => setScenario(e.target.value)}>
                         {scenarios.map((scenario) => (
-                            <option key= {scenario.toString()} value={scenario}>{scenario}</option>
+                            <option key={scenario.toString()} value={scenario}>{scenario}</option>
                         ))}
                     </select>
                     <select className='nodeSelector'

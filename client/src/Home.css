@@ -37,10 +37,12 @@ html, body, .home{
   width:50%;
   border-radius: 10px;
   font-size: 30px;
+  border:none;
 }
 
 .mainbtn:hover {
-  background-color: #2AA7DD;
+
   font-size: 20px;
+  background-color: #2AA7DD;
 }
 

@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from './Navbar';
 import './Home.css';
 import './App.css';
 // const path = require('path');
 
+<<<<<<< HEAD
+const Home = (props) => {
+    console.log(props)
+=======
 const Home = () => {
 
+>>>>>>> fab7c44bd82bf583c3d23875a24e1f3444e211c8
     const [hover1, setHover1] = useState(false);
     const [hover2, setHover2] = useState(false);
     const page = "Home"
@@ -13,7 +18,7 @@ const Home = () => {
     const openInNewTab=url=>{
         window.open(url, '_self', 'noopener,noreferrer');
     }
-
+  
     return (  
         <div className="home">
             <Navbar page={page}/>

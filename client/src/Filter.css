@@ -1,6 +1,44 @@
-.filter{
+.body{
     height: 100%;
 }
+
+.topcontent {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    margin-bottom:2%;
+    justify-content: space-between;
+}
+
+.filters{
+    height: 80%;
+    display:flex;
+    flex-direction: row;
+    background-color: #f1f2f6;;
+    padding:1%;
+    border-radius: 5px;
+}
+
+.filter{
+    height: 80%;
+    width: 33%;
+    padding:2%;
+}
+
+.action {
+    height:80%;
+    width: 20%;
+    background-color: #f1f2f6;;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding:1%;
+    margin-left: 6%;
+    border-radius: 5px;
+}
+
+
 
 .filterObj{
     /* height: 10%; */
@@ -25,17 +63,23 @@
     border-radius: 4px; */
 }
 
-.link{
-    margin-top: 3%;
-    margin-left: auto;
-    margin-right: auto;
-    height: 5%;
-    width: 30%;
-    font-size: 22px;
-    background-color: white;
-    text-align: center;
+.submitBtn{
+    font-size: 20px;
+    width: 40%;
+    background-color: lightgreen;
+    color: white;
+    padding: 10px;
+    border-radius:3px;
     text-decoration: none;
-    color: black;
+}
+
+.resetBtn{
+    font-size: 20px;
+    width: 40%;
+    border-radius: 3px;
+    background-color: coral;
+    padding: 10px;
+    color: white;
 }
 
 .remove{
@@ -52,59 +96,36 @@
 }
 
 .list{
+    text-align: center;
     height: 100%;
-    width: 37%;
-    display: flex;
-    flex-direction: column;
-}
-
-.customFilters{
-    height: 8%;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
+    background-color: #f1f2f6;;
+    padding: 2%;
+    border-radius:5px;
 }
 
 .filterList{
     height: 80%;
     width: 85%;
-    background-color: #26303A;
-    border: 1vw solid white;
-    margin-left: 5%;
+    background-color: white;
     overflow-y: auto;
 }
 
 .getList{
-    height: 50%;
-    width: 85%;
-    background-color: #26303A;
+    height: 65%;
+    width: 100%;
+    background-color: white;
     border: 0.5vw solid white;
     margin-right: 5%;
     margin-bottom: 5%;
     overflow-y: auto;
 }
 
-.getTitle{
-    color: white;
-    margin-top: 30%;
-    margin-bottom: 1%;
-    font-size: 20px;
-    text-align: center;
-}
+
 
 .getText{
-    color: white;
     margin-left: 2%;
     /* border-style: solid;
     border-radius: 4px; */
-}
-
-.topTitle{
-    color: white;
-    margin-top: 1%;
-    margin-bottom: 1%;
-    font-size: 20px;
-    text-align: center;
 }
 
 .submit{
@@ -116,26 +137,9 @@
     font-size: 20px;
 }
 
-.filters{
-    height: 100%;
-    width: 21%;
-    display: flex;
-    flex-direction: column;
-}
-
-.scenarioTitle{
-    color: white;
-    font-size: 20px;
-    text-align: center;
-    margin-bottom: 1%;
-    margin-top: 100%;
-}
 
 .filterInputs{
-    margin-top: 1%;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%;
 }
 
 .customFilterInputs{
@@ -144,9 +148,43 @@
 }
 
 .add{
+    border:none;
     margin-top: 3%;
     width: 50%;
     margin-left: auto;
     margin-right: auto;
+    background-color:#1999d8;
+    border-radius: 5px;
+    color:white;
+}
+
+.add:hover {
+    color:black;
+    background-color: #c0e0fd; 
+}
+
+.customfilter {
+    margin: 3%;
+    border-radius: 5px;
+    padding:2%;
+    height: 84%;
+    background-color: #f1f2f6;;
+    margin-right: 0;
+    width: 20%;
+}
+
+.customInput {
+    height: 15%;
+    margin-bottom: 5%;
+}
+
+.rightcontent {
+    padding: 3%;
+    display:flex;
+    flex-direction: column;
+}
+
+.filterTitle {
+    text-align: center;
 }
 
