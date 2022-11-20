@@ -140,106 +140,124 @@ const Filter = () => {
     }, [])
 
     return (  
-        <div className="filter">
+        <div className="body">
             <Navbar page={page}/>
             <div className="content">
                 {/* Filter list box */}
+        
+                <div className='customfilter'>
+                    <div className='customInput'> 
+                        {/* Custom Filters */}
+                        <p className='topTitle'>Unique Descriptors</p> 
+                        <select className='filterInputs'
+                            onChange={(e) => {setCustomKey(e.target.value); setGetListKey(e.target.value);}}
+                            defaultValue='key'>
+                            {Object.keys(keys).map((key) => (
+                                <option value={key}>{key}</option>
+                            ))}
+                        </select>
+                        <div className='customFilters'>
+                            {keys[customKey] === 'string' &&
+                                <input className='customFilterInputs' type='text' defaultValue='value'
+                                    onChange={(e) => setCustomOne(e.target.value)}></input>
+                            }
+                            {keys[customKey] === 'number' &&
+                                <div>
+                                    <input className='customFilterInputs' type='value' defaultValue='start'
+                                        onChange={(e) => setCustomStart(e.target.value)}></input>
+                                    <input className='customFilterInputs' type='value' defaultValue='end'
+                                        onChange={(e) => setCustomEnd(e.target.value)}></input> 
+                                </div>
+                            }
+                        </div>
+
+                        <button className='add' onClick={addCustom}>Add Filter</button>
+                        {/* Scenario Filters */}
+                    </div>
+                    <div>
+                        
+                    </div>
+                    <p className='getTitle'>Values:</p>
+                    <div className="getList">
+                        {getList.map((elem) => (<p className='getText'>{elem}</p>))}
+                    </div>
+                </div>
+                <div className="rightcontent">
+                {/* Div containing custom filters and scenario */}
+                <div className="topcontent">
+                    <div className='filters'>
+                        {/* Date filter div */}
+                        <div className='filter'> 
+                            <p className='filterTitle'>Dates</p>
+                            <input className='filterInputs' type='date'
+                                onChange={(e) => setStartDate(e.target.value)}/>
+                            <input className='filterInputs' type='date'
+                                onChange={(e) => setEndDate(e.target.value)}/>
+                            <input className='filterInputs' type='time'
+                                onChange={(e) => setStartTime(e.target.value)}/>
+                            <input className='filterInputs' type='time'
+                                onChange={(e) => setEndTime(e.target.value)}/>
+                            <input className='filterInputs' type='number'
+                                onChange={(e) => setPeriod(e.target.value)}/>
+                            <button className='add'
+                                onClick={addDate}>Add Filter</button>
+                        </div>
+                        {/* LMP filter div */}
+                        <div className='filter'>
+                            <p className='filterTitle'>LMP</p>
+                            <input className='filterInputs' type='number' 
+                                defaultValue={'start'}
+                                onChange={(e) => setStartLMP(e.target.value)}
+                            />
+                            <input className='filterInputs' type='number' 
+                                defaultValue={'end'}
+                                onChange={(e) => setEndLMP(e.target.value)}
+                            />
+                            <button className='add'onClick={addLMP}>Add Filter </button>
+
+                        </div>
+                        <div className='filter'>
+                            <p className='filterTitle'>Scenarios</p>
+                                <select className='filterInputs'
+                                    onChange={(e) => setScenario(e.target.value)}
+                                    defaultValue={'scenario'}>
+                                    {/* <option value='select' disabled selected hidden> select scenario </option> */}
+                                    {scenarios.map((scenario) => (
+                                        <option value={scenario}>{scenario}</option>
+                                    ))}
+                                </select>
+                                <button className='add' onClick={addScenario}>Add Scenario</button>
+                        </div>
+                    </div>
+                    <div className='action'>
+                            {/* <button className="submit">Submit</button> */}                        
+                            <Link
+                                className='submitBtn'
+                                to = '/UC2'
+                                state={createQuery()}
+                            >Submit</Link>
+                            <btn className='resetBtn'>reset</btn>
+                    </div>
+                </div>
+
                 <div className="list"> 
                     <p className="topTitle">Active Filters</p>
+                    {/* <div> <span>key</span> <span>values</span></div> */}
                     <div className="filterList">
                         {filters.map((filter, index) => (
                             <div className='filterObj'>
                                 {Object.keys(filter).map((key) => (
                                     <p className='filterEl'>{key + ': ' + filter[key]}</p>
                                 ))}
-                                <button className='remove'
-                                    onClick={() => remove(index)}>-</button>
+                                <button className='remove' onClick={() => remove(index)}>-</button>
                             </div>
                             
                         ))}
                     </div>
-                    {/* <button className="submit">Submit</button> */}
-                    <Link
-                        className = 'link'
-                        to = '/UC2'
-                        state={createQuery()}
-                    >Submit</Link>
                 </div>
-                {/* Div containing custom filters and scenario */}
-                <div className='filters'> 
-                    {/* Custom Filters */}
-                    <p className='topTitle'>Unique Descriptors</p> 
-                    <select className='filterInputs'
-                        onChange={(e) => {setCustomKey(e.target.value); setGetListKey(e.target.value);}}
-                        defaultValue='key'>
-                        {Object.keys(keys).map((key) => (
-                            <option value={key}>{key}</option>
-                        ))}
-                    </select>
-                    <div className='customFilters'>
-                        {keys[customKey] === 'string' &&
-                            <input className='customFilterInputs' type='text' defaultValue='value'
-                                onChange={(e) => setCustomOne(e.target.value)}></input>
-                        }
-                        {keys[customKey] === 'number' &&
-                            <div>
-                                <input className='customFilterInputs' type='value' defaultValue='start'
-                                    onChange={(e) => setCustomStart(e.target.value)}></input>
-                                <input className='customFilterInputs' type='value' defaultValue='end'
-                                    onChange={(e) => setCustomEnd(e.target.value)}></input> 
-                            </div>
-                        }
-                    </div>
+                </div>
 
-                    <button className='add'
-                        onClick={addCustom}>Add Filter</button>
-                    {/* Scenario Filters */}
-                    <p className='scenarioTitle'>Scenarios</p>
-                    <select className='filterInputs'
-                        onChange={(e) => setScenario(e.target.value)}
-                        defaultValue={'scenario'}>
-                        {/* <option value='select' disabled selected hidden> select scenario </option> */}
-                        {scenarios.map((scenario) => (
-                            <option value={scenario}>{scenario}</option>
-                        ))}
-                    </select>
-                    <button className='add'
-                        onClick={addScenario}>Add Scenario</button>
-                </div>
-                {/* Date filter div */}
-                <div className='filters'> 
-                    <p className='topTitle'>Dates</p>
-                    <input className='filterInputs' type='date'
-                        onChange={(e) => setStartDate(e.target.value)}/>
-                    <input className='filterInputs' type='date'
-                        onChange={(e) => setEndDate(e.target.value)}/>
-                    <input className='filterInputs' type='time'
-                        onChange={(e) => setStartTime(e.target.value)}/>
-                    <input className='filterInputs' type='time'
-                        onChange={(e) => setEndTime(e.target.value)}/>
-                    <input className='filterInputs' type='number'
-                        onChange={(e) => setPeriod(e.target.value)}/>
-                    <button className='add'
-                        onClick={addDate}>Add Filter</button>
-                </div>
-                {/* LMP filter div */}
-                <div className='filters'>
-                    <p className='topTitle'>LMP</p>
-                    <input className='filterInputs' type='number' 
-                        defaultValue={'start'}
-                        onChange={(e) => setStartLMP(e.target.value)}
-                    />
-                    <input className='filterInputs' type='number' 
-                        defaultValue={'end'}
-                        onChange={(e) => setEndLMP(e.target.value)}
-                    />
-                    <button className='add' 
-                        onClick={addLMP}>Add Filter </button>
-                    <p className='getTitle'>Values:</p>
-                    <div className="getList">
-                    {getList.map((elem) => (<p className='getText'>{elem}</p>))}
-                    </div>
-                </div>
+                
             </div> 
         </div>
     );
