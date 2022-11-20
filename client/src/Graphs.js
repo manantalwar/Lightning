@@ -224,7 +224,7 @@ export class Histogram extends React.Component {
         const { mainText, subText } = this.props;
         const options = {
             chart: {
-                //height: "55%",
+                /* height: '55%', */
                 type: 'column'
             },
             title: {
@@ -319,7 +319,7 @@ export class HeatMap extends React.Component {
                 marginTop: 40,
                 marginBottom: 80,
                 plotBorderWidth: 1,
-                height: '100%',
+                height: '99.5%',
             },
 
 
