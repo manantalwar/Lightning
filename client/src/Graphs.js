@@ -1,6 +1,7 @@
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official';
+import './Graphs.css'
 
 const heat = require('highcharts/modules/heatmap');
 heat(Highcharts);
@@ -9,25 +10,123 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     /* constructor(props) {
         super(props);
     } */
+    const [stateData, setStateData] = useState({})
+    const [linepoints, setLinePoints] = useState([])
+    const [slope, setSlope] = useState();
+    const [yint, setYint] = useState();
+    const {data, height} = props;
+    const [graphData, setGraphData] = useState();
+
     function grabData(obj){
         let ret = {}
         let cap = 0;
         try{cap = obj.PNODE_NAME.length}catch{cap = 0}
+
+        let n = cap;
+        let sumxy = 0;
+        let sumx = 0;
+        let sumy = 0;
+        let sumxsqure = 0
+        let minx = Infinity;
+        let maxx = -Infinity;
+
+        let entered = false;
         for(let i = 0; i < cap; i++){
             let index = obj["PNODE_NAME"][i].toString() + obj["PERIOD_ID"][i].toString();
-            if(!ret.hasOwnProperty(index)){ret[index] = {x: parseFloat(obj["LMP"][i]), y: parseFloat(obj["LMP"][i]), z: obj["PNODE_NAME"][i], time: new Date(obj["PERIOD_ID"][i]).getTime()}}
-            if(obj["SCENARIO_ID"][i] === '1') {ret[index].x = parseFloat(obj["LMP"][i])}
-            else {ret[index].y = parseFloat(obj["LMP"][i])}
+            if(!ret.hasOwnProperty(index)){ret[index] = {x: null, y: null, z: obj["PNODE_NAME"][i], time: new Date(obj["PERIOD_ID"][i]).getTime(), yset: false}}
+            if(obj["SCENARIO_ID"][i] === '1') {
+                ret[index].x = parseFloat(obj["LMP"][i])
+                ret[index].y = parseFloat(obj["LMP"][i])
+
+                minx = Math.min(minx, ret[index].x)
+                maxx = Math.max(maxx, ret[index].x)
+
+                sumx += ret[index].x;
+                sumxsqure += (ret[index].x * ret[index].x);
+            }
+            else {
+                ret[index].y = parseFloat(obj["LMP"][i])
+                ret[index].yset = true;
+                entered=true;
+                sumy += ret[index].y;
+            }
+            if(ret[index].x !== null && ret[index].yset){
+                sumxy += ret[index].x * ret[index].y;
+            }
         }
-        return Object.values(ret);
+
+        ret = Object.values(ret)
+
+        let points = [[minx,minx],[maxx,maxx]]
+        
+        if(!entered){
+            setSlope(1)
+            setYint(0)
+        }else{
+            let slope = ((n * sumxy) - (sumx * sumy)) / ((n * sumxsqure) - (sumx * sumx))
+            let yinter = (sumy / n) - (slope * (sumx / n))
+
+            function getPoint(xval){
+                return {x: xval, y: (xval*slope+yinter) }
+            }
+            setYint(yinter);
+            setSlope(slope);
+            points = [getPoint(minx), getPoint(maxx)];
+        }
+        
+        return [ret, points];
     }
-    let dat = grabData(props.data);
-    console.log(dat) 
+
+    useEffect(() => {
+        setStateData(data)
+    }, [data])
+
+    useEffect(() => {
+        const grab = grabData(stateData)
+
+        setGraphData(grab[0]);
+        setLinePoints(grab[1]);
+        
+        //console.log(graphData)
+    }, [stateData])
+
+    /*
+    useEffect(() => {
+        setLinePoints(startEndPoints(graphData))
+        console.log(linepoints)
+    }, [graphData])
+    */
+    /*
+    function startEndPoints(data){
+        let n = data?.length
+        let sumxy = 0;
+        let sumx = 0;
+        let sumy = 0;
+        let sumxsqure = 0
+        let minx = Infinity;
+        let maxx = -Infinity;
+        for(let i = 0; i < n; ++i){
+            minx = Math.min(minx, data[i].x)
+            maxx = Math.max(maxx, data[i].x)
+            sumxy += data[i].x * data[i].y;
+            sumx += data[i].x;
+            sumy += data[i].y;
+            sumxsqure += (data[i].x * data[i].x);
+        }
+        let slope = ((n * sumxy) - (sumx * sumy)) / ((n * sumxsqure) - (sumx * sumx))
+        let yinter = (sumy / n) - (slope * (sumx / n))
+        function getPoint(xval){
+            return {x: xval, y: (xval*slope+yinter) }
+        }
+        setSlope(slope);
+        return [ getPoint(minx), getPoint(maxx) ]
+    }  
+    */
 
     /* render() { */
         const options = {
             chart: {
-                height: '110%'
+                height: height+'%',
             },
             title: {
                 text: 'Scatter Plot with Regression Line'
@@ -47,8 +146,8 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
         series: [
             {
                 type: 'scatter',
-                name: 'Base Case',
-                data: dat
+                name: 'Node Data',
+                data: graphData
                     /*[{x: 30 , y : 30 , z: "help"},]  or  [1, 1.5, 2.8, 3.5, 3.9, 4.2] */,
                 marker: {
                     radius: 4
@@ -60,7 +159,8 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
             {
                 type: 'line',
                 name: 'Regression Line',
-                data: [dat[0], dat[dat.length-1]],
+                data: linepoints, //[dat[0], dat[dat.length-1]],
+                color: "#60A4FC",
                 marker: {
                     enabled: false
                 },
@@ -69,7 +169,11 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
                         lineWidth: 0
                     }
                 },
-                enableMouseTracking: false
+                enableMouseTracking: true,
+                tooltip: {
+                    headerFormat: "X: ",
+                    pointFormat: '{point.x} <br/> Y : {point.y} <br/> Slope: ' + slope + '<br/> Y-int: ' + yint,
+                },
             },
             /*
             {
@@ -115,14 +219,12 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
 }
 
 export class Histogram extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    
     render() {
         const { mainText, subText } = this.props;
         const options = {
             chart: {
-                height: '55%',
+                //height: "55%",
                 type: 'column'
             },
             title: {
@@ -159,10 +261,8 @@ export class Histogram extends React.Component {
                 lineColor: '#E2E7FF'
             },
             tooltip: {
-                headerFormat: '<span style="font-size:12px">Price: {point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">Percent: </td>' +
-                '<td style="padding:0">{point.y:.1f} %<b></b></td></tr>',
-                footerFormat: '</table>',
+                headerFormat: '<span style="font-size:12px">Price: {point.key}</span><br/>',
+                pointFormat: 'Percent: : {point.y:.1f} ',
                 shared: true,
                 useHTML: true
             },
@@ -211,9 +311,7 @@ function makeCells() {
 }
 
 export class HeatMap extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+    
     render() {
         const options = {
             chart: {
@@ -221,7 +319,7 @@ export class HeatMap extends React.Component {
                 marginTop: 40,
                 marginBottom: 80,
                 plotBorderWidth: 1,
-                height: '110%',
+                height: '100%',
             },
 
 
@@ -319,6 +417,7 @@ export default function LineChart(props) {
     Format for Specific Graph
     Display
     */
+    const {data, height} = props
 
     function grabData(obj){
         let ret = {set1:[], set2:[]}
@@ -329,18 +428,18 @@ export default function LineChart(props) {
             if(obj["SCENARIO_ID"][i] === '1'){
                 ret.set1.push(toPush)
             }
-            else{
+            else{   
                 ret.set2.push(toPush)
             }
         }
         return ret;
     }
-    let dat = grabData(props.data);
+    let dat = grabData(data);
     /* console.log(dat) */
 
     const options = {
         chart: {
-            height: '110%',
+            height: height+'%',
             type: 'spline'
         },
         title: {
@@ -423,6 +522,92 @@ export default function LineChart(props) {
         </div>
     );
 }
+
+
+export function PeroidButton(props){
+    const [period, setPeriod] = useState("All")
+    const {setParentPeriod} = props;
+    const [allButton, setAllButton] = useState("blackButton")
+    const [yearButton, setYearButton] = useState("blackButton")
+    const [monthButton, setMonthButton] = useState("blackButton")
+    const [weekButton, setWeekButton] = useState("blackButton")
+    const [dayButton, setDayButton] = useState("blackButton")
+
+    const handleChange = (str) => {
+        setPeriod(str);
+    };
+    
+    useEffect(() => {
+        if(period === "All") {setAllButton("whiteButton")}
+        else{setAllButton("blackButton")}
+
+        if(period === "Year") {setYearButton("whiteButton")}
+        else{setYearButton("blackButton")}
+
+        if(period === "Month") {setMonthButton("whiteButton")}
+        else{setMonthButton("blackButton")}
+
+        if(period === "Week") {setWeekButton("whiteButton")}
+        else{setWeekButton("blackButton")}
+
+        if(period === "Day") {setDayButton("whiteButton")}
+        else{setDayButton("blackButton")}
+
+        setParentPeriod(period);
+    }, [period])
+
+    return (
+    <div style={{margin: "auto"}}>
+      <button className={allButton} onClick={() => handleChange('All')}>All</button>
+      <button className={yearButton} onClick={() => handleChange('Year')}>Yearly</button>
+      <button className={monthButton} onClick={() => handleChange('Month')}>Monthly</button>
+      <button className={weekButton} onClick={() => handleChange('Week')}>Weekly</button>
+      <button className={dayButton} onClick={() => handleChange('Day')}>Daily</button>
+    </div>
+
+    );
+}
+
+export function DataTable(props){
+    const {period, data} = props
+    const [stateData, setStateData] = useState();
+    
+    useEffect(() => {
+        setStateData(data)
+    }, [data])
+
+    useEffect(() => {
+        console.log(stateData)
+    }, [stateData])
+
+    return (
+    <div className='DataTable'>
+        <table>
+        <tr>
+          <th>Period Start</th>
+          <th>STD</th>
+          <th>R^2</th>
+        </tr>
+        <tr>
+          <td>Date 1</td>
+          <td>Some Std</td>
+          <td>Some R^2</td>
+        </tr>
+        <tr>
+          <td>Date 2</td>
+          <td>Some Std</td>
+          <td>Some R^2</td>
+        </tr>
+        <tr>
+          <td>Date 3</td>
+          <td>Some Std</td>
+          <td>Some R^2</td>
+        </tr>
+      </table>
+    </div>
+    );
+}
+
 
 // export class LineChart extends React.Component {
 //     constructor(props) {

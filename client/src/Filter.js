@@ -1,11 +1,12 @@
 import Navbar from './Navbar'
 import { useEffect, useState } from 'react'
 import './Filter.css'
-import {pullInit, get} from './getFromServer.mjs'
+import {get} from './getFromServer.mjs'
 import { Link } from 'react-router-dom'
 //import {get} from './getFromServer.mjs'
 
-const Filter = () => {
+const Filter = (props) => {
+
     const page = "Node Selector"
     const [filters, setFilters] = useState([])
     const [queries, setQueries] = useState([])
@@ -24,6 +25,35 @@ const Filter = () => {
     const [customStart, setCustomStart] = useState()
     const [customEnd, setCustomEnd] = useState()
     const [getList, setGetList] = useState([])
+    const {init} = props;
+
+
+    /*
+    function intitialize(){
+        pullInit().then((data) => {
+            Object.keys(data).map((key) => {
+                if(data[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
+                    delete data[key]  
+                }
+            });
+            setKeys(data)
+        });
+
+    }
+    */
+
+    useEffect(() => {
+        
+        let temp = { ...init }
+        Object.keys(temp).map((key) => {
+            if(temp[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
+                delete temp[key]  
+            }
+            return null;
+        });
+        setKeys(temp)
+
+    }, [init])
 
     const createQuery = () => {
         let query = '?'
@@ -62,7 +92,7 @@ const Filter = () => {
                     if(period === '' || period === undefined){
                         filter = {key: 'date', start: startDate}
                     } else filter = {key:'date', start: startDate, period: period}
-                    query='PERIOD_ID='+startDate+'T00:00:00.000Z'+'&PERIOD_ID='+startDate+'T23:59:59.999Z'
+                    query='PERIOD_ID='+startDate+'T00:00:00.000Z&PERIOD_ID='+startDate+'T23:59:59.999Z'
                 /* time but no end date */
                 } else{
                     if(endTime === undefined){
@@ -70,7 +100,7 @@ const Filter = () => {
                         query='PERIOD_ID='+startDate+'T'+startTime+':00.000Z'
                     } else {
                         filter = {key:'date', day:startDate, startTime:startTime,endTime:endTime}
-                        query='PERIOD_ID='+startDate+'T'+startTime+':00.000Z'+'&PERIOD_ID='+startDate+'T'+endTime+':00.000Z'
+                        query='PERIOD_ID='+startDate+'T'+startTime+':00.000Z&PERIOD_ID='+startDate+'T'+endTime+':00.000Z'
                     }
                 }
             }
@@ -128,16 +158,6 @@ const Filter = () => {
         }).catch(() => "")
     }
 
-    useEffect(() => {
-        pullInit().then((obj) => { 
-            Object.keys(obj).map((key) => {
-                if(obj[key] === 'object' || key === 'LMP' || key === 'PERIOD_ID' || key === 'SCENARIO_ID'){
-                    delete obj[key]  
-                }
-                setKeys(obj)
-        })
-    })
-    }, [])
 
     return (  
         <div className="body">
@@ -247,7 +267,7 @@ const Filter = () => {
                         {filters.map((filter, index) => (
                             <div className='filterObj'>
                                 {Object.keys(filter).map((key) => (
-                                    <p className='filterEl'>{key + ': ' + filter[key]}</p>
+                                    <pre><p className='filterEl'>{key + ': ' + filter[key]}</p></pre>
                                 ))}
                                 <button className='remove' onClick={() => remove(index)}>-</button>
                             </div>

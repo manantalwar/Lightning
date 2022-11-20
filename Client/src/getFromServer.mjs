@@ -75,9 +75,7 @@ export async function aggregateNodes(query = ''){
         elem = flattenNode(elem);
         for(let key in elem){
             if(!obj.hasOwnProperty(key)){obj[key] = []}
-            else{
-                obj[key].push(elem[key])
-            }
+            obj[key].push(elem[key])
         }
     }));
     return obj

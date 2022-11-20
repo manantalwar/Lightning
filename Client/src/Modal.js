@@ -4,13 +4,14 @@ import LineChart from './Graphs';
 
 const MODAL_STYLES = {
     position: 'fixed',
-    top: '10%',
+    top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     backgroundColor: '#FFF',
     zIndex: 1000,
-    width: '40%',
-    height: '10%'
+    height: '95%',
+    width: '80%',
+    overflow: 'auto',
   }
 
   const OVERLAY_STYLES = {
@@ -25,7 +26,7 @@ const MODAL_STYLES = {
 
 export default function Modal({ open, children, onClose }) {
     if (!open) return null
-    console.log(children)
+    //console.log(children)
     return(
       <>
       <div style={OVERLAY_STYLES} />
