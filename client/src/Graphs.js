@@ -84,11 +84,9 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
         const grab = grabData(stateData)
 
         setGraphData(grab[0]);
-
         setLinePoints(grab[1]);
         
         //console.log(graphData)
-
     }, [stateData])
 
     /*
