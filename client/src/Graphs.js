@@ -12,6 +12,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     const [stateData, setStateData] = useState({})
     const [linepoints, setLinePoints] = useState([])
     const [slope, setSlope] = useState();
+    const [yint, setYint] = useState();
     const {data} = props;
     const [graphData, setGraphData] = useState();
 
@@ -60,14 +61,15 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
         
         if(!entered){
             setSlope(1)
+            setYint(0)
         }else{
             let slope = ((n * sumxy) - (sumx * sumy)) / ((n * sumxsqure) - (sumx * sumx))
             let yinter = (sumy / n) - (slope * (sumx / n))
-            
+
             function getPoint(xval){
                 return {x: xval, y: (xval*slope+yinter) }
             }
-
+            setYint(yinter);
             setSlope(slope);
             points = [getPoint(minx), getPoint(maxx)];
         }
@@ -172,8 +174,8 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
                 },
                 enableMouseTracking: true,
                 tooltip: {
-                    headerFormat: "x: ",
-                    pointFormat: '{point.x} <br/> y : {point.y} <br/> Slope: ' + slope,
+                    headerFormat: "X: ",
+                    pointFormat: '{point.x} <br/> Y : {point.y} <br/> Slope: ' + slope + '<br/> Y-int: ' + yint,
                 },
             },
             /*
