@@ -247,14 +247,15 @@ const Filter = (props) => {
                         <button className='add' onClick={addCustom}>Add Filter</button>
                         {/* Scenario Filters */}
                     </div>
-                    <div>
-                
-                    </div>
+                        <div>
+                    
+                        </div>
+                    <div className='getBlock'>
                     <p className='getTitle'>Values:</p>
                     <div className="getList">
                         {getList.map((elem) => (<pre><p className='getText'>{elem}</p></pre>))}
                     </div>
-                    
+                    </div>
                 </div>
                 <div className="rightcontent">
                 {/* Div containing custom filters and scenario */}

@@ -23,6 +23,7 @@
     height: 80%;
     width: 33%;
     padding:2%;
+    text-align: center;
 }
 
 .action {
@@ -136,13 +137,17 @@
 }
 
 .getList{
-    height: 69.5%;
     width: 100%;
     background-color: white;
     border: 0.5vw solid white;
     margin-bottom: 5%;
     margin-left: -2%;
     overflow-y: auto;
+    height: 100%;
+}
+
+.getBlock{
+    height: 70.5%;
 }
 
 .getTitle{
@@ -193,16 +198,19 @@
 
 .customfilter {
     border-radius: 5px;
-    padding:2%;
-    height: auto;
+    height: auto!important;
     background-color: #f1f2f6;
-
-    width: 20%;
+    text-align: center;
+    width: 25%;
     margin-right: 0;
     margin-left: 7%;
     margin-top: 3%;
     margin-bottom: 3%;
-    /* display: inline-block; */
+    overflow-y: clip;
+    overflow-x: clip;
+    padding:2%;
+    padding-bottom: 5%;
+
 }
 
 .customInput {
