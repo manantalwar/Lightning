@@ -172,7 +172,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
                 enableMouseTracking: true,
                 tooltip: {
                     headerFormat: "X: ",
-                    pointFormat: '{point.x} <br/> Y : {point.y} <br/> Slope: ' + slope + '<br/> Y-int: ' + yint,
+                    pointFormat: '{point.x:.5f} <br/> Y : {point.y:.5f} <br/> Slope: ' + slope.toFixed(5) + '<br/> Y-int: ' + yint.toFixed(5),
                 },
             },
             /*
@@ -218,15 +218,76 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     /* } */
 }
 
-export class Histogram extends React.Component {
-    
-    render() {
-        const { mainText, subText } = this.props;
+export function Histogram(props) {
+        const { mainText, subText, data, bucket } = props;
+
+        const [metric, setMetric] = useState("LMP");
+        const [stateData, setStateData] = useState({});
+        const [graphData, setGraphData] = useState([]);
+
+        useEffect(() => {
+            setStateData(data);
+        },[data])
+
+        function grabData(data){
+            if(data === undefined){return undefined;}
+
+            let ret ={xAxis:[], series:null};
+
+            let cap = 0;
+            try{cap = data[metric].length} catch{cap = 0;}
+
+            let min = Infinity;
+            let max = -Infinity;
+            data[metric]?.forEach((elem) => {min = Math.min(min,elem); max = Math.max(max,elem)})
+
+            let ser = [];
+            for(let i = min; i < max; i+=bucket){
+                let obj = {y:0, percent:"0%"}
+                ser.push(obj)
+
+                let str = i.toFixed(2) + "-" + (i+bucket).toFixed(2);
+                ret.xAxis.push(str)
+            }
+
+            let elems = 0;
+            
+            for(let i = 0; i < cap; ++i){
+                if(data.base && data["SCENARIO_ID"][i] === '1'){
+                    let valBuck = Math.floor((data[metric][i] - min) / bucket);
+                    ser[valBuck].y += 1;
+                    elems += 1;
+                } else if(!data.base && data["SCENARIO_ID"][i] !== '1'){
+                    let valBuck = Math.floor((data[metric][i] - min) / bucket);
+                    ser[valBuck].y += 1;
+                    elems += 1;
+                }
+            }
+
+            for(let i = 0; i < ret.xAxis.length; ++i){
+                ser[i].percent = ((ser[i].y / elems)*100).toFixed(2) + "%";
+            }
+
+            ret.series = ser;
+
+            return ret;
+        }
+
+        useEffect(() => {
+            const grab = grabData(stateData)
+            setGraphData(grab);
+            console.log(grab);
+        }, [stateData]);
+
         const options = {
             chart: {
-                /* height: '55%', */
-                type: 'column'
+                type: 'column',
+                width: "90%",
             },
+            series: [{
+                name: 'Value (' + metric + ")",
+                data: graphData.series
+            },],
             title: {
                 text: mainText
             },
@@ -234,35 +295,21 @@ export class Histogram extends React.Component {
                 text: subText
             },
             xAxis: {
-                /*categories: [
-                2.5,
-                17.5,
-                32.5,
-                47.5,
-                62.5,
-                77.5,
-                107.5,
-                122.5,
-                137.5,
-                152.5,
-                167.5,
-                182.5,
-                197.5
-                ],
-                */
+                categories: graphData.xAxis,
+                
                 crosshair: true
             },
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Percent'
+                    text: 'Occurences'
                 },
                 lineWidth: 1,
                 lineColor: '#E2E7FF'
             },
             tooltip: {
-                headerFormat: '<span style="font-size:12px">Price: {point.key}</span><br/>',
-                pointFormat: 'Percent: : {point.y:.1f} ',
+                headerFormat: '<span style="font-size:12px">Range: {point.x}</span><br/>',
+                pointFormat: 'Occurences: : {point.y:.0f} <br/> Percent: {point.percent} ',
                 shared: true,
                 useHTML: true
             },
@@ -272,25 +319,18 @@ export class Histogram extends React.Component {
                     borderWidth: 1,
                     groupPadding: 0,
                     shadow: false
-                }
+                },
             },
-            series: [{
-                name: 'HUB Node Prices',
-                data: [2, 7, 17, 19, 13, 9, 7, 6, 5, 4, 3, 2, 1]
-
-            }]
+            
         }
-        return (
 
+        return (
             <HighchartsReact
                 // containerProps={{ style: { height: "100%"}}}
                 highcharts={Highcharts}
                 options={options}
             />
-
-
         );
-    }
 }
 
 function getPointCategoryName(point, dimension) {

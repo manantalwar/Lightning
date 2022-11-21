@@ -2,6 +2,13 @@ body {
     padding-bottom: 30%;
 }
 
+.histoPeriod{
+    height: auto;
+    margin-right: 20%;
+    margin-left: 20%;
+    text-align: center;
+}
+
 .validation{
     height: 100%;
 }

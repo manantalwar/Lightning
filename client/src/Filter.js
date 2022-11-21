@@ -23,7 +23,7 @@ const Filter = (props) => {
     const [customOne, setCustomOne] = useState()
     const [customStart, setCustomStart] = useState()
     const [customEnd, setCustomEnd] = useState()
-    const [getList, setGetList] = useState([])
+    const [getList, setGetList] = useState([])  
     const {init} = props;
 
 

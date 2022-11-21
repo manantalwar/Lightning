@@ -23,6 +23,11 @@ const Validation = () => {
     const [allNodeNames, setAllNodeNames] = useState(["All"])
     const [nodeName, setNodeName] = useState()
     const [period, setPeriod] = useState("All")
+    const [histoBucket, setHistoBucket] = useState(1);
+
+    useEffect(() => {
+        setHistoBucket(1);
+    }, [])
 
     useEffect(() => {
         getNodes();
@@ -64,13 +69,7 @@ const Validation = () => {
         aggregateNodes(query).then((obj) => {
             setNodes(obj);
         })
-    }
-    
-    /*
-    useEffect(() => {
-        console.log(period);
-    }, [period])
-    */
+    }    
 
     //console.log(nodes)
     
@@ -134,15 +133,32 @@ const Validation = () => {
                     </div>
                     <div className = 'graph'>
                     <div className="expanding"> 
-                        <div style={{width: "100%", height: "100%"}}>
-                            <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>         
-                            <Histogram mainText={'Historgram: Scenario'} subText={'HUB Node Prices of Scenario that we are Validating'}/>  
+                        <div style={{width: "100%", height: "100%", verticalText:"center",}}>
+                                    <div className="histoPeriod">
+                                        <label for="histo">Histogram Bucket Size</label><bre/>
+                                        <input type="text" id="histo" onChange={(e) => {
+                                            let val = parseFloat(e.target.value);
+                                            if(!isNaN(val) && val !== 0){
+                                                setHistoBucket(Math.abs(val));
+                                            }}}></input>
+                                    </div>
+                                    <bre/><bre/>
+                            <Histogram mainText={'Histogram: Base Case'} subText={'Base Case Metrics'} data={{...nodes, ...{base:true}}} bucket={histoBucket}/>         
+                            <Histogram mainText={'Histogram: Scenario'} subText={'Scenario Metrics'} data={{...nodes, ...{base:false}}} bucket={histoBucket}/>  
                         </div>
                         <button className= "expandpos" onClick={() => setIsOpen3(true)}><img className="expanding" src={expand} alt="expand"/></button>
                             <Modal open={isOpen3} onClose={() => setIsOpen3(false)}>
                             <div>
-                                <Histogram mainText={'Historgram: Base Case'} subText={'Base Case HUB Node Prices'}/>         
-                                <Histogram mainText={'Historgram: Scenario'} subText={'HUB Node Prices of Scenario that we are Validating'}/> 
+                                    <div className="histoPeriod">
+                                        <label for="histo">Histogram Bucket Size: </label>
+                                        <input type="text" id="histo" onChange={(e) => {
+                                            let val = parseFloat(e.target.value);
+                                            if(!isNaN(val) && val !== 0){
+                                                setHistoBucket(Math.abs(val));
+                                            }}}></input>
+                                    </div>
+                                <Histogram mainText={'Histogram: Base Case'} subText={'Base Case Metrics'} data={{...nodes, ...{base:true}}} bucket={histoBucket}/>         
+                                <Histogram mainText={'Histogram: Scenario'} subText={'Scenario Metrics'} data={{...nodes, ...{base:false}}} bucket={histoBucket}/> 
                             </div>
                             </Modal>      
                         </div>                                            
