@@ -106,6 +106,8 @@ const Validation = () => {
                             Update Filter</button>            
                 </div>
                 
+                <div>
+
                 <div className='graphs'>
                     <div className = 'graph'>
                         <div className="expanding"> 
@@ -166,6 +168,9 @@ const Validation = () => {
                     </div>
 
                 </div>
+
+                </div>
+
             </div>
         </div>
 

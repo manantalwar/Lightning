@@ -319,7 +319,7 @@ export class HeatMap extends React.Component {
                 marginTop: 40,
                 marginBottom: 80,
                 plotBorderWidth: 1,
-                height: '99.5%',
+                height: '94%',
             },
 
 
