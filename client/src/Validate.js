@@ -45,13 +45,13 @@ const Validation = () => {
             if(endDate === undefined){
                 /* no start time */
                 if(startTime === undefined){
-                    queryDate='PERIOD_ID='+startDate+'T00:00:00.000'+'&PERIOD_ID='+startDate+'T23:59:59.999'
+                    queryDate='PERIOD_ID='+startDate+'T00:00:00.000&PERIOD_ID='+startDate+'T23:59:59.999';
                 /* time but no end date */
                 } else{
                     if(endTime === undefined){
-                        queryDate='PERIOD_ID='+startDate+'T'+startTime+':00.000'
+                        queryDate='PERIOD_ID='+startDate+'T'+startTime+':00.000';
                     } else {
-                        queryDate='PERIOD_ID='+startDate+'T'+startTime+':00.000'+'&PERIOD_ID='+startDate+'T'+endTime+':00.000'
+                        queryDate='PERIOD_ID='+startDate+'T'+startTime+':00.000&PERIOD_ID='+startDate+'T'+endTime+':00.000';
                     }
                 }
             }

@@ -81,17 +81,18 @@ const Filter = (props) => {
             setQueries(queries.concat([query]))
         }
     }
+    
     const addDate = () => {
         if (startDate !== undefined) {
-            let filter = {key: 'date', startDate: startDate};
-            let query = '';
+            //let query = '';
             /* no end date */
 
             /* console.log(startDate)
             console.log(endDate)
             console.log(startTime)
             console.log(endTime) */
-
+            
+            let filter = {key: 'date', startDate: startDate};
             let firstQuery= 'PERIOD_ID=' + startDate;
             let secondQuery= '&PERIOD_ID=';
 
