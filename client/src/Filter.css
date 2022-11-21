@@ -29,7 +29,7 @@
     height:80%;
     width: 20%;
     background-color: #f1f2f6;;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
@@ -45,8 +45,8 @@
     width: 97%;
     background-color: white;
     margin-top:1%;
-    margin-left: 1%;
-    margin-right: 2%;
+    margin-left: 2%;
+    margin-right: 1%;
     padding-top: 1%;
     padding-bottom: 1%;
     display:inline-flex;
@@ -56,9 +56,8 @@
 
 .filterEl{
     display: inline-block;
-    margin-top: 0%;
-    margin-bottom: 0%;
-    margin-left: 2%;
+    margin: auto;
+    margin-left: 0%;
     /* border-style: solid;
     border-radius: 4px; */
 }
@@ -71,6 +70,8 @@
     padding: 5px;
     border-radius:4px;
     vertical-align: middle;
+    margin: auto;
+
     /* 
     text-decoration: none; */
 }
@@ -87,6 +88,8 @@
     padding: 5px; 
     color: white;
     vertical-align: middle;
+    margin-left: 50%;
+    margin-right: 50%;
 }
 
 .resetBtn:hover{
@@ -100,10 +103,15 @@
     border-radius: 4px;
     border-width: 1px;
 }
+.remove:hover{
+    background-color: grey;
+
+}
 
 .content{
     height: 90%;
     display: flex;
+    margin: auto;
 }
 
 .list{
@@ -116,9 +124,10 @@
 
 .filterList{
     height: 80%;
-    width: 85%;
+    width: 90%;
     background-color: white;
     overflow-y: auto;
+    margin: auto;
 }
 
 .getList{
@@ -178,13 +187,16 @@
 }
 
 .customfilter {
-    margin: 3%;
+
     border-radius: 5px;
     padding:2%;
     height: 77.5%;
-    background-color: #f1f2f6;;
-    margin-right: 0;
+    background-color: #f1f2f6;
+
     width: 20%;
+    margin: auto;
+    margin-right: 0;
+    margin-left: 8%;
     /* display: inline-block; */
 }
 
@@ -201,5 +213,13 @@
 
 .filterTitle {
     text-align: center;
+    border: 1px solid black;
+    border-radius: 10px;
+    height: 10%;
 }
 
+.topTitle{
+    text-align: center;
+    margin-top: 0%;
+    margin-bottom: 20px;
+}

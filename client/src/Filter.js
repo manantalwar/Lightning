@@ -18,7 +18,6 @@ const Filter = (props) => {
     const [endDate, setEndDate] = useState()
     const [startTime, setStartTime] = useState()
     const [endTime, setEndTime] = useState()
-    const [period, setPeriod] = useState()
     const [scenario, setScenario] = useState()
     const [customKey, setCustomKey] = useState()
     const [customOne, setCustomOne] = useState()
@@ -56,6 +55,7 @@ const Filter = (props) => {
     }, [init])
 
     const createQuery = () => {
+        console.log(queries)
         let query = '?'
         queries.map((cur) => (
             query += '&'+cur
@@ -77,45 +77,92 @@ const Filter = (props) => {
                 filter = {key:'LMP', start:startLMP, end:endLMP}
                 query = 'LMP=range&LMP=' + startLMP + '&LMP=' + endLMP
             }
-            setFilters(filters.concat(filter))
-            setQueries(queries.concat(query))
+            setFilters(filters.concat([filter]))
+            setQueries(queries.concat([query]))
         }
     }
     const addDate = () => {
-        if(startDate !== undefined){
-            let filter
-            let query
+        if (startDate !== undefined) {
+            let filter = {key: 'date', startDate: startDate};
+            let query = '';
             /* no end date */
-            if(endDate === undefined){
-                /* no start time */
-                if(startTime === undefined){
-                    if(period === '' || period === undefined){
-                        filter = {key: 'date', start: startDate}
-                    } else filter = {key:'date', start: startDate, period: period}
-                    query='PERIOD_ID='+startDate+'T00:00:00.000Z&PERIOD_ID='+startDate+'T23:59:59.999Z'
-                /* time but no end date */
-                } else{
-                    if(endTime === undefined){
-                        filter = {key:'date', day:startDate, time:startTime}
-                        query='PERIOD_ID='+startDate+'T'+startTime+':00.000Z'
-                    } else {
-                        filter = {key:'date', day:startDate, startTime:startTime,endTime:endTime}
-                        query='PERIOD_ID='+startDate+'T'+startTime+':00.000Z&PERIOD_ID='+startDate+'T'+endTime+':00.000Z'
-                    }
+
+            /* console.log(startDate)
+            console.log(endDate)
+            console.log(startTime)
+            console.log(endTime) */
+
+            let firstQuery= 'PERIOD_ID=' + startDate;
+            let secondQuery= '&PERIOD_ID=';
+
+            if(startTime !== undefined){
+                firstQuery += 'T' + startTime + ':00.000Z';
+                filter["startTime"] = startTime;
+            }else{
+                firstQuery += 'T00:00:00.000Z';
+                filter["startTime"] = "00:00"
+            }
+            if(endDate !== undefined){
+                secondQuery += endDate;
+                filter["endDate"] = endDate;
+                if(endTime !== undefined){
+                    secondQuery += 'T' + endTime + ':00.000Z';
+                    filter["endTime"] = endTime;
+                } else {
+                    secondQuery += 'T00:00:00.000Z';
+                    filter["endTime"] = "00:00";
+                }
+            } else {
+                secondQuery += startDate;
+                filter["endDate"] = startDate;
+                if(endTime !== undefined){
+                    secondQuery += 'T' + endTime + ':00.000Z';
+                } else {
+                    secondQuery += 'T23:59:00.000Z';
                 }
             }
+
+            //console.log(filter)
+            //console.log(firstQuery + secondQuery)
+
+            setFilters(filters.concat([filter]))
+            setQueries(queries.concat([firstQuery + secondQuery]))
+
+            /*
+            if (endDate === undefined) {
+                //no start time
+                if (startTime === undefined) {
+                    filter = { key: 'date', start: startDate }
+                } else {
+                    filter = { key: 'date', start: startDate }
+                    query = 'PERIOD_ID=' + startDate + 'T00:00:00.000Z&PERIOD_ID=' + startDate + 'T23:59:59.999Z'
+                }
+                //time but no end date 
+            } else {
+                if (endTime === undefined) {
+
+                    
+                    filter = { key: 'date', day: startDate, time: startTime }
+
+                    query = 'PERIOD_ID=' + startDate + 'T' + startTime + ':00.000Z'
+                } else { 
+                    filter = { key: 'date', day: startDate, startTime: startTime, endTime: endTime }
+                    query = 'PERIOD_ID=' + startDate + 'T' + startTime + ':00.000Z&PERIOD_ID=' + startDate + 'T' + endTime + ':00.000Z'
+                }
+            }
+            */
+
             /* filter = {key:'date', start: startDate, end: endDate, startTime: startTime, endTime: endTime, period: period}
              query   */
-            setFilters(filters.concat(filter))
-            setQueries(queries.concat(query))
+
         }
     }
     const addScenario = () => {
         if(scenario !== undefined){
             const filter = {key:'scenario', scenario: scenario}
             const query = 'SCENARIO_ID='+scenario
-            setFilters(filters.concat(filter))
-            setQueries(queries.concat(query))
+            setFilters(filters.concat([filter]))
+            setQueries(queries.concat([query]))
         }
     }
     const addCustom = () => {
@@ -123,8 +170,8 @@ const Filter = (props) => {
             if(customOne !== undefined && customOne !== ''){
                 const filter = {key:customKey, value: customOne}
                 const query = customKey+'='+customOne
-                setFilters(filters.concat(filter))
-                setQueries(queries.concat(query))
+                setFilters(filters.concat([filter]))
+                setQueries(queries.concat([query]))
             }
         } else{
             if(customStart !== undefined && customStart !== ''){
@@ -137,13 +184,13 @@ const Filter = (props) => {
                     filter = {key:customKey, value: customStart}
                     query = customKey+'='+customStart
                 }
-                setFilters(filters.concat(filter))
-                setQueries(queries.concat(query))
+                setFilters(filters.concat([filter]))
+                setQueries(queries.concat([query]))
             } else if(customEnd !== undefined && customEnd !== ''){
                 const filter = {key:customKey, value: customEnd}
                 const query = customKey+'='+customEnd
-                setFilters(filters.concat(filter))
-                setQueries(queries.concat(query))
+                setFilters(filters.concat([filter]))
+                setQueries(queries.concat([query]))
             }
         }
     }
@@ -223,8 +270,8 @@ const Filter = (props) => {
                                 onChange={(e) => setStartTime(e.target.value)}/>
                             <input className='filterInputs' type='time'
                                 onChange={(e) => setEndTime(e.target.value)}/>
-                            <input className='filterInputs' type='number'
-                                onChange={(e) => setPeriod(e.target.value)}/>
+                            {/* <input className='filterInputs' type='number'
+                                onChange={(e) => setPeriod(e.target.value)}/> */}
                             <button className='add'
                                 onClick={addDate}>Add Filter</button>
                         </div>
@@ -274,7 +321,7 @@ const Filter = (props) => {
                                 {Object.keys(filter).map((key) => (
                                     <p className='filterEl'>{key + ': ' + filter[key]}</p>
                                 ))}
-                                <button className='remove' onClick={() => remove(index)}>-</button>
+                                <button className='remove' onClick={() => remove(index)}>Remove</button>
                             </div>
                             
                         ))}
