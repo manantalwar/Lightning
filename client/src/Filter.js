@@ -199,8 +199,9 @@ const Filter = (props) => {
                     </div>
                     <p className='getTitle'>Values:</p>
                     <div className="getList">
-                        {getList.map((elem) => (<p className='getText'>{elem}</p>))}
+                        {getList.map((elem) => (<pre><p className='getText'>{elem}</p></pre>))}
                     </div>
+                    
                 </div>
                 <div className="rightcontent">
                 {/* Div containing custom filters and scenario */}
