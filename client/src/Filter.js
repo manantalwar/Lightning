@@ -261,7 +261,7 @@ const Filter = (props) => {
                     <div className='filters'>
                         {/* Date filter div */}
                         <div className='filter'> 
-                            <p className='filterTitle'>Dates</p>
+                            <div className='filterTitleBorder'><p className='filterTitle'>Dates</p></div>
                             <input className='filterInputs' type='date'
                                 onChange={(e) => setStartDate(e.target.value)}/>
                             <input className='filterInputs' type='date'
@@ -277,7 +277,7 @@ const Filter = (props) => {
                         </div>
                         {/* LMP filter div */}
                         <div className='filter'>
-                            <p className='filterTitle'>LMP</p>
+                            <div className='filterTitleBorder'><p className='filterTitle'>LMP</p></div>
                             <input className='filterInputs' type='number' 
                                 defaultValue={'start'}
                                 onChange={(e) => setStartLMP(e.target.value)}
@@ -290,7 +290,7 @@ const Filter = (props) => {
 
                         </div>
                         <div className='filter'>
-                            <p className='filterTitle'>Scenarios</p>
+                        <div className='filterTitleBorder'><p className='filterTitle'>Scenarios</p></div>
                                 <select className='filterInputs'
                                     onChange={(e) => setScenario(e.target.value)}
                                     defaultValue={'scenario'}>
