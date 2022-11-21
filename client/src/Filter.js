@@ -109,8 +109,8 @@ const Filter = (props) => {
                     secondQuery += 'T' + endTime + ':00.000Z';
                     filter["endTime"] = endTime;
                 } else {
-                    secondQuery += 'T00:00:00.000Z';
-                    filter["endTime"] = "00:00";
+                    secondQuery += 'T23:59:00.000Z';
+                    filter["endTime"] = "23:59";
                 }
             } else {
                 secondQuery += startDate;
@@ -316,6 +316,7 @@ const Filter = (props) => {
                     <p className="topTitle">Active Filters</p>
                     {/* <div> <span>key</span> <span>values</span></div> */}
                     <div className="filterList">
+                        <div>
                         {filters.map((filter, index) => (
                             <div className='filterObj'>
                                 {Object.keys(filter).map((key) => (
@@ -325,6 +326,7 @@ const Filter = (props) => {
                             </div>
                             
                         ))}
+                        </div>
                     </div>
                 </div>
                 </div>
