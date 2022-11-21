@@ -158,6 +158,11 @@ const Filter = (props) => {
         }).catch(() => "")
     }
 
+    const reset = () => {
+        setFilters([])
+        setQueries([])
+    }
+
 
     return (  
         <div className="body">
@@ -195,7 +200,7 @@ const Filter = (props) => {
                         {/* Scenario Filters */}
                     </div>
                     <div>
-                        
+                
                     </div>
                     <p className='getTitle'>Values:</p>
                     <div className="getList">
@@ -253,11 +258,10 @@ const Filter = (props) => {
                     <div className='action'>
                             {/* <button className="submit">Submit</button> */}                        
                             <Link
-                                className='submitBtn'
                                 to = '/UC2'
                                 state={createQuery()}
-                            >Submit</Link>
-                            <btn className='resetBtn'>reset</btn>
+                            ><button className='submitBtn'>Submit</button></Link>
+                            <button className='resetBtn' onClick={reset}>Reset</button>
                     </div>
                 </div>
 
@@ -268,7 +272,7 @@ const Filter = (props) => {
                         {filters.map((filter, index) => (
                             <div className='filterObj'>
                                 {Object.keys(filter).map((key) => (
-                                    <pre><p className='filterEl'>{key + ': ' + filter[key]}</p></pre>
+                                    <p className='filterEl'>{key + ': ' + filter[key]}</p>
                                 ))}
                                 <button className='remove' onClick={() => remove(index)}>-</button>
                             </div>

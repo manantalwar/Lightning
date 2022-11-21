@@ -49,7 +49,7 @@
     margin-right: 2%;
     padding-top: 1%;
     padding-bottom: 1%;
-    display:inline-block;
+    display:inline-flex;
     justify-content: space-between;
     text-align: justify;
 }
@@ -64,22 +64,33 @@
 }
 
 .submitBtn{
-    font-size: 20px;
-    width: 40%;
-    background-color: lightgreen;
+    border: 1px solid black;
+    font-size: 18px;
+    background-color: rgb(0, 255, 0); 
     color: white;
-    padding: 10px;
-    border-radius:3px;
-    text-decoration: none;
+    padding: 5px;
+    border-radius:4px;
+    vertical-align: middle;
+    /* 
+    text-decoration: none; */
+}
+
+.submitBtn:hover{
+    background-color: darkgreen;
 }
 
 .resetBtn{
-    font-size: 20px;
-    width: 40%;
-    border-radius: 3px;
-    background-color: coral;
-    padding: 10px;
+    border: 1px solid black;
+    font-size: 18px;
+    border-radius: 4px;
+    background-color: rgb(255, 0, 0);
+    padding: 5px; 
     color: white;
+    vertical-align: middle;
+}
+
+.resetBtn:hover{
+    background-color: darkred;
 }
 
 .remove{
@@ -126,6 +137,7 @@
 
 .getText{
     margin-left: 2%;
+    font-size: large;
     /* border-style: solid;
     border-radius: 4px; */
 }
@@ -169,7 +181,7 @@
     margin: 3%;
     border-radius: 5px;
     padding:2%;
-    height: 84%;
+    height: 77.5%;
     background-color: #f1f2f6;;
     margin-right: 0;
     width: 20%;
