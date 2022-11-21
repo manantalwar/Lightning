@@ -12,8 +12,8 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     } */
     const [stateData, setStateData] = useState({})
     const [linepoints, setLinePoints] = useState([])
-    const [slope, setSlope] = useState();
-    const [yint, setYint] = useState();
+    const [slope, setSlope] = useState(1);
+    const [yint, setYint] = useState(0);
     const {data, height} = props;
     const [graphData, setGraphData] = useState();
 
@@ -276,13 +276,11 @@ export function Histogram(props) {
         useEffect(() => {
             const grab = grabData(stateData)
             setGraphData(grab);
-            console.log(grab);
         }, [stateData]);
 
         const options = {
             chart: {
                 type: 'column',
-                width: "90%",
             },
             series: [{
                 name: 'Value (' + metric + ")",
