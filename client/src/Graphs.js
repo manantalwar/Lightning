@@ -15,7 +15,8 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     const [slope, setSlope] = useState(1);
     const [yint, setYint] = useState(0);
     const {data, height} = props;
-    const [graphData, setGraphData] = useState();
+    const [graphData, setGraphData] = useState()
+
 
     function grabData(obj){
         let ret = {}
@@ -69,6 +70,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
             function getPoint(xval){
                 return {x: xval, y: (xval*slope+yinter) }
             }
+
             setYint(yinter);
             setSlope(slope);
             points = [getPoint(minx), getPoint(maxx)];
@@ -76,7 +78,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
         
         return [ret, points];
     }
-
+    
     useEffect(() => {
         setStateData(data)
     }, [data])
@@ -239,7 +241,6 @@ export function Histogram(props) {
 
         function grabData(data, metric){
             if(data === undefined && metric !== undefined && Object.keys(data).length !== 0){return undefined;}
-            console.log(data)
             //console.log(data)
 
             let ret ={xAxis:[], series:null};
@@ -368,9 +369,64 @@ function makeCells() {
     return cells;
 }
 
-export class HeatMap extends React.Component {
-    
-    render() {
+export function HeatMap (props){
+
+        const {xToY, data} = props;
+        const [stateXToY, setStateXToY] = useState(xToY);
+        const [stateData, setStateData] = useState(data);
+        const [graphData, setGraphData] = useState();
+        const {stateMetric, setStateMetric} = useState("LMP");
+
+        useEffect(()=>{
+            if(xToY !== undefined){
+                setStateXToY(xToY)
+            }   
+        },[xToY])
+
+        useEffect(()=>{
+            if(data !== undefined){
+            setStateData(data)
+            }
+        },[data])
+
+        useEffect(()=>{
+            if(stateData !== undefined && xToY !== undefined){
+            const grab = grabData(stateData, xToY)
+            console.log(grab)
+            }
+            
+        }, [stateData, xToY])
+
+        function grabData(data, func){
+            let arr = []
+            for(let month = 0; month < 12; ++month){
+                arr.push(new Array(24))
+            }
+
+            for(let i = 0; i < data[stateMetric].length; ++i){
+                let tempDate = new Date(data["PERIOD_ID"][i])
+                let hour = tempDate.getHours();
+                let month = tempDate.getMonth();
+                if(arr[hour][month] === undefined){arr[hour][month] = {sum:0, count:0}}
+                let val = data[stateMetric][i];
+                arr[month][hour].sum += Math.abs(((func(val) - val)/val)*100)
+                arr[month][hour].count += 1;
+            }
+
+            let ret = [];
+
+            for(let month = 0; month < 12; ++month){
+                for(let hour = 0; hour < 24; ++hour){
+                    if(arr[month][hour] === undefined){ret.push([month,hour,NaN])}
+                    else{
+                        ret.push([month,hour,(arr[month][hour].sum/arr[month][hour].count)])
+                    }
+                }
+            }
+
+            return ret;
+        }
+
         const options = {
             chart: {
                 type: 'heatmap',
@@ -423,7 +479,7 @@ export class HeatMap extends React.Component {
             series: [{
                 name: 'Month',
                 borderWidth: 1,
-                data: makeCells(),
+                data: [[0,0,1],[0,1,2],[4,0,3],[1,1,NaN]],
                 dataLabels: {
                     enabled: true,
                     color: '#000000'
@@ -447,6 +503,7 @@ export class HeatMap extends React.Component {
                 }]
             }
         }
+
         return (
             <div
             style={{
@@ -465,7 +522,6 @@ export class HeatMap extends React.Component {
             </div>
 
         );
-    }
 }
 
 export default function LineChart(props) {

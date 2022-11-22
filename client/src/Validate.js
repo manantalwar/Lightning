@@ -28,7 +28,7 @@ const Validation = (props) => {
     const [endTime, setEndTime] = useState()
     const [scenario, setScenario] = useState()
     const [nodes, setNodes] = useState({})
-   
+
     useEffect(()=>{
         if(init !== undefined){
         setStateInit(init);
@@ -156,7 +156,7 @@ const Validation = (props) => {
                     </div>
                     <div className = 'graph'>
                         <div className="expanding"> 
-                        <ScatterPlot height={95} data={nodes}/>
+                        <ScatterPlot height={95} data={nodes} />
                         <button className= "expandpos" onClick={() => setIsOpen2(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen2} onClose={() => setIsOpen2(false)}>
                             <div>
@@ -199,11 +199,11 @@ const Validation = (props) => {
                     </div>
                     <div className = 'graph'>
                         <div className="expanding"> 
-                        <HeatMap />
+                        <HeatMap data={nodes}/>
                         <button className= "expandpos" onClick={() => setIsOpen4(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen4} onClose={() => setIsOpen4(false)}>
                             <div> 
-                                <HeatMap />
+                                <HeatMap data={nodes}/>
                             </div>
                         </Modal>    
                         </div>                    
