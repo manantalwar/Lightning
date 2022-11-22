@@ -683,7 +683,8 @@ export function DataTable(props){
         }
         else if (statePeriod === 'Hour'){
             editDate = (elem) => new Date(Math.min(addMinutes(elem, 60), end));
-        } else if (statePeriod === 'Min'){
+        } 
+        else if (statePeriod === 'Min'){
             editDate = (elem) => new Date(Math.min(addMinutes(elem, 1), end));
         } else {
             editDate = (elem) => end;
@@ -694,7 +695,7 @@ export function DataTable(props){
         for(let i = start; i < end; i = editDate(i)){
             let objbase = {startdate: i, scen:'1', min: Infinity, max: -Infinity, mean:null, dev:null, count:0}
             let objscen = {startdate: i, scen:null, min: Infinity, max: -Infinity, mean:null, dev:null, count:0}
-            let tempEnd = addMinutes(editDate(i), (-.5));
+            let tempEnd = addMinutes(editDate(i), -(1/60.0));
 
             let basesum = 0;
             let scensum = 0;

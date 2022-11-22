@@ -82,8 +82,8 @@ async function init(){
         temp = {}
         nodes.forEach((elem) => {
             temp = {
-                ...classify(elem),
                 ...temp,
+                ...classify(elem),
             }
         })
         return temp;
