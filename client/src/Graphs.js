@@ -78,7 +78,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
         
         return [ret, points];
     }
-    
+
     useEffect(() => {
         setStateData(data)
     }, [data])
@@ -371,7 +371,7 @@ function makeCells() {
 
 export function HeatMap (props){
 
-        const {xToY, data} = props;
+        const {data, xToY} = props;
         const [stateXToY, setStateXToY] = useState(xToY);
         const [stateData, setStateData] = useState(data);
         const [graphData, setGraphData] = useState();
@@ -417,7 +417,7 @@ export function HeatMap (props){
 
             for(let month = 0; month < 12; ++month){
                 for(let hour = 0; hour < 24; ++hour){
-                    if(arr[month][hour] === undefined){ret.push([month,hour,NaN])}
+                    if(arr[month][hour] === undefined){ret.push([month,hour,undefined])}
                     else{
                         ret.push([month,hour,(arr[month][hour].sum/arr[month][hour].count)])
                     }
@@ -479,7 +479,7 @@ export function HeatMap (props){
             series: [{
                 name: 'Month',
                 borderWidth: 1,
-                data: [[0,0,1],[0,1,2],[4,0,3],[1,1,NaN]],
+                data: [[0,0,1],[0,1,2],[4,0,3],[1,1,undefined]],
                 dataLabels: {
                     enabled: true,
                     color: '#000000'
