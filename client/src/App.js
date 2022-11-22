@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/filter" element={<Filter init={init} />}></Route>
-          <Route path="/validate"element={<Validation />}></Route>
+          <Route path="/validate"element={<Validation init={init}/>}></Route>
           <Route path='/UC2'element={<UC2 init={init} />}></Route>
         </Routes>
       </div>

@@ -7,8 +7,16 @@ import {aggregateNodes, get} from './getFromServer.mjs'
 import { HeatMap, ScatterPlot, Histogram, PeroidButton, DataTable} from './Graphs';
 import LineChart from './Graphs';
 
-const Validation = () => {
+const Validation = (props) => {
     const page = "Validation"
+    const [allNodeNames, setAllNodeNames] = useState(["All"])
+    const [nodeName, setNodeName] = useState()
+    const [period, setPeriod] = useState("All")
+    const [histoBucket, setHistoBucket] = useState(1);
+    const [metric, setMetric] = useState("LMP");
+    const [metrics, setMetrics] = useState(["LMP","MW"]);
+    const {init} = props;
+    const [stateInit, setStateInit] = useState(init);
     const [scenarios, setScenarios] = useState([])
     const [isOpen1, setIsOpen1] = useState(false)
     const [isOpen2, setIsOpen2] = useState(false)
@@ -20,14 +28,12 @@ const Validation = () => {
     const [endTime, setEndTime] = useState()
     const [scenario, setScenario] = useState()
     const [nodes, setNodes] = useState({})
-    const [allNodeNames, setAllNodeNames] = useState(["All"])
-    const [nodeName, setNodeName] = useState()
-    const [period, setPeriod] = useState("All")
-    const [histoBucket, setHistoBucket] = useState(1);
-
-    useEffect(() => {
-        setHistoBucket(1);
-    }, [])
+   
+    useEffect(()=>{
+        if(init !== undefined){
+        setStateInit(init);
+        }
+    },[init]);  
 
     useEffect(() => {
         getNodes();
@@ -38,6 +44,28 @@ const Validation = () => {
             setScenarios(scen)
         )).catch(() => '')
     }, [])
+
+    useEffect(() => {
+        let arr = [];
+        for (let key in stateInit) {
+            //console.log(key)
+            let keystr = (key).toString().toLocaleLowerCase();
+            if (stateInit[key] === 'number' && !keystr.includes("id")) {
+                arr.push(key)
+            }
+        }
+        setMetrics(arr);
+    }, [stateInit])
+
+    useEffect(()=>{
+        if(metric==="LMP"){
+            setHistoBucket(1);
+        }
+        if(metric==="MW"){
+            setHistoBucket(100);
+        }
+    },[metric])
+
 
     const getNodes = () => {
         let query = '?SCENARIO_ID=1'
@@ -69,7 +97,7 @@ const Validation = () => {
         aggregateNodes(query).then((obj) => {
             setNodes(obj);
         })
-    }    
+    }   
 
     //console.log(nodes)
     
@@ -92,6 +120,12 @@ const Validation = () => {
                             onChange={(e) => setScenario(e.target.value)}>
                         {scenarios.map((scenario) => (
                             <option key={scenario.toString()} value={scenario}>{scenario}</option>
+                        ))}
+                    </select>
+                    <select className='metricSelector'
+                            onChange={(e) => setMetric(e.target.value)}>
+                        {metrics.map((metric) => (
+                            <option key={metric.toString()} value={metric}>{metric}</option>
                         ))}
                     </select>
                     <select className='nodeSelector'
@@ -143,8 +177,8 @@ const Validation = () => {
                                             }}}></input>
                                     </div>
                                     <bre/><bre/>
-                            <Histogram mainText={'Histogram: Base Case'} subText={'Base Case Metrics'} data={{...nodes, ...{base:true}}} bucket={histoBucket}/>         
-                            <Histogram mainText={'Histogram: Scenario'} subText={'Scenario Metrics'} data={{...nodes, ...{base:false}}} bucket={histoBucket}/>  
+                            <Histogram mainText={'Histogram: Base Case'} subText={'Base Case Metrics'} data={{...nodes, ...{base:true}}} bucket={histoBucket} metric={metric}/>         
+                            <Histogram mainText={'Histogram: Scenario'} subText={'Scenario Metrics'} data={{...nodes, ...{base:false}}} bucket={histoBucket} metric={metric}/>  
                         </div>
                         <button className= "expandpos" onClick={() => setIsOpen3(true)}><img className="expanding" src={expand} alt="expand"/></button>
                             <Modal open={isOpen3} onClose={() => setIsOpen3(false)}>
@@ -157,8 +191,8 @@ const Validation = () => {
                                                 setHistoBucket(Math.abs(val));
                                             }}}></input>
                                     </div>
-                                <Histogram mainText={'Histogram: Base Case'} subText={'Base Case Metrics'} data={{...nodes, ...{base:true}}} bucket={histoBucket}/>         
-                                <Histogram mainText={'Histogram: Scenario'} subText={'Scenario Metrics'} data={{...nodes, ...{base:false}}} bucket={histoBucket}/> 
+                                <Histogram mainText={'Histogram: Base Case'} subText={'Base Case Metrics'} data={{...nodes, ...{base:true}}} bucket={histoBucket} metric={metric}/>         
+                                <Histogram mainText={'Histogram: Scenario'} subText={'Scenario Metrics'} data={{...nodes, ...{base:false}}} bucket={histoBucket} metric={metric}/> 
                             </div>
                             </Modal>      
                         </div>                                            
@@ -176,11 +210,11 @@ const Validation = () => {
                     </div>
 
                     <div className = 'statBox'>
-                        <header className='StatsTitle'>Statistics (LMP)</header>
+                        <header className='StatsTitle'>Statistics ({metric})</header>
                         <br/>
                         <PeroidButton setParentPeriod={(per) => setPeriod(per)}/> 
                         <br/>
-                        <DataTable period={period} data={nodes}/>
+                        <DataTable period={period} data={nodes} metric={metric}/>
                     </div>
 
                 </div>

@@ -219,18 +219,28 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
 }
 
 export function Histogram(props) {
-        const { mainText, subText, data, bucket } = props;
+        const { mainText, subText, data, bucket, metric } = props;
 
-        const [metric, setMetric] = useState("LMP");
+        const [stateMetric, setStateMetric] = useState(metric);
         const [stateData, setStateData] = useState({});
         const [graphData, setGraphData] = useState([]);
 
         useEffect(() => {
+            if(metric !== undefined){
+            setStateMetric(metric);
+            }
+        },[metric])
+
+        useEffect(() => {
+            if(data !== undefined){
             setStateData(data);
+            }
         },[data])
 
-        function grabData(data){
-            if(data === undefined){return undefined;}
+        function grabData(data, metric){
+            if(data === undefined && metric !== undefined && Object.keys(data).length !== 0){return undefined;}
+            console.log(data)
+            //console.log(data)
 
             let ret ={xAxis:[], series:null};
 
@@ -239,10 +249,18 @@ export function Histogram(props) {
 
             let min = Infinity;
             let max = -Infinity;
-            data[metric]?.forEach((elem) => {min = Math.min(min,elem); max = Math.max(max,elem)})
+            data[metric]?.forEach((elem) => {
+                if(elem)
+                min = Math.min(min,elem); 
+                max = Math.max(max,elem)
+            })
+
+            /* console.log(min)
+            console.log(max) */
 
             let ser = [];
-            for(let i = min; i < max; i+=bucket){
+
+            for(let i = min; i <= max; i+=bucket){
                 let obj = {y:0, percent:"0%"}
                 ser.push(obj)
 
@@ -250,14 +268,16 @@ export function Histogram(props) {
                 ret.xAxis.push(str)
             }
 
+            //console.log(ser)
+
             let elems = 0;
             
             for(let i = 0; i < cap; ++i){
-                if(data.base && data["SCENARIO_ID"][i] === '1'){
+                if(data.base && data["SCENARIO_ID"][i] === '1' && data[metric][i] !== ''){
                     let valBuck = Math.floor((data[metric][i] - min) / bucket);
                     ser[valBuck].y += 1;
                     elems += 1;
-                } else if(!data.base && data["SCENARIO_ID"][i] !== '1'){
+                } else if(!data.base && data["SCENARIO_ID"][i] !== '1' && data[metric][i] !== ''){
                     let valBuck = Math.floor((data[metric][i] - min) / bucket);
                     ser[valBuck].y += 1;
                     elems += 1;
@@ -274,16 +294,16 @@ export function Histogram(props) {
         }
 
         useEffect(() => {
-            const grab = grabData(stateData)
+            const grab = grabData(stateData, stateMetric)
             setGraphData(grab);
-        }, [stateData]);
+        }, [stateMetric, stateData]);
 
         const options = {
             chart: {
                 type: 'column',
             },
             series: [{
-                name: 'Value (' + metric + ")",
+                name: 'Value (' + stateMetric + ")",
                 data: graphData.series
             },],
             title: {
@@ -624,10 +644,10 @@ export function PeroidButton(props){
 }
 
 export function DataTable(props){
-    const {period, data} = props;
+    const {period, data, metric} = props;
     const [stateData, setStateData] = useState();
     const [stats, setStats] = useState([]);
-    const [metric, setMetric] = useState("LMP");
+    const [stateMetric, setStateMetric] = useState(metric);
     const [statePeriod, setStatePeriod] = useState(period);
     
     useEffect(() => {
@@ -638,11 +658,15 @@ export function DataTable(props){
         setStatePeriod(period)
     }, [period])
 
+    useEffect(()=>{
+        setStateMetric(metric)
+    },[metric])
+
     useEffect(() => {
         const grab = grabData(stateData)
         setStats(grab);
 
-    }, [stateData, statePeriod])
+    }, [stateData, statePeriod, stateMetric])
 
 
     function addMinutes(date, minutes) {
@@ -702,27 +726,29 @@ export function DataTable(props){
             let basedat = [];
             let scendat = []
 
-            for(let j = 0; j < data[metric]?.length; ++j){
+            for(let j = 0; j < data[stateMetric]?.length; ++j){
                 
                 let thisDate = new Date(data["PERIOD_ID"][j]);
                 
                 if(thisDate >= i && thisDate <= tempEnd){
-                    let val = parseFloat(data[metric][j]);
+                    if (data[stateMetric][j] !== "") {
+                        let val = parseFloat(data[stateMetric][j]);
 
-                    if(data["SCENARIO_ID"][j] === '1'){
-                        objbase.min = Math.min(objbase.min, val)
-                        objbase.max = Math.max(objbase.max, val)
-                        objbase.count += 1;
-                        basesum += val
-                        basedat.push(val);
+                        if (data["SCENARIO_ID"][j] === '1') {
+                            objbase.min = Math.min(objbase.min, val)
+                            objbase.max = Math.max(objbase.max, val)
+                            objbase.count += 1;
+                            basesum += val
+                            basedat.push(val);
 
-                    }else{
-                        objscen.scen = data["SCENARIO_ID"][j];
-                        objscen.min = Math.min(objscen.min, val)
-                        objscen.max = Math.max(objscen.max, val)
-                        objscen.count += 1;
-                        scensum += val
-                        scendat.push(val);
+                        } else {
+                            objscen.scen = data["SCENARIO_ID"][j];
+                            objscen.min = Math.min(objscen.min, val)
+                            objscen.max = Math.max(objscen.max, val)
+                            objscen.count += 1;
+                            scensum += val
+                            scendat.push(val);
+                        }
                     }
                 }
             }
