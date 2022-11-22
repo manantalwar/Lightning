@@ -28,12 +28,9 @@ const Validation = (props) => {
     const [endTime, setEndTime] = useState()
     const [scenario, setScenario] = useState()
     const [nodes, setNodes] = useState({})
+    const [func, setFunc] = useState([1,0]);
+    const [includeBase, setIncludeBase] = useState(true);
 
-    useEffect(()=>{
-        if(init !== undefined){
-        setStateInit(init);
-        }
-    },[init]);  
 
     useEffect(() => {
         getNodes();
@@ -44,6 +41,12 @@ const Validation = (props) => {
             setScenarios(scen)
         )).catch(() => '')
     }, [])
+
+    useEffect(()=>{
+        if(init !== undefined){
+        setStateInit(init);
+        }
+    },[init]);  
 
     useEffect(() => {
         let arr = [];
@@ -100,7 +103,10 @@ const Validation = (props) => {
     }   
 
     //console.log(nodes)
-    
+    useEffect(() => {
+        //console.log(func)
+    }, [func])
+
     return (  
         <div className="validation">
             <Navbar page={page}/>
@@ -156,11 +162,11 @@ const Validation = (props) => {
                     </div>
                     <div className = 'graph'>
                         <div className="expanding"> 
-                        <ScatterPlot height={95} data={nodes} />
+                        <ScatterPlot height={95} data={nodes} func={(x)=>setFunc(x)}/>
                         <button className= "expandpos" onClick={() => setIsOpen2(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen2} onClose={() => setIsOpen2(false)}>
                             <div>
-                                <ScatterPlot height={50} data={nodes}/>
+                                <ScatterPlot height={50} data={nodes} func={(x)=>setFunc(x)}/>
                             </div>
                         </Modal> 
                         </div>
@@ -198,12 +204,26 @@ const Validation = (props) => {
                         </div>                                            
                     </div>
                     <div className = 'graph'>
-                        <div className="expanding"> 
-                        <HeatMap data={nodes}/>
+                            <div className="expanding">
+                            <div className='checkcontainer'>
+                                <label><p className="checkText">Include Base Case: </p></label>
+                                <input className="check" type="checkbox"
+                                    onChange={(event) => setIncludeBase(event.currentTarget.checked)}
+                                    checked={includeBase}
+                                />
+                            </div>
+                        <HeatMap data={nodes} func={func} metric={metric} inc={includeBase}/>
                         <button className= "expandpos" onClick={() => setIsOpen4(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen4} onClose={() => setIsOpen4(false)}>
                             <div> 
-                                <HeatMap data={nodes}/>
+                                <div className='checkcontainer'>
+                                <label className="checkText"> Include Base Case: </label>
+                                    <input className="check" type="checkbox"
+                                        onChange={(event) => setIncludeBase(event.currentTarget.checked)}
+                                        checked={includeBase}
+                                    />
+                                </div>
+                                <HeatMap data={nodes} func={func} metric={metric} inc={includeBase}/>
                             </div>
                         </Modal>    
                         </div>                    
@@ -212,7 +232,7 @@ const Validation = (props) => {
                     <div className = 'statBox'>
                         <header className='StatsTitle'>Statistics ({metric})</header>
                         <br/>
-                        <PeroidButton setParentPeriod={(per) => setPeriod(per)}/> 
+                        <PeroidButton setParentPeriod={(per) => setPeriod(per)}/>
                         <br/>
                         <DataTable period={period} data={nodes} metric={metric}/>
                     </div>

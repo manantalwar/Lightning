@@ -14,9 +14,8 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     const [linepoints, setLinePoints] = useState([])
     const [slope, setSlope] = useState(1);
     const [yint, setYint] = useState(0);
-    const {data, height} = props;
+    const {data, height, func} = props;
     const [graphData, setGraphData] = useState()
-
 
     function grabData(obj){
         let ret = {}
@@ -70,9 +69,10 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
             function getPoint(xval){
                 return {x: xval, y: (xval*slope+yinter) }
             }
-
+/* 
             setYint(yinter);
-            setSlope(slope);
+            setSlope(slope); */
+            handleSlope(slope, yinter)
             points = [getPoint(minx), getPoint(maxx)];
         }
         
@@ -82,6 +82,17 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     useEffect(() => {
         setStateData(data)
     }, [data])
+
+    
+    function handleSlope(slp, y){
+        setYint(y)
+        setSlope(slp);
+    }
+
+    useEffect(() => {
+        func([slope, yint]);
+    }, [slope, yint])
+
 
     useEffect(() => {
         const grab = grabData(stateData)
@@ -371,60 +382,80 @@ function makeCells() {
 
 export function HeatMap (props){
 
-        const {data, xToY} = props;
-        const [stateXToY, setStateXToY] = useState(xToY);
+        const {data, func, inc} = props;
         const [stateData, setStateData] = useState(data);
         const [graphData, setGraphData] = useState();
-        const {stateMetric, setStateMetric} = useState("LMP");
+        const [stateMetric, setStateMetric] = useState("LMP");
+        const [stateFunc, setStateFunc] = useState((x) => x);
+        const [includeBase, setIncludeBase] = useState(inc);
+
 
         useEffect(()=>{
-            if(xToY !== undefined){
-                setStateXToY(xToY)
-            }   
-        },[xToY])
+            setIncludeBase(inc);
+        },[inc])
 
+        useEffect(()=>{
+            setStateFunc(func);
+        },[func])
+
+        /* useEffect(()=>{
+            setStateMetric(metric)
+        },[metric]) */
+
+        useEffect(()=>{
+            setStateMetric("LMP");
+        },[])
+        
         useEffect(()=>{
             if(data !== undefined){
-            setStateData(data)
+            setStateData(data);
             }
         },[data])
 
         useEffect(()=>{
-            if(stateData !== undefined && xToY !== undefined){
-            const grab = grabData(stateData, xToY)
-            console.log(grab)
+            if(stateData !== undefined && func !== undefined && stateMetric !== undefined){
+            const grab = grabData(stateData, func, stateMetric, includeBase)
+            setGraphData(grab)
+            //console.log(graphData)
             }
             
-        }, [stateData, xToY])
+        }, [stateData, func, stateMetric, includeBase])
 
-        function grabData(data, func){
+        function grabData(data, func, metric, inc){
+            if(data !== undefined){
             let arr = []
             for(let month = 0; month < 12; ++month){
                 arr.push(new Array(24))
             }
-
-            for(let i = 0; i < data[stateMetric].length; ++i){
-                let tempDate = new Date(data["PERIOD_ID"][i])
-                let hour = tempDate.getHours();
-                let month = tempDate.getMonth();
-                if(arr[hour][month] === undefined){arr[hour][month] = {sum:0, count:0}}
-                let val = data[stateMetric][i];
-                arr[month][hour].sum += Math.abs(((func(val) - val)/val)*100)
-                arr[month][hour].count += 1;
+            
+            //console.log(data)
+            for(let i = 0; i < data[metric]?.length; ++i){
+                if((data["SCENARIO_ID"][i] !== "1" || inc) && data[metric][i] !== ''){
+                    
+                    let tempDate = new Date(data["PERIOD_ID"][i])
+                    let hour = tempDate.getHours();
+                    let month = tempDate.getMonth();
+                    if (arr[month][hour] === undefined) { arr[month][hour] = { sum: 0, count: 0 } }
+                    let val = data[metric][i];
+                    arr[month][hour].sum += Math.abs((((val*func[0] + func[1]) - val) / val) * 100)
+                    arr[month][hour].count += 1;
+                }
             }
-
+            
             let ret = [];
 
             for(let month = 0; month < 12; ++month){
                 for(let hour = 0; hour < 24; ++hour){
                     if(arr[month][hour] === undefined){ret.push([month,hour,undefined])}
                     else{
-                        ret.push([month,hour,(arr[month][hour].sum/arr[month][hour].count)])
+                        ret.push([month,hour, parseFloat((arr[month][hour].sum/arr[month][hour].count).toFixed(3))])
                     }
                 }
             }
 
+            
             return ret;
+            }
         }
 
         const options = {
@@ -438,7 +469,7 @@ export function HeatMap (props){
 
 
             title: {
-                text: 'Maximum Absolute Percent Errors'
+                text: 'Maximum Absolute Percent Errors (LMP)'
             },
 
             xAxis: {
@@ -472,14 +503,14 @@ export function HeatMap (props){
 
             tooltip: {
                 formatter: function () {
-                    return '<b>' + this.point.value + '</b>% at <b>' + getPointCategoryName(this.point, 'y') + '</b> on <b>' + getPointCategoryName(this.point, 'x') + '</b>';
+                    return '<b>' + this.point.value + ' </b>% at <b>' + getPointCategoryName(this.point, 'y') + '</b> on <b>' + getPointCategoryName(this.point, 'x') + '</b>';
                 }
             },
 
             series: [{
                 name: 'Month',
                 borderWidth: 1,
-                data: [[0,0,1],[0,1,2],[4,0,3],[1,1,undefined]],
+                data: graphData,
                 dataLabels: {
                     enabled: true,
                     color: '#000000'
