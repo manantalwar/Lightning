@@ -752,8 +752,8 @@ export function DataTable(props){
           <th>Scenario</th>
           <th>Min</th>
           <th>Max</th>
-          <th>STD-Dev</th>
           <th>Mean</th>
+          <th>STD-Dev</th>
           <th>Count</th>
         </tr>
         {
@@ -764,8 +764,8 @@ export function DataTable(props){
                         <td>{elem.scen}</td>
                         <td>{elem.min}</td>
                         <td>{elem.max}</td>
-                        <td>{elem.dev.toFixed(4)}</td>
                         <td>{elem.mean.toFixed(3)}</td>
+                        <td>{elem.dev.toFixed(4)}</td>
                         <td>{elem.count}</td>
                     </tr>
                 );
