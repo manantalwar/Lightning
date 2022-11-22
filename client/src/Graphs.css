@@ -1,7 +1,7 @@
 button{
     width: 80px;
     height: 40px;
-    margin-left: 20px;
+    margin-left:4.4%;
   }
   .blackButton{
     background-color: black;
@@ -12,8 +12,6 @@ button{
     background-color: white;
     color: black;
   }
-
-
 
 .DataTable {
     width: 100%;

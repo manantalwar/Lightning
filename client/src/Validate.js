@@ -175,8 +175,8 @@ const Validation = () => {
                         </div>                    
                     </div>
 
-                    <div className = 'graph'>
-                        <header className='StatsTitle'>Statistics</header>
+                    <div className = 'statBox'>
+                        <header className='StatsTitle'>Statistics (LMP)</header>
                         <br/>
                         <PeroidButton setParentPeriod={(per) => setPeriod(per)}/> 
                         <br/>

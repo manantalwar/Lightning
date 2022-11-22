@@ -567,9 +567,12 @@ export function PeroidButton(props){
     const {setParentPeriod} = props;
     const [allButton, setAllButton] = useState("blackButton")
     const [yearButton, setYearButton] = useState("blackButton")
+    const [quarterButton, setQuarterButton] = useState("blackButton")
     const [monthButton, setMonthButton] = useState("blackButton")
     const [weekButton, setWeekButton] = useState("blackButton")
     const [dayButton, setDayButton] = useState("blackButton")
+    const [hourButton, setHourButton] = useState("blackButton")
+    const [minButton, setMinButton] = useState("blackButton")
 
     const handleChange = (str) => {
         setPeriod(str);
@@ -582,6 +585,9 @@ export function PeroidButton(props){
         if(period === "Year") {setYearButton("whiteButton")}
         else{setYearButton("blackButton")}
 
+        if(period === "Quarter") {setQuarterButton("whiteButton")}
+        else{setQuarterButton("blackButton")}
+
         if(period === "Month") {setMonthButton("whiteButton")}
         else{setMonthButton("blackButton")}
 
@@ -591,56 +597,208 @@ export function PeroidButton(props){
         if(period === "Day") {setDayButton("whiteButton")}
         else{setDayButton("blackButton")}
 
+        if(period === "Hour") {setHourButton("whiteButton")}
+        else{setHourButton("blackButton")}
+
+        if(period === "Min") {setMinButton("whiteButton")}
+        else{setMinButton("blackButton")}
+
+
         setParentPeriod(period);
+        
     }, [period])
 
     return (
     <div style={{margin: "auto"}}>
       <button className={allButton} onClick={() => handleChange('All')}>All</button>
+      <button className={quarterButton} onClick={() => handleChange('Quarter')}>Quarterly</button>
       <button className={yearButton} onClick={() => handleChange('Year')}>Yearly</button>
       <button className={monthButton} onClick={() => handleChange('Month')}>Monthly</button>
       <button className={weekButton} onClick={() => handleChange('Week')}>Weekly</button>
       <button className={dayButton} onClick={() => handleChange('Day')}>Daily</button>
+      <button className={hourButton} onClick={() => handleChange('Hour')}>Hourly</button>
+      <button className={minButton} onClick={() => handleChange('Min')}>Minutely</button>
     </div>
 
     );
 }
 
 export function DataTable(props){
-    const {period, data} = props
+    const {period, data} = props;
     const [stateData, setStateData] = useState();
+    const [stats, setStats] = useState([]);
+    const [metric, setMetric] = useState("LMP");
+    const [statePeriod, setStatePeriod] = useState(period);
     
     useEffect(() => {
         setStateData(data)
     }, [data])
 
     useEffect(() => {
-        /* console.log(stateData) */
-    }, [stateData])
+        setStatePeriod(period)
+    }, [period])
 
+    useEffect(() => {
+        const grab = grabData(stateData)
+        setStats(grab);
+
+    }, [stateData, statePeriod])
+
+
+    function addMinutes(date, minutes) {
+        return new Date(date.getTime() + minutes*60000);
+    }
+
+    function grabData(data){
+        if(data === undefined || Object.keys(data).length === 0){return [];}
+        //console.log(data)
+
+        let start = new Date();
+        let end = new Date(0);
+
+
+        data["PERIOD_ID"]?.forEach((date) =>{
+            start = Math.min(new Date(date), start)
+            end = Math.max(new Date(date), end)
+        })
+
+        start = new Date(start)
+        end = addMinutes(new Date(end), 0);
+
+        let editDate;
+        if(statePeriod === 'All'){
+            editDate = (elem) => end;
+        }
+        else if (statePeriod === 'Year'){
+            editDate = (elem) => new Date(Math.min(addMinutes(elem, 525600), end));
+        }
+        else if (statePeriod === 'Quarter'){
+            editDate = (elem) => new Date(Math.min(addMinutes(elem, 525600/4), end));
+        }
+        else if (statePeriod === 'Month'){
+            editDate = (elem) => new Date(Math.min(addMinutes(elem, 43800), end));
+        }
+        else if (statePeriod === 'Day'){
+            editDate = (elem) => new Date(Math.min(addMinutes(elem, 1440), end));
+        }
+        else if (statePeriod === 'Hour'){
+            editDate = (elem) => new Date(Math.min(addMinutes(elem, 60), end));
+        } else if (statePeriod === 'Min'){
+            editDate = (elem) => new Date(Math.min(addMinutes(elem, 1), end));
+        } else {
+            editDate = (elem) => end;
+        }
+
+        let ret = []
+
+        for(let i = start; i < end; i = editDate(i)){
+            let objbase = {startdate: i, scen:'1', min: Infinity, max: -Infinity, mean:null, dev:null, count:0}
+            let objscen = {startdate: i, scen:null, min: Infinity, max: -Infinity, mean:null, dev:null, count:0}
+            let tempEnd = addMinutes(editDate(i), (-.5));
+
+            let basesum = 0;
+            let scensum = 0;
+            let basedat = [];
+            let scendat = []
+
+            for(let j = 0; j < data[metric]?.length; ++j){
+                
+                let thisDate = new Date(data["PERIOD_ID"][j]);
+                
+                if(thisDate >= i && thisDate <= tempEnd){
+                    let val = parseFloat(data[metric][j]);
+
+                    if(data["SCENARIO_ID"][j] === '1'){
+                        objbase.min = Math.min(objbase.min, val)
+                        objbase.max = Math.max(objbase.max, val)
+                        objbase.count += 1;
+                        basesum += val
+                        basedat.push(val);
+
+                    }else{
+                        objscen.scen = data["SCENARIO_ID"][j];
+                        objscen.min = Math.min(objscen.min, val)
+                        objscen.max = Math.max(objscen.max, val)
+                        objscen.count += 1;
+                        scensum += val
+                        scendat.push(val);
+                    }
+                }
+            }
+
+            if(objbase.count !== 0){
+                objbase.mean = basesum / objbase.count;
+                objbase.dev = Math.sqrt(basedat.reduce((prev,elem)=>(prev+(elem-objbase.mean)*(elem-objbase.mean)),0) / objbase.count);
+                ret.push(objbase);
+            }
+            
+            if(objscen.scen !== null && objscen.count !== 0){
+                objscen.mean = scensum / objscen.count;
+                objscen.dev = Math.sqrt(scendat.reduce((prev,elem)=>(prev+(elem-objscen.mean)*(elem-objscen.mean)),0) / objscen.count);
+                ret.push(objscen);
+            }
+
+        }
+
+        return ret
+    }
+    
     return (
     <div className='DataTable'>
         <table>
+        
         <tr>
           <th>Period Start</th>
-          <th>STD</th>
-          <th>R^2</th>
+          <th>Scenario</th>
+          <th>Min</th>
+          <th>Max</th>
+          <th>STD-Dev</th>
+          <th>Mean</th>
+          <th>Count</th>
+        </tr>
+        {
+            stats.map((elem) => {
+                return(
+                    <tr>
+                        <td>{elem.startdate.toISOString().split("T")[0]} <br/> {"T" + elem.startdate.toISOString().split("T")[1]}</td>
+                        <td>{elem.scen}</td>
+                        <td>{elem.min}</td>
+                        <td>{elem.max}</td>
+                        <td>{elem.dev.toFixed(4)}</td>
+                        <td>{elem.mean.toFixed(3)}</td>
+                        <td>{elem.count}</td>
+                    </tr>
+                );
+            })
+        }
+        {/*
+        <tr>
+          <td>Date 1</td>
+          <td>Scen</td>
+          <td>Min</td>
+          <td>Max</td>
+          <td>Std-Dev</td>
+          <td>Mean</td>
+          <td>Count</td>
+        </tr>
+         <tr>
+          <td>Date 1</td>
+          <td>Scen</td>
+          <td>Min</td>
+          <td>Max</td>
+          <td>Std-Dev</td>
+          <td>Mean</td>
+          <td>Count</td>
         </tr>
         <tr>
           <td>Date 1</td>
-          <td>Some Std</td>
-          <td>Some R^2</td>
-        </tr>
-        <tr>
-          <td>Date 2</td>
-          <td>Some Std</td>
-          <td>Some R^2</td>
-        </tr>
-        <tr>
-          <td>Date 3</td>
-          <td>Some Std</td>
-          <td>Some R^2</td>
-        </tr>
+          <td>Scen</td>
+          <td>Min</td>
+          <td>Max</td>
+          <td>Std-Dev</td>
+          <td>Mean</td>
+          <td>Count</td>
+        </tr> */}
       </table>
     </div>
     );

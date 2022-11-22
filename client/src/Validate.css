@@ -60,6 +60,25 @@ body {
     margin: 1.25%;
 }
 
+.statBox{
+    width: 60%;
+    height: 61%; 
+    /* width: 520px;
+    height: 500px; */
+    margin-bottom: 2%;
+    margin-top: 2%;
+    padding: 1%;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    background-color: white;
+    border-radius: 6px;
+    display: inline-block;
+    flex-direction: column;
+    
+    /* justify-content: center; */
+    
+    overflow: auto;
+}
+
 .graph{
     width: 29%;
     height: 61%; 
