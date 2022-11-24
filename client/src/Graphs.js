@@ -377,7 +377,7 @@ function makeCells() {
 
 export function HeatMap (props){
 
-        const {data, inc, name} = props;
+        const {data, inc, name, height} = props;
         const [stateData, setStateData] = useState(data);
         const [graphData, setGraphData] = useState();
         const [stateMetric, setStateMetric] = useState("LMP");
@@ -467,7 +467,7 @@ export function HeatMap (props){
                 marginTop: 40,
                 marginBottom: 80,
                 plotBorderWidth: 1,
-                height: '94%',
+                height: height+'%',
             },
 
 

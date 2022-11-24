@@ -209,7 +209,7 @@ const Validation = (props) => {
                                     checked={includeBase}
                                 />
                             </div>
-                        <HeatMap data={nodes} metric={metric} inc={includeBase} name={nodeName}/>
+                        <HeatMap data={nodes} metric={metric} inc={includeBase} name={nodeName} height={94}/>
                         <button className= "expandpos" onClick={() => setIsOpen4(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen4} onClose={() => setIsOpen4(false)}>
                             <div> 
@@ -220,7 +220,7 @@ const Validation = (props) => {
                                         checked={includeBase}
                                     />
                                 </div>
-                                <HeatMap data={nodes} metric={metric} inc={includeBase} name={nodeName}/>
+                                <HeatMap data={nodes} metric={metric} inc={includeBase} name={nodeName} height={60}/>
                             </div>
                         </Modal>    
                         </div>                    
