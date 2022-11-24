@@ -215,7 +215,7 @@ const Filter = (props) => {
     return (  
         <div className="body">
             <Navbar page={page}/>
-            <div className="content">
+            <div className="fcontent">
                 {/* Filter list box */}
         
                 <div className='customfilter'>

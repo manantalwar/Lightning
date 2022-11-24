@@ -735,13 +735,13 @@ export function PeroidButton(props){
     );
 }
 
-export function DataTable(props){
-    const {period, data, metric} = props;
+export function DataTable(props) {
+    const { period, data, metric } = props;
     const [stateData, setStateData] = useState();
     const [stats, setStats] = useState([]);
     const [stateMetric, setStateMetric] = useState(metric);
     const [statePeriod, setStatePeriod] = useState(period);
-    
+
     useEffect(() => {
         setStateData(data)
     }, [data])
@@ -750,9 +750,9 @@ export function DataTable(props){
         setStatePeriod(period)
     }, [period])
 
-    useEffect(()=>{
+    useEffect(() => {
         setStateMetric(metric)
-    },[metric])
+    }, [metric])
 
     useEffect(() => {
         const grab = grabData(stateData)
@@ -762,18 +762,18 @@ export function DataTable(props){
 
 
     function addMinutes(date, minutes) {
-        return new Date(date.getTime() + minutes*60000);
+        return new Date(date.getTime() + minutes * 60000);
     }
 
-    function grabData(data){
-        if(data === undefined || Object.keys(data).length === 0){return [];}
+    function grabData(data) {
+        if (data === undefined || Object.keys(data).length === 0) { return []; }
         //console.log(data)
 
         let start = new Date();
         let end = new Date(0);
 
 
-        data["PERIOD_ID"]?.forEach((date) =>{
+        data["PERIOD_ID"]?.forEach((date) => {
             start = Math.min(new Date(date), start)
             end = Math.max(new Date(date), end)
         })
@@ -782,25 +782,25 @@ export function DataTable(props){
         end = addMinutes(new Date(end), 0);
 
         let editDate;
-        if(statePeriod === 'All'){
+        if (statePeriod === 'All') {
             editDate = (elem) => end;
         }
-        else if (statePeriod === 'Year'){
+        else if (statePeriod === 'Year') {
             editDate = (elem) => new Date(Math.min(addMinutes(elem, 525600), end));
         }
-        else if (statePeriod === 'Quarter'){
-            editDate = (elem) => new Date(Math.min(addMinutes(elem, 525600/4), end));
+        else if (statePeriod === 'Quarter') {
+            editDate = (elem) => new Date(Math.min(addMinutes(elem, 525600 / 4), end));
         }
-        else if (statePeriod === 'Month'){
+        else if (statePeriod === 'Month') {
             editDate = (elem) => new Date(Math.min(addMinutes(elem, 43800), end));
         }
-        else if (statePeriod === 'Day'){
+        else if (statePeriod === 'Day') {
             editDate = (elem) => new Date(Math.min(addMinutes(elem, 1440), end));
         }
-        else if (statePeriod === 'Hour'){
+        else if (statePeriod === 'Hour') {
             editDate = (elem) => new Date(Math.min(addMinutes(elem, 60), end));
-        } 
-        else if (statePeriod === 'Min'){
+        }
+        else if (statePeriod === 'Min') {
             editDate = (elem) => new Date(Math.min(addMinutes(elem, 1), end));
         } else {
             editDate = (elem) => end;
@@ -808,21 +808,21 @@ export function DataTable(props){
 
         let ret = []
 
-        for(let i = start; i < end; i = editDate(i)){
-            let objbase = {startdate: i, scen:'1', min: Infinity, max: -Infinity, mean:null, dev:null, count:0}
-            let objscen = {startdate: i, scen:null, min: Infinity, max: -Infinity, mean:null, dev:null, count:0}
-            let tempEnd = addMinutes(editDate(i), -(1/60.0));
+        for (let i = start; i < end; i = editDate(i)) {
+            let objbase = { startdate: i, scen: '1', min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum:0, arr: [0]}
+            let objarr = []
+            objarr.push(objbase);
+
+            let tempEnd = addMinutes(editDate(i), -(1 / 60.0));
 
             let basesum = 0;
             let scensum = 0;
-            let basedat = [];
-            let scendat = []
 
-            for(let j = 0; j < data[stateMetric]?.length; ++j){
-                
+            for (let j = 0; j < data[stateMetric]?.length; ++j) {
+
                 let thisDate = new Date(data["PERIOD_ID"][j]);
-                
-                if(thisDate >= i && thisDate <= tempEnd){
+
+                if (thisDate >= i && thisDate <= tempEnd) {
                     if (data[stateMetric][j] !== "") {
                         let val = parseFloat(data[stateMetric][j]);
 
@@ -830,67 +830,75 @@ export function DataTable(props){
                             objbase.min = Math.min(objbase.min, val)
                             objbase.max = Math.max(objbase.max, val)
                             objbase.count += 1;
-                            basesum += val
-                            basedat.push(val);
+                            objbase.sum += val
+                            objbase.arr.push(val);
 
                         } else {
-                            objscen.scen = data["SCENARIO_ID"][j];
-                            objscen.min = Math.min(objscen.min, val)
-                            objscen.max = Math.max(objscen.max, val)
-                            objscen.count += 1;
-                            scensum += val
-                            scendat.push(val);
+                            let scen = data["SCENARIO_ID"][j];
+                            let point = objarr.find((elem) => elem.scen === scen)
+
+                            if (point === undefined){
+                                point = { startdate: i, scen: scen, min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum:0 , arr: [0]};
+                                objarr.push(point);
+                            }
+
+                            point.min = Math.min(point.min, val)
+                            point.max = Math.max(point.max, val)
+                            point.count += 1;
+                            point.sum += val
+                            point.arr.push(val);
                         }
                     }
                 }
             }
 
-            if(objbase.count !== 0){
+            /* if(objbase.count !== 0){
                 objbase.mean = basesum / objbase.count;
                 objbase.dev = Math.sqrt(basedat.reduce((prev,elem)=>(prev+(elem-objbase.mean)*(elem-objbase.mean)),0) / objbase.count);
                 ret.push(objbase);
-            }
-            
-            if(objscen.scen !== null && objscen.count !== 0){
-                objscen.mean = scensum / objscen.count;
-                objscen.dev = Math.sqrt(scendat.reduce((prev,elem)=>(prev+(elem-objscen.mean)*(elem-objscen.mean)),0) / objscen.count);
-                ret.push(objscen);
-            }
+            } */
 
+            objarr.forEach((objscen) => {
+                if (objscen.scen !== null && objscen.count !== 0) {
+                    objscen.mean = objscen.sum / objscen.count;
+                    objscen.dev = Math.sqrt(objscen.arr.reduce((prev, elem) => (prev + (elem - objscen.mean) * (elem - objscen.mean)), 0) / objscen.count);
+                    ret.push(objscen);
+                }
+            });
         }
 
         return ret
     }
-    
+
     return (
-    <div className='DataTable'>
-        <table>
-        
-        <tr>
-          <th>Period Start</th>
-          <th>Scenario</th>
-          <th>Min</th>
-          <th>Max</th>
-          <th>Mean</th>
-          <th>STD-Dev</th>
-          <th>Count</th>
-        </tr>
-        {
-            stats.map((elem) => {
-                return(
-                    <tr>
-                        <td>{elem.startdate.toISOString().split("T")[0]} <br/> {"T" + elem.startdate.toISOString().split("T")[1]}</td>
-                        <td>{elem.scen}</td>
-                        <td>{elem.min}</td>
-                        <td>{elem.max}</td>
-                        <td>{elem.mean.toFixed(3)}</td>
-                        <td>{elem.dev.toFixed(4)}</td>
-                        <td>{elem.count}</td>
-                    </tr>
-                );
-            })
-        }
-        {/*
+        <div className='DataTable'>
+            <table>
+
+                <tr>
+                    <th>Period Start</th>
+                    <th>Scenario</th>
+                    <th>Min</th>
+                    <th>Max</th>
+                    <th>Mean</th>
+                    <th>STD-Dev</th>
+                    <th>Count</th>
+                </tr>
+                {
+                    stats.map((elem) => {
+                        return (
+                            <tr>
+                                <td>{elem.startdate.toISOString().split("T")[0]} <br /> {"T" + elem.startdate.toISOString().split("T")[1]}</td>
+                                <td>{elem.scen}</td>
+                                <td>{elem.min}</td>
+                                <td>{elem.max}</td>
+                                <td>{elem.mean.toFixed(3)}</td>
+                                <td>{elem.dev.toFixed(4)}</td>
+                                <td>{elem.count}</td>
+                            </tr>
+                        );
+                    })
+                }
+                {/*
         <tr>
           <td>Date 1</td>
           <td>Scen</td>
@@ -918,8 +926,8 @@ export function DataTable(props){
           <td>Mean</td>
           <td>Count</td>
         </tr> */}
-      </table>
-    </div>
+            </table>
+        </div>
     );
 }
 
