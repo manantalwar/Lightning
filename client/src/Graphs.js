@@ -434,13 +434,17 @@ export function HeatMap (props){
                     let tempDate = new Date(data["PERIOD_ID"][i])
                     let hour = tempDate.getHours();
                     let month = tempDate.getMonth();
-                    if (arr[month][hour] === undefined) { arr[month][hour] = { sum: 0, count: 0 , max:-Infinity }}
+                    if (arr[month][hour] === undefined) { arr[month][hour] = { sum: 0, count: 0 , max:-Infinity , node: null}}
                     let val = data[metric][i];
                     let error = Math.abs((((totalexpected) - val) / val)*100);
                     //console.log(error)
                     arr[month][hour].sum += error
                     arr[month][hour].count += 1;
-                    arr[month][hour].max = Math.max(error, arr[month][hour].max)
+                    //arr[month][hour].max = Math.max(error, arr[month][hour].max)
+                    if(arr[month][hour].max < error){
+                        arr[month][hour].max = error;
+                        arr[month][hour].node = data["PNODE_NAME"][i];
+                    }
                 }
             }
             
@@ -450,7 +454,7 @@ export function HeatMap (props){
                 for(let hour = 0; hour < 24; ++hour){
                     if(arr[month][hour] === undefined){ret.push([month,hour,undefined])}
                     else{
-                        ret.push({x:month, y:hour, value: parseFloat((arr[month][hour].max).toFixed(3)), count:arr[month][hour].count, ave:arr[month][hour].sum/arr[month][hour].count})
+                        ret.push({x:month, y:hour, value: parseFloat((arr[month][hour].max).toFixed(3)), name:arr[month][hour].node, count:arr[month][hour].count, ave:arr[month][hour].sum/arr[month][hour].count})
                         //ret.push([month,hour, parseFloat((arr[month][hour].max).toFixed(3)), "hello"])
                     }
                 }
@@ -507,7 +511,12 @@ export function HeatMap (props){
             tooltip: {
                 headerFormat: '',
                 formatter: function () {
-                    return '<b> '+this.point.value+' </b>% at <b> '+this.point.y+':00 </b> on <b>  ' + getPointCategoryName(this.point, 'x') + ' </b> <br/> Count: <b>'+this.point.count+'</b> <br/> Average: <b>'+this.point.ave.toFixed(2)+'%</b>'
+                    return '<b> '+this.point.value+' </b>% at <b> '
+                            +this.point.y+':00 </b> on <b>  ' 
+                            + getPointCategoryName(this.point, 'x') + ' </b> <br/> Count: <b>'
+                            +this.point.count+'</b> <br/> Average: <b>'
+                            +this.point.ave.toFixed(2)+'%</b> <br/> Node: <b>'
+                            +this.point.name+'</b>';
                 }
                 //pointFormat: '<b> '+'this.point.value'+' </b>% at <b> {point.y}:00 </b> on <b>  ' + getPointCategoryName(this.point, 'x') + ' </b> <br/> Count: <b>{point.count}</b> <br/> Average: <b>{point.ave:.2f}%</b>'
                 /* formatter: function () {
