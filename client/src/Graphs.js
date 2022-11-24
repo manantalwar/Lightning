@@ -437,7 +437,7 @@ export function HeatMap (props){
                     if (arr[month][hour] === undefined) { arr[month][hour] = { sum: 0, count: 0 , max:-Infinity }}
                     let val = data[metric][i];
                     let error = Math.abs((((totalexpected) - val) / val)*100);
-                    console.log(error)
+                    //console.log(error)
                     arr[month][hour].sum += error
                     arr[month][hour].count += 1;
                     arr[month][hour].max = Math.max(error, arr[month][hour].max)
@@ -506,9 +506,12 @@ export function HeatMap (props){
 
             tooltip: {
                 headerFormat: '',
-                pointFormat: '<b> {point.value} </b>% at <b> {point.y} </b> on <b> {point.x} </b> <br/> Count: <b>{point.count}</b> <br/> Average: <b>{point.ave:.2f}%</b>'
+                formatter: function () {
+                    return '<b> '+this.point.value+' </b>% at <b> '+this.point.y+':00 </b> on <b>  ' + getPointCategoryName(this.point, 'x') + ' </b> <br/> Count: <b>'+this.point.count+'</b> <br/> Average: <b>'+this.point.ave.toFixed(2)+'%</b>'
+                }
+                //pointFormat: '<b> '+'this.point.value'+' </b>% at <b> {point.y}:00 </b> on <b>  ' + getPointCategoryName(this.point, 'x') + ' </b> <br/> Count: <b>{point.count}</b> <br/> Average: <b>{point.ave:.2f}%</b>'
                 /* formatter: function () {
-                    return '<b>' + this.point.value + ' </b>% at <b>' + getPointCategoryName(this.point, 'y') + '</b> on <b>' + getPointCategoryName(this.point, 'x') + '</b> <bre> ' + getPointCategoryName(this.point, 'hello');
+                    return '<b>' + this.point.value + ' </b>% at <b>'    + getPointCategoryName(this.point, 'y') + '</b> on <b>' + getPointCategoryName(this.point, 'x') + '</b> <bre> ' + getPointCategoryName(this.point, 'hello');
                 } */
             },
 
