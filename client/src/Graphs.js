@@ -809,7 +809,7 @@ export function DataTable(props) {
         let ret = []
 
         for (let i = start; i < end; i = editDate(i)) {
-            let objbase = { startdate: i, scen: '1', min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum:0, arr: [0]}
+            let objbase = { startdate: i, scen: '1', min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum:0, arr: []}
             let objarr = []
             objarr.push(objbase);
 
@@ -838,7 +838,7 @@ export function DataTable(props) {
                             let point = objarr.find((elem) => elem.scen === scen)
 
                             if (point === undefined){
-                                point = { startdate: i, scen: scen, min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum:0 , arr: [0]};
+                                point = { startdate: i, scen: scen, min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum:0 , arr: []};
                                 objarr.push(point);
                             }
 
@@ -861,19 +861,18 @@ export function DataTable(props) {
             objarr.forEach((objscen) => {
                 if (objscen.scen !== null && objscen.count !== 0) {
                     objscen.mean = objscen.sum / objscen.count;
-                    objscen.dev = Math.sqrt(objscen.arr.reduce((prev, elem) => (prev + (elem - objscen.mean) * (elem - objscen.mean)), 0) / objscen.count);
+                    objscen.dev = Math.sqrt(objscen.arr.reduce((prev, elem) => (prev + ((elem - objscen.mean) * (elem - objscen.mean))), 0) / objscen.count);
                     ret.push(objscen);
                 }
             });
         }
 
-        return ret
+        return ret;
     }
 
     return (
         <div className='DataTable'>
             <table>
-
                 <tr>
                     <th>Period Start</th>
                     <th>Scenario</th>
@@ -898,6 +897,12 @@ export function DataTable(props) {
                         );
                     })
                 }
+            </table>
+        </div>
+    );
+}
+
+
                 {/*
         <tr>
           <td>Date 1</td>
@@ -926,10 +931,7 @@ export function DataTable(props) {
           <td>Mean</td>
           <td>Count</td>
         </tr> */}
-            </table>
-        </div>
-    );
-}
+            
 
 
 // export class LineChart extends React.Component {
