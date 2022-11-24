@@ -14,7 +14,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
     const [linepoints, setLinePoints] = useState([])
     const [slope, setSlope] = useState(1);
     const [yint, setYint] = useState(0);
-    const {data, height, func} = props;
+    const {data, height} = props;
     const [graphData, setGraphData] = useState()
 
     function grabData(obj){
@@ -88,11 +88,6 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
         setYint(y)
         setSlope(slp);
     }
-
-    useEffect(() => {
-        func([slope, yint]);
-    }, [slope, yint])
-
 
     useEffect(() => {
         const grab = grabData(stateData)
@@ -382,21 +377,20 @@ function makeCells() {
 
 export function HeatMap (props){
 
-        const {data, func, inc} = props;
+        const {data, inc, name} = props;
         const [stateData, setStateData] = useState(data);
         const [graphData, setGraphData] = useState();
         const [stateMetric, setStateMetric] = useState("LMP");
-        const [stateFunc, setStateFunc] = useState((x) => x);
         const [includeBase, setIncludeBase] = useState(inc);
+        const [stateName, setStateName] = useState(name);
 
+        useEffect(() => { 
+            setStateName(name)
+        }, [name])
 
         useEffect(()=>{
             setIncludeBase(inc);
         },[inc])
-
-        useEffect(()=>{
-            setStateFunc(func);
-        },[func])
 
         /* useEffect(()=>{
             setStateMetric(metric)
@@ -413,32 +407,40 @@ export function HeatMap (props){
         },[data])
 
         useEffect(()=>{
-            if(stateData !== undefined && func !== undefined && stateMetric !== undefined){
-            const grab = grabData(stateData, func, stateMetric, includeBase)
+            if(stateData !== undefined && stateMetric !== undefined){
+            const grab = grabData(stateData, stateMetric, includeBase, stateName)
             setGraphData(grab)
             //console.log(graphData)
             }
             
-        }, [stateData, func, stateMetric, includeBase])
+        }, [stateData, stateMetric, includeBase, stateName])
 
-        function grabData(data, func, metric, inc){
+        function grabData(data, metric, inc, name){
             if(data !== undefined){
             let arr = []
             for(let month = 0; month < 12; ++month){
                 arr.push(new Array(24))
             }
-            
+
+            let totalexpected = 0;
+            for(let i = 0; i < data[metric]?.length; ++i){
+                totalexpected += parseFloat(data[metric][i])
+            }
+            totalexpected = totalexpected / data[metric]?.length;
+
             //console.log(data)
             for(let i = 0; i < data[metric]?.length; ++i){
-                if((data["SCENARIO_ID"][i] !== "1" || inc) && data[metric][i] !== ''){
-                    
+                if((data["SCENARIO_ID"][i] !== "1" || inc) && data[metric][i] !== '' && (name === "All" || data["PNODE_NAME"][i] === name)){
                     let tempDate = new Date(data["PERIOD_ID"][i])
                     let hour = tempDate.getHours();
                     let month = tempDate.getMonth();
-                    if (arr[month][hour] === undefined) { arr[month][hour] = { sum: 0, count: 0 } }
+                    if (arr[month][hour] === undefined) { arr[month][hour] = { sum: 0, count: 0 , max:-Infinity }}
                     let val = data[metric][i];
-                    arr[month][hour].sum += Math.abs((((val*func[0] + func[1]) - val) / val) * 100)
+                    let error = Math.abs((((totalexpected) - val) / val)*100);
+                    console.log(error)
+                    arr[month][hour].sum += error
                     arr[month][hour].count += 1;
+                    arr[month][hour].max = Math.max(error, arr[month][hour].max)
                 }
             }
             
@@ -448,7 +450,8 @@ export function HeatMap (props){
                 for(let hour = 0; hour < 24; ++hour){
                     if(arr[month][hour] === undefined){ret.push([month,hour,undefined])}
                     else{
-                        ret.push([month,hour, parseFloat((arr[month][hour].sum/arr[month][hour].count).toFixed(3))])
+                        ret.push({x:month, y:hour, value: parseFloat((arr[month][hour].max).toFixed(3)), count:arr[month][hour].count, ave:arr[month][hour].sum/arr[month][hour].count})
+                        //ret.push([month,hour, parseFloat((arr[month][hour].max).toFixed(3)), "hello"])
                     }
                 }
             }
@@ -502,9 +505,11 @@ export function HeatMap (props){
            },
 
             tooltip: {
-                formatter: function () {
-                    return '<b>' + this.point.value + ' </b>% at <b>' + getPointCategoryName(this.point, 'y') + '</b> on <b>' + getPointCategoryName(this.point, 'x') + '</b>';
-                }
+                headerFormat: '',
+                pointFormat: '<b> {point.value} </b>% at <b> {point.y} </b> on <b> {point.x} </b> <br/> Count: <b>{point.count}</b> <br/> Average: <b>{point.ave:.2f}%</b>'
+                /* formatter: function () {
+                    return '<b>' + this.point.value + ' </b>% at <b>' + getPointCategoryName(this.point, 'y') + '</b> on <b>' + getPointCategoryName(this.point, 'x') + '</b> <bre> ' + getPointCategoryName(this.point, 'hello');
+                } */
             },
 
             series: [{
