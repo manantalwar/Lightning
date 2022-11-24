@@ -227,7 +227,7 @@ const Validation = (props) => {
                     </div>
 
                     <div className = 'statBox'>
-                        <header className='StatsTitle'>Statistics ({metric})</header>
+                        <header className='StatsTitle'> Statistics ({metric})</header>
                         <br/>
                         <PeroidButton setParentPeriod={(per) => setPeriod(per)}/>
                         <br/>
