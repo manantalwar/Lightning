@@ -445,7 +445,6 @@ export function HeatMap (props){
                         arr[month][hour].max = error;
                         arr[month][hour].node = data["PNODE_NAME"][i];
                         arr[month][hour].scen = data["SCENARIO_ID"][i];
-                        console.log(data["SCENARIO_ID"][i])
                     }
                 }
             }
@@ -513,13 +512,13 @@ export function HeatMap (props){
             tooltip: {
                 headerFormat: '',
                 formatter: function () {
-                    return '<b> '+this.point.value+' </b>% at <b> '
-                            +this.point.y+':00 </b> on <b>  ' 
-                            + getPointCategoryName(this.point, 'x') + ' </b> <br/> Count: <b>'
-                            +this.point.count+'</b> <br/> Average: <b>'
-                            +this.point.ave.toFixed(2)+'%</b> <br/> Node: <b>'
-                            +this.point.name+'</b> <br/> Scen: <b>'
-                            +this.point.scen+'</b>';
+                    return '<b> ' + this.point.value +
+                        ' </b>% at <b> ' + this.point.y +
+                        ':00 </b> on <b>  ' + getPointCategoryName(this.point, 'x') +
+                        '</b> <br/> Node: <b>' + this.point.name +
+                        ' </b> <br/> Count: <b>' + this.point.count +
+                        '</b> <br/> Average: <b>' + this.point.ave?.toFixed(2) +
+                        '%</b> <br/> Scen: <b>' + this.point.scen + '</b>';
                 }
                 //pointFormat: '<b> '+'this.point.value'+' </b>% at <b> {point.y}:00 </b> on <b>  ' + getPointCategoryName(this.point, 'x') + ' </b> <br/> Count: <b>{point.count}</b> <br/> Average: <b>{point.ave:.2f}%</b>'
                 /* formatter: function () {
