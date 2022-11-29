@@ -10,7 +10,8 @@ const Filter = (props) => {
     const page = "Node Selector"
     const [filters, setFilters] = useState([])
     const [queries, setQueries] = useState([])
-    const scenarios = ['1', '2', '3'];
+    const s = ['1', '2', '3'];
+    const [scenarios, setScenarios] = useState(s);
     const [keys, setKeys] = useState({})
     const [startLMP, setStartLMP] = useState()
     const [endLMP, setEndLMP] = useState()
@@ -18,7 +19,7 @@ const Filter = (props) => {
     const [endDate, setEndDate] = useState()
     const [startTime, setStartTime] = useState()
     const [endTime, setEndTime] = useState()
-    const [scenario, setScenario] = useState()
+    const [scenario, setScenario] = useState("1")
     const [customKey, setCustomKey] = useState()
     const [customOne, setCustomOne] = useState()
     const [customStart, setCustomStart] = useState()
@@ -53,6 +54,12 @@ const Filter = (props) => {
         setKeys(temp)
 
     }, [init])
+
+    useEffect(() => {
+        get("SCENARIO_ID").then((data)=>{
+            setScenarios(data);
+        })
+    }, [])
 
     const createQuery = () => {
         //console.log(queries)
