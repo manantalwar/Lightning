@@ -80,7 +80,7 @@ const UC2 = (props) => {
                         <br/>
                         <DataTable period={period} data={data} metric={metric}/>
                     </div>
-                    <bre/>
+                    <br/>
                 </div>
 
                 <div className="values">{nodes?.map((node) => (JSON.stringify(node)))}</div>    
