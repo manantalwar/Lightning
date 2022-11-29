@@ -21,6 +21,7 @@ const UC2 = (props) => {
 
     useEffect(() => {
         setStateInit(init);
+        //console.log(location)
         pullNodes(location.state).then((obj) => setNodes(obj))
         aggregateNodes(location.state).then((obj => setData(obj)))
         //getMean()
@@ -57,7 +58,7 @@ const UC2 = (props) => {
         }
     } */
     
-
+ 
     return (  
         <div className="UC2">
             <Navbar page={page}/>

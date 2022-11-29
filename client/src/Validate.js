@@ -134,7 +134,7 @@ const Validation = (props) => {
                     <select className='nodeSelector'
                             onChange={(e)=> setNodeName(e.target.value)}>
                         {allNodeNames.map((name) => (
-                            <option value={name}>{name}</option>
+                            <option key={name} value={name}>{name}</option>
                         ))}
                     </select>
                     <button className='addB'
@@ -172,14 +172,14 @@ const Validation = (props) => {
                     <div className="expanding"> 
                         <div style={{width: "100%", height: "100%", verticalText:"center",}}>
                                     <div className="histoPeriod">
-                                        <label for="histo">Histogram Bucket Size</label><bre/>
+                                        <label htmlFor="histo">Histogram Bucket Size</label><br/>
                                         <input type="text" id="histo" onChange={(e) => {
                                             let val = parseFloat(e.target.value);
                                             if(!isNaN(val) && val !== 0){
                                                 setHistoBucket(Math.abs(val));
                                             }}}></input>
                                     </div>
-                                    <bre/><bre/>
+                                    <br/>
                             <Histogram mainText={'Histogram: Base Case'} subText={'Base Case Metrics'} data={{...nodes, ...{base:true}}} bucket={histoBucket} metric={metric}/>         
                             <Histogram mainText={'Histogram: Scenario'} subText={'Scenario Metrics'} data={{...nodes, ...{base:false}}} bucket={histoBucket} metric={metric}/>  
                         </div>
