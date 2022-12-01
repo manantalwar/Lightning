@@ -17,7 +17,8 @@ This project is intended to be a Minimum Viable Product (MVP) implementation for
 
 # Team Description
 
-**Team Manager:** Bonnie Comisar 
+**Team Manager:** Bonnie Comisar
+
 **Team Members:**
 
 - Nishant Jain
