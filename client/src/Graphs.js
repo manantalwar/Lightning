@@ -365,7 +365,7 @@ function getPointCategoryName(point, dimension) {
     return axis.categories[point[isY ? 'y' : 'x']];
 }
 
-function makeCells() {
+/* function makeCells() {
     let cells = [];
     for (let i = 0; i < 24; ++i) {
         for (let j = 0; j < 12; ++j) {
@@ -373,7 +373,7 @@ function makeCells() {
         }
     }
     return cells;
-}
+} */
 
 export function HeatMap (props){
 
@@ -771,7 +771,6 @@ export function DataTable(props) {
     useEffect(() => {
         const grab = grabData(stateData)
         setStats(grab);
-
     }, [stateData, statePeriod, stateMetric])
 
 
@@ -823,14 +822,10 @@ export function DataTable(props) {
         let ret = []
 
         for (let i = start; i < end; i = editDate(i)) {
-            let objbase = { startdate: i, scen: '1', min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum:0, arr: []}
+            let objtotal = { startdate: i, scen: 'All', min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum:0, arr: []}
             let objarr = []
-            objarr.push(objbase);
 
             let tempEnd = addMinutes(editDate(i), -(1 / 60.0));
-
-            let basesum = 0;
-            let scensum = 0;
 
             for (let j = 0; j < data[stateMetric]?.length; ++j) {
 
@@ -840,31 +835,37 @@ export function DataTable(props) {
                     if (data[stateMetric][j] !== "") {
                         let val = parseFloat(data[stateMetric][j]);
 
-                        if (data["SCENARIO_ID"][j] === '1') {
+                        /* if (data["SCENARIO_ID"][j] === '1') {
                             objbase.min = Math.min(objbase.min, val)
                             objbase.max = Math.max(objbase.max, val)
                             objbase.count += 1;
                             objbase.sum += val
                             objbase.arr.push(val);
 
-                        } else {
-                            let scen = data["SCENARIO_ID"][j];
-                            let point = objarr.find((elem) => elem.scen === scen)
+                        } else { */
+                        let scen = data["SCENARIO_ID"][j];
+                        let point = objarr.find((elem) => elem.scen === scen)
 
-                            if (point === undefined){
-                                point = { startdate: i, scen: scen, min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum:0 , arr: []};
-                                objarr.push(point);
-                            }
-
-                            point.min = Math.min(point.min, val)
-                            point.max = Math.max(point.max, val)
-                            point.count += 1;
-                            point.sum += val
-                            point.arr.push(val);
+                        if (point === undefined) {
+                            point = { startdate: i, scen: scen, min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum: 0, arr: [] };
+                            objarr.push(point);
                         }
+
+                        point.min = Math.min(point.min, val)
+                        point.max = Math.max(point.max, val)
+                        point.count += 1;
+                        point.sum += val
+                        point.arr.push(val);
+
+                        objtotal.min = Math.min(objtotal.min, val)
+                        objtotal.max = Math.max(objtotal.max, val)
+                        objtotal.count += 1;
+                        objtotal.sum += val
+                        objtotal.arr.push(val);
                     }
                 }
             }
+            objarr.push(objtotal);
 
             /* if(objbase.count !== 0){
                 objbase.mean = basesum / objbase.count;
@@ -919,7 +920,7 @@ export function DataTable(props) {
 }
 
 
-                {/*
+                /*
         <tr>
           <td>Date 1</td>
           <td>Scen</td>
@@ -946,7 +947,7 @@ export function DataTable(props) {
           <td>Std-Dev</td>
           <td>Mean</td>
           <td>Count</td>
-        </tr> */}
+        </tr> */
             
 
 

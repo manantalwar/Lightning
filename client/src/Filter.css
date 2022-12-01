@@ -76,7 +76,7 @@
 }
 
 .submitBtn:hover{
-    background-color: green;
+    background-color: rgb(0, 160, 0);
 }
 
 .resetBtn{
@@ -92,7 +92,7 @@
 }
 
 .resetBtn:hover{
-    background-color: red;
+    background-color: rgb(180, 0, 0);
 }
 
 .remove{
