@@ -64,7 +64,7 @@
 .submitBtn{
     border: 1px solid black;
     font-size: 18px;
-    background-color: #26303A; 
+    background-color: darkgreen; 
     color: white;
     padding: 5px;
     border-radius:4px;
@@ -76,14 +76,14 @@
 }
 
 .submitBtn:hover{
-    background-color: darkgreen;
+    background-color: green;
 }
 
 .resetBtn{
     border: 1px solid black;
     font-size: 18px;
     border-radius: 4px;
-    background-color: #26303A;
+    background-color: darkred;
     padding: 5px; 
     color: white;
     vertical-align: middle;
@@ -92,7 +92,7 @@
 }
 
 .resetBtn:hover{
-    background-color: darkred;
+    background-color: red;
 }
 
 .remove{
@@ -152,6 +152,7 @@
 
 .getTitle{
     margin-top: 0%;
+    font-weight: bold;
 }
 
 .getText{
@@ -241,6 +242,7 @@
     font-size: large;
     margin-top: 2%;
     margin-bottom: 2%;
+    font-weight: bold;
 
 }
 
@@ -248,4 +250,5 @@
     text-align: center;
     margin-top: 0%;
     margin-bottom: 20px;
+    font-weight: bold;
 }
