@@ -227,7 +227,7 @@ export /* class */ function ScatterPlot(props) /* extends React.Component */ {
 }
 
 export function Histogram(props) {
-        const { mainText, subText, data, bucket, metric } = props;
+        const { mainText, subText, data, bucket, metric , height} = props;
 
         const [stateMetric, setStateMetric] = useState(metric);
         const [stateData, setStateData] = useState({});
@@ -308,6 +308,7 @@ export function Histogram(props) {
         const options = {
             chart: {
                 type: 'column',
+                height: height+"%",
             },
             series: [{
                 name: 'Value (' + stateMetric + ")",
