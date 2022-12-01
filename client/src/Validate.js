@@ -119,6 +119,21 @@ const Validation = (props) => {
                             onChange={(e) => setStartTime(e.target.value)}></input>
                     <input className='inputs' type='time'
                             onChange={(e) => setEndTime(e.target.value)}></input>
+                    <div className="histoPeriod">
+                        <label htmlFor="histo">Histogram Bucket Size</label><br />
+                        <input type="text" id="histo" onChange={(e) => {
+                            let val = parseFloat(e.target.value);
+                            if (!isNaN(val) && val !== 0) {
+                                setHistoBucket(Math.abs(val));
+                                            }}}></input>
+                    </div>
+                    <div className='checkcontainer'>
+                                <label><p className="checkText">Heatmap Base Case: </p></label>
+                                <input className="check" type="checkbox"
+                                    onChange={(event) => setIncludeBase(event.currentTarget.checked)}
+                                    checked={includeBase}
+                                />
+                    </div>
                     <select className='scenarioSelector'
                             onChange={(e) => setScenario(e.target.value)}>
                         {scenarios.map((scenario) => (
@@ -134,7 +149,7 @@ const Validation = (props) => {
                     <select className='nodeSelector'
                             onChange={(e)=> setNodeName(e.target.value)}>
                         {allNodeNames.map((name) => (
-                            <option value={name}>{name}</option>
+                            <option key={name} value={name}>{name}</option>
                         ))}
                     </select>
                     <button className='addB'
@@ -171,29 +186,12 @@ const Validation = (props) => {
                     <div className = 'graph'>
                     <div className="expanding"> 
                         <div style={{width: "100%", height: "100%", verticalText:"center",}}>
-                                    <div className="histoPeriod">
-                                        <label for="histo">Histogram Bucket Size</label><bre/>
-                                        <input type="text" id="histo" onChange={(e) => {
-                                            let val = parseFloat(e.target.value);
-                                            if(!isNaN(val) && val !== 0){
-                                                setHistoBucket(Math.abs(val));
-                                            }}}></input>
-                                    </div>
-                                    <bre/><bre/>
                             <Histogram mainText={'Histogram: Base Case'} subText={'Base Case Metrics'} data={{...nodes, ...{base:true}}} bucket={histoBucket} metric={metric}/>         
                             <Histogram mainText={'Histogram: Scenario'} subText={'Scenario Metrics'} data={{...nodes, ...{base:false}}} bucket={histoBucket} metric={metric}/>  
                         </div>
                         <button className= "expandpos" onClick={() => setIsOpen3(true)}><img className="expanding" src={expand} alt="expand"/></button>
                             <Modal open={isOpen3} onClose={() => setIsOpen3(false)}>
                             <div>
-                                    <div className="histoPeriod">
-                                        <label for="histo">Histogram Bucket Size: </label>
-                                        <input type="text" id="histo" onChange={(e) => {
-                                            let val = parseFloat(e.target.value);
-                                            if(!isNaN(val) && val !== 0){
-                                                setHistoBucket(Math.abs(val));
-                                            }}}></input>
-                                    </div>
                                 <Histogram mainText={'Histogram: Base Case'} subText={'Base Case Metrics'} data={{...nodes, ...{base:true}}} bucket={histoBucket} metric={metric}/>         
                                 <Histogram mainText={'Histogram: Scenario'} subText={'Scenario Metrics'} data={{...nodes, ...{base:false}}} bucket={histoBucket} metric={metric}/> 
                             </div>
@@ -202,24 +200,10 @@ const Validation = (props) => {
                     </div>
                     <div className = 'graph'>
                             <div className="expanding">
-                            <div className='checkcontainer'>
-                                <label><p className="checkText">Include Base Case: </p></label>
-                                <input className="check" type="checkbox"
-                                    onChange={(event) => setIncludeBase(event.currentTarget.checked)}
-                                    checked={includeBase}
-                                />
-                            </div>
                         <HeatMap data={nodes} metric={metric} inc={includeBase} name={nodeName} height={94}/>
                         <button className= "expandpos" onClick={() => setIsOpen4(true)}><img className="expanding" src={expand} alt="expand"/></button>
                         <Modal open={isOpen4} onClose={() => setIsOpen4(false)}>
                             <div> 
-                                <div className='checkcontainer'>
-                                <label className="checkText"> Include Base Case: </label>
-                                    <input className="check" type="checkbox"
-                                        onChange={(event) => setIncludeBase(event.currentTarget.checked)}
-                                        checked={includeBase}
-                                    />
-                                </div>
                                 <HeatMap data={nodes} metric={metric} inc={includeBase} name={nodeName} height={60}/>
                             </div>
                         </Modal>    

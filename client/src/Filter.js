@@ -10,7 +10,8 @@ const Filter = (props) => {
     const page = "Node Selector"
     const [filters, setFilters] = useState([])
     const [queries, setQueries] = useState([])
-    const scenarios = ['1', '2', '3'];
+    const s = ['1', '2', '3'];
+    const [scenarios, setScenarios] = useState(s);
     const [keys, setKeys] = useState({})
     const [startLMP, setStartLMP] = useState()
     const [endLMP, setEndLMP] = useState()
@@ -18,7 +19,7 @@ const Filter = (props) => {
     const [endDate, setEndDate] = useState()
     const [startTime, setStartTime] = useState()
     const [endTime, setEndTime] = useState()
-    const [scenario, setScenario] = useState()
+    const [scenario, setScenario] = useState("1")
     const [customKey, setCustomKey] = useState()
     const [customOne, setCustomOne] = useState()
     const [customStart, setCustomStart] = useState()
@@ -54,8 +55,14 @@ const Filter = (props) => {
 
     }, [init])
 
+    useEffect(() => {
+        get("SCENARIO_ID").then((data)=>{
+            setScenarios(data);
+        })
+    }, [])
+
     const createQuery = () => {
-        console.log(queries)
+        //console.log(queries)
         let query = '?'
         queries.map((cur) => (
             query += '&'+cur
@@ -226,7 +233,7 @@ const Filter = (props) => {
                             onChange={(e) => {setCustomKey(e.target.value); setGetListKey(e.target.value);}}
                             defaultValue='key'>
                             {Object.keys(keys).map((key) => (
-                                <option value={key}>{key}</option>
+                                <option key={key} value={key}>{key}</option>
                             ))}
                         </select>
                         <div className='customFilters'>
@@ -253,7 +260,7 @@ const Filter = (props) => {
                     <div className='getBlock'>
                     <p className='getTitle'>Values:</p>
                     <div className="getList">
-                        {getList.map((elem) => (<pre><p className='getText'>{elem}</p></pre>))}
+                        {getList.map((elem) => (<pre key={elem}><p className='getText'>{elem}</p></pre>))}
                     </div>
                     </div>
                 </div>
@@ -298,7 +305,7 @@ const Filter = (props) => {
                                     defaultValue={'scenario'}>
                                     {/* <option value='select' disabled selected hidden> select scenario </option> */}
                                     {scenarios.map((scenario) => (
-                                        <option value={scenario}>{scenario}</option>
+                                        <option key={scenario} value={scenario}>{scenario}</option>
                                     ))}
                                 </select>
                                 <button className='add' onClick={addScenario}>Add Scenario</button>
@@ -320,9 +327,9 @@ const Filter = (props) => {
                     <div className="filterList">
                         <div>
                         {filters.map((filter, index) => (
-                            <div className='filterObj'>
+                            <div key={filter+index} className='filterObj'>
                                 {Object.keys(filter).map((key) => (
-                                    <p className='filterEl'>{key + ': ' + filter[key]}</p>
+                                    <p key={key+filter[key]+index} className='filterEl'>{key + ': ' + filter[key]}</p>
                                 ))}
                                 <button className='remove' onClick={() => remove(index)}>Remove</button>
                             </div>

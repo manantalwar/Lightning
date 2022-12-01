@@ -455,7 +455,7 @@ export function HeatMap (props){
                 for(let hour = 0; hour < 24; ++hour){
                     if(arr[month][hour] === undefined){ret.push([month,hour,undefined])}
                     else{
-                        ret.push({x:month, y:hour, value: parseFloat((arr[month][hour].max).toFixed(3)), name:arr[month][hour].node, count:arr[month][hour].count, ave:arr[month][hour].sum/arr[month][hour].count, scen:arr[month][hour].scen})
+                        ret.push({x:month, y:hour, value: parseFloat((arr[month][hour].max).toFixed(2)), name:arr[month][hour].node, count:arr[month][hour].count, ave:(arr[month][hour].sum/arr[month][hour].count).toFixed(2), scen:arr[month][hour].scen})
                         //ret.push([month,hour, parseFloat((arr[month][hour].max).toFixed(3)), "hello"])
                     }
                 }
@@ -517,12 +517,12 @@ export function HeatMap (props){
                         ':00 </b> on <b>  ' + getPointCategoryName(this.point, 'x') +
                         '</b> <br/> Node: <b>' + this.point.name +
                         ' </b> <br/> Count: <b>' + this.point.count +
-                        '</b> <br/> Average: <b>' + this.point.ave?.toFixed(2) +
+                        '</b> <br/> Average: <b>' + this.point.ave +
                         '%</b> <br/> Scen: <b>' + this.point.scen + '</b>';
                 }
                 //pointFormat: '<b> '+'this.point.value'+' </b>% at <b> {point.y}:00 </b> on <b>  ' + getPointCategoryName(this.point, 'x') + ' </b> <br/> Count: <b>{point.count}</b> <br/> Average: <b>{point.ave:.2f}%</b>'
                 /* formatter: function () {
-                    return '<b>' + this.point.value + ' </b>% at <b>'    + getPointCategoryName(this.point, 'y') + '</b> on <b>' + getPointCategoryName(this.point, 'x') + '</b> <bre> ' + getPointCategoryName(this.point, 'hello');
+                    return '<b>' + this.point.value + ' </b>% at <b>'    + getPointCategoryName(this.point, 'y') + '</b> on <b>' + getPointCategoryName(this.point, 'x') + '</b> <br/> ' + getPointCategoryName(this.point, 'hello');
                 } */
             },
 
@@ -887,30 +887,32 @@ export function DataTable(props) {
     return (
         <div className='DataTable'>
             <table>
-                <tr>
-                    <th>Period Start</th>
-                    <th>Scenario</th>
-                    <th>Min</th>
-                    <th>Max</th>
-                    <th>Mean</th>
-                    <th>STD-Dev</th>
-                    <th>Count</th>
-                </tr>
-                {
-                    stats.map((elem) => {
-                        return (
-                            <tr>
-                                <td>{elem.startdate.toISOString().split("T")[0]} <br /> {"T" + elem.startdate.toISOString().split("T")[1]}</td>
-                                <td>{elem.scen}</td>
-                                <td>{elem.min}</td>
-                                <td>{elem.max}</td>
-                                <td>{elem.mean.toFixed(3)}</td>
-                                <td>{elem.dev.toFixed(4)}</td>
-                                <td>{elem.count}</td>
-                            </tr>
-                        );
-                    })
-                }
+                <tbody>
+                    <tr>
+                        <th>Period Start</th>
+                        <th>Scenario</th>
+                        <th>Min</th>
+                        <th>Max</th>
+                        <th>Mean</th>
+                        <th>STD-Dev</th>
+                        <th>Count</th>
+                    </tr>
+                    {
+                        stats?.map((elem) => {
+                            return (
+                                <tr key={elem.startdate + elem.scen}>
+                                    <td>{elem.startdate.toISOString().split("T")[0]} <br /> {"T" + elem.startdate.toISOString().split("T")[1]}</td>
+                                    <td>{elem.scen}</td>
+                                    <td>{elem.min}</td>
+                                    <td>{elem.max}</td>
+                                    <td>{elem.mean.toFixed(3)}</td>
+                                    <td>{elem.dev.toFixed(4)}</td>
+                                    <td>{elem.count}</td>
+                                </tr>
+                            );
+                        })
+                    }
+                </tbody>
             </table>
         </div>
     );
