@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from './Navbar';
 import './Home.css';
 import './App.css';
+import background from './Lightning2.jpg'
 // const path = require('path');
 
 const Home = () => {

@@ -64,7 +64,7 @@
 .submitBtn{
     border: 1px solid black;
     font-size: 18px;
-    background-color: rgba(0, 255, 0, 0.89); 
+    background-color: #26303A; 
     color: white;
     padding: 5px;
     border-radius:4px;
@@ -83,7 +83,7 @@
     border: 1px solid black;
     font-size: 18px;
     border-radius: 4px;
-    background-color: rgb(255, 0, 0);
+    background-color: #26303A;
     padding: 5px; 
     color: white;
     vertical-align: middle;
@@ -186,7 +186,7 @@
     width: 50%;
     margin-left: auto;
     margin-right: auto;
-    background-color:#1999d8;
+    background-color:#26303A;
     border-radius: 5px;
     color:white;
 }

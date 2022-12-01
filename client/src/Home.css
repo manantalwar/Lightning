@@ -2,7 +2,11 @@ html, body, .home{
   margin: 0px;
   background-color: #26303A;
   height:100%;
+  /* padding-bottom: 0%; */
 }
+/* body{
+  padding-bottom: 0%;
+} */
 
 .header {
   height: 10%;
@@ -17,6 +21,8 @@ html, body, .home{
   justify-content: center;
   align-items: center;
   height: 90%;
+  background-image: URL('City3.jpg');
+  background-size: 100% 120%;
 }
 
 .box {
@@ -28,6 +34,7 @@ html, body, .home{
   justify-content: space-around;
   align-items: center;
   border-radius: 10px;
+  
 }
 
 .mainbtn {
