@@ -1,7 +1,8 @@
 button{
     width: 80px;
     height: 40px;
-    margin-left:3.8%;
+    margin-left: 2%;
+    margin-right: 2%;
   }
   .blackButton{
     background-color: black;
@@ -12,6 +13,15 @@ button{
     background-color: white;
     color: black;
   }
+
+.buttonBox{
+  margin-top: 1%;
+  margin-bottom: 1%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
 
 .DataTable {
     width: 100%;
@@ -42,4 +52,5 @@ button{
     color: black;
     text-align: center;
     font-size: 30px;
+    margin-top: 1%;
 }

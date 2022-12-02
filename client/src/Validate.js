@@ -29,6 +29,22 @@ const Validation = (props) => {
     const [scenario, setScenario] = useState()
     const [nodes, setNodes] = useState({})
     const [includeBase, setIncludeBase] = useState(true);
+    const [statgroup, setStatgroup] = useState ("SCENARIO_ID");
+    const [keys, setKeys] = useState({});
+
+    useEffect(() => {
+
+        let temp = { ...init }
+        console.log(init)
+        Object.keys(temp).map((key) => {
+            if(key === "LMP" || key === "MW" || temp[key] === 'date' || temp[key] === 'object'){
+                delete temp[key]  
+            }
+            return null;
+        });
+        setKeys(temp)
+
+    }, [init])
 
 
     useEffect(() => {
@@ -120,8 +136,8 @@ const Validation = (props) => {
                     <input className='inputs' type='time'
                             onChange={(e) => setEndTime(e.target.value)}></input>
                     <div className="histoPeriod">
-                        <label htmlFor="histo">Histogram Bucket Size</label><br />
-                        <input type="text" id="histo" onChange={(e) => {
+                        <label htmlFor="histo">Histogram Bucket Size:</label><br />
+                        <input class="histoSelect" type="text" id="histo" onChange={(e) => {
                             let val = parseFloat(e.target.value);
                             if (!isNaN(val) && val !== 0) {
                                 setHistoBucket(Math.abs(val));
@@ -134,24 +150,43 @@ const Validation = (props) => {
                                     checked={includeBase}
                                 />
                     </div>
-                    <select className='scenarioSelector'
+                    <div className='filterContainer'>
+                    <label><p className="checkText">StatBox Group: </p></label>
+                        <select className='vfilterInputs'
+                            onChange={(e) => { setStatgroup(e.target.value) }}
+                            defaultValue={statgroup}>
+                            {Object.keys(keys).map((key) => (
+                                <option key={key} value={key}>{key}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className='scenContainer'>
+                        <label><p className="checkText">Comparison Scenario: </p></label>
+                        <select className='scenarioSelector'
                             onChange={(e) => setScenario(e.target.value)}>
-                        {scenarios.map((scenario) => (
-                            <option key={scenario.toString()} value={scenario}>{scenario}</option>
-                        ))}
-                    </select>
-                    <select className='metricSelector'
+                            {scenarios.map((scenario) => (
+                                <option key={scenario.toString()} value={scenario}>{scenario}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className='filterContainer'>
+                        <label><p className="checkText">Metric: </p></label>
+                        <select className='metricSelector'
                             onChange={(e) => setMetric(e.target.value)}>
-                        {metrics.map((metric) => (
-                            <option key={metric.toString()} value={metric}>{metric}</option>
-                        ))}
-                    </select>
-                    <select className='nodeSelector'
-                            onChange={(e)=> setNodeName(e.target.value)}>
-                        {allNodeNames.map((name) => (
-                            <option key={name} value={name}>{name}</option>
-                        ))}
-                    </select>
+                            {metrics.map((metric) => (
+                                <option key={metric.toString()} value={metric}>{metric}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className='filterContainer'>
+                        <label><p className="checkText">Node: </p></label>
+                        <select className='nodeSelector'
+                            onChange={(e) => setNodeName(e.target.value)}>
+                            {allNodeNames.map((name) => (
+                                <option key={name} value={name}>{name}</option>
+                            ))}
+                        </select>
+                    </div>
                     <button className='addB'
                             onClick={getNodes}>
                             Update Filter</button>            
@@ -215,7 +250,7 @@ const Validation = (props) => {
                         <br/>
                         <PeroidButton setParentPeriod={(per) => setPeriod(per)}/>
                         <br/>
-                        <DataTable period={period} data={nodes} metric={metric}/>
+                        <DataTable period={period} data={nodes} metric={metric} group={statgroup}/>
                     </div>
 
                 </div>

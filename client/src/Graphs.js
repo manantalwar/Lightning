@@ -736,7 +736,7 @@ export function PeroidButton(props){
     }, [period])
 
     return (
-    <div style={{margin: "auto"}}>
+    <div className='buttonBox'>
       <button className={allButton} onClick={() => handleChange('All')}>All</button>
       <button className={quarterButton} onClick={() => handleChange('Quarter')}>Quarterly</button>
       <button className={yearButton} onClick={() => handleChange('Year')}>Yearly</button>
@@ -751,11 +751,16 @@ export function PeroidButton(props){
 }
 
 export function DataTable(props) {
-    const { period, data, metric } = props;
+    const { period, data, metric, group } = props;
     const [stateData, setStateData] = useState();
     const [stats, setStats] = useState([]);
     const [stateMetric, setStateMetric] = useState(metric);
     const [statePeriod, setStatePeriod] = useState(period);
+    const [groupby, setGroupby] = useState(group);
+    
+    useEffect(() => {
+        setGroupby(group)
+    }, [group])
 
     useEffect(() => {
         setStateData(data)
@@ -772,7 +777,7 @@ export function DataTable(props) {
     useEffect(() => {
         const grab = grabData(stateData)
         setStats(grab);
-    }, [stateData, statePeriod, stateMetric])
+    }, [stateData, statePeriod, stateMetric, groupby])
 
 
     function addMinutes(date, minutes) {
@@ -823,7 +828,7 @@ export function DataTable(props) {
         let ret = []
 
         for (let i = start; i < end; i = editDate(i)) {
-            let objtotal = { startdate: i, scen: 'All', min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum:0, arr: []}
+            let objtotal = { startdate: i, group: 'All', min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum:0, arr: []}
             let objarr = []
 
             let tempEnd = addMinutes(editDate(i), -(1 / 60.0));
@@ -844,25 +849,27 @@ export function DataTable(props) {
                             objbase.arr.push(val);
 
                         } else { */
-                        let scen = data["SCENARIO_ID"][j];
-                        let point = objarr.find((elem) => elem.scen === scen)
+                        let group = data[groupby][j];
+                        let point = objarr.find((elem) => elem.group === group)
 
-                        if (point === undefined) {
-                            point = { startdate: i, scen: scen, min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum: 0, arr: [] };
+                        if (point === undefined && group !== undefined) {
+                            point = { startdate: i, group: group, min: Infinity, max: -Infinity, mean: null, dev: null, count: 0, sum: 0, arr: [] };
                             objarr.push(point);
                         }
 
-                        point.min = Math.min(point.min, val)
-                        point.max = Math.max(point.max, val)
-                        point.count += 1;
-                        point.sum += val
-                        point.arr.push(val);
+                        if (group !== undefined) {
+                            point.min = Math.min(point.min, val)
+                            point.max = Math.max(point.max, val)
+                            point.count += 1;
+                            point.sum += val
+                            point.arr.push(val);
 
-                        objtotal.min = Math.min(objtotal.min, val)
-                        objtotal.max = Math.max(objtotal.max, val)
-                        objtotal.count += 1;
-                        objtotal.sum += val
-                        objtotal.arr.push(val);
+                            objtotal.min = Math.min(objtotal.min, val)
+                            objtotal.max = Math.max(objtotal.max, val)
+                            objtotal.count += 1;
+                            objtotal.sum += val
+                            objtotal.arr.push(val);
+                        }
                     }
                 }
             }
@@ -892,7 +899,7 @@ export function DataTable(props) {
                 <tbody>
                     <tr>
                         <th>Period Start</th>
-                        <th>Scenario</th>
+                        <th>Group <br></br>({groupby})</th>
                         <th>Min</th>
                         <th>Max</th>
                         <th>Mean</th>
@@ -902,9 +909,9 @@ export function DataTable(props) {
                     {
                         stats?.map((elem) => {
                             return (
-                                <tr key={elem.startdate + elem.scen}>
+                                <tr key={elem.startdate + elem.group}>
                                     <td>{elem.startdate.toISOString().split("T")[0]} <br /> {"T" + elem.startdate.toISOString().split("T")[1]}</td>
-                                    <td>{elem.scen}</td>
+                                    <td>{elem.group}</td>
                                     <td>{elem.min}</td>
                                     <td>{elem.max}</td>
                                     <td>{elem.mean.toFixed(3)}</td>
