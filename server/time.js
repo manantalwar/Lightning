@@ -64,8 +64,44 @@ function takeIntoAccountDaylightSavings(localTimeString){
     return nd;
 }
 
-takeIntoAccountDaylightSavings('17-JUL-2020 01')
-takeIntoAccountDaylightSavings('06-Nov-2022 02')
-takeIntoAccountDaylightSavings('06-Nov-2022 01')
-takeIntoAccountDaylightSavings('06-Nov-2022 03')
+// takeIntoAccountDaylightSavings('17-JUL-2020 01')
+d1 = takeIntoAccountDaylightSavings('06-Nov-2022 00')
+date3 = takeIntoAccountDaylightSavings('06-Nov-2022 01')
+date4 = takeIntoAccountDaylightSavings('06-Nov-2022 02')
+date5 = takeIntoAccountDaylightSavings('06-Nov-2022 03')
+d2 = takeIntoAccountDaylightSavings('06-Nov-2022 04')
+console.log("Diff1: %d", date5.getTime() - date4.getTime())
+console.log("Diff2: %d", date4.getTime() - date3.getTime())
+console.log(d1)
+console.log(date3)
+console.log(date4)
+console.log(date5)
+console.log(d2)
 
+date7 = takeIntoAccountDaylightSavings('13-Mar-2022 00')
+// These next 3 dates display the same time, but why?
+date0 = takeIntoAccountDaylightSavings('13-Mar-2022 01') 
+date1 = takeIntoAccountDaylightSavings('13-Mar-2022 02')
+date2 = takeIntoAccountDaylightSavings('13-Mar-2022 03')
+console.log(date0)
+console.log(date1)
+console.log(date2)
+
+// These next 3 dates display the same time, but why?
+date9 = takeIntoAccountDaylightSavings('14-Mar-2021 01') 
+date10 = takeIntoAccountDaylightSavings('14-Mar-2021 02')
+date11 = takeIntoAccountDaylightSavings('14-Mar-2021 03')
+console.log(date9)
+console.log(date10)
+console.log(date11)
+
+// date6 = takeIntoAccountDaylightSavings('13-Mar-2022 04')
+// date8 = takeIntoAccountDaylightSavings('13-Mar-2022 05')
+// console.log("Diff3: %d", date0.getTime() - date7.getTime())
+// console.log("Diff4: %d", date6.getTime() - date2.getTime())
+// console.log("Diff5: %d", date8.getTime() - date6.getTime())
+
+// date1 = takeIntoAccountDaylightSavings('06-Nov-2022 04')
+// date2 = takeIntoAccountDaylightSavings('06-Nov-2022 05')
+// console.log("Diff: %d", date2.getTime() - date1.getTime())
+// takeIntoAccountDaylightSavings('06-Nov-2022 06')
