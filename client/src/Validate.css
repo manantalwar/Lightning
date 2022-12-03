@@ -38,6 +38,7 @@
 .titles{
     color: white;
     font-size: 20px;
+    white-space:nowrap;
     text-align: center;
     margin: 0%;
     margin-right: 1%;
@@ -251,8 +252,6 @@ input.check{
     margin: 0%;
     width: 11%;
     height: 100%;
-    padding-left: .3%;
-    padding-right: .3%;
     color: #405158;
     border-left: solid;
 }

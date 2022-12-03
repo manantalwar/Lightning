@@ -126,14 +126,14 @@ const Validation = (props) => {
             <div className="contentVal">
                 <div className='dateTime'>
                     <div className='dateContainer'>
-                        <p className='titles'>Dates:</p>
+                        <p className='titles'>Dates: </p>
                         <input className='inputs' type='date'
                             onChange={(e) => setStartDate(e.target.value)}></input>
                         <input className='inputs' type='date'
                             onChange={(e) => setEndDate(e.target.value)}></input>
                     </div>
                     <div className='dateContainer'>
-                        <p className='titles'>Times:</p>
+                        <p className='titles'>Times: </p>
                         <input className='inputs' type='time'
                             onChange={(e) => setStartTime(e.target.value)}></input>
                         <input className='inputs' type='time'
