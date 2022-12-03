@@ -1,6 +1,6 @@
 import Navbar from "./Navbar"
 import './UC2.css'
-import {aggregateNodes, pullNodes} from './getFromServer.mjs'
+import {aggregateNodes} from './getFromServer.mjs'
 import { useLocation } from "react-router-dom"
 import { useEffect, useState } from 'react'
 import {DataTable, PeroidButton} from './Graphs.js'
@@ -9,9 +9,6 @@ const UC2 = (props) => {
 
     const page = 'Statistics'
     const [data, setData] = useState()
-    const [nodes, setNodes] = useState();
-    //const [agr, setAgr] = useState([])
-    const [mean, setMean] = useState([])
     const {init} = props;
     const location = useLocation()
     const [metric, setMetric] = useState("LMP")
@@ -37,7 +34,6 @@ const UC2 = (props) => {
     useEffect(() => {
         setStateInit(init);
         //console.log(location)
-        pullNodes(location.state).then((obj) => setNodes(obj))
         aggregateNodes(location.state).then((obj => setData(obj)))
         //getMean()
     }, [location.state, init])
