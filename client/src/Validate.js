@@ -125,16 +125,20 @@ const Validation = (props) => {
             <Navbar page={page}/>
             <div className="contentVal">
                 <div className='dateTime'>
-                    <p className='titles'>Dates:</p>
-                    <input className='inputs' type='date'
+                    <div className='dateContainer'>
+                        <p className='titles'>Dates:</p>
+                        <input className='inputs' type='date'
                             onChange={(e) => setStartDate(e.target.value)}></input>
-                    <input className='inputs' type='date'
+                        <input className='inputs' type='date'
                             onChange={(e) => setEndDate(e.target.value)}></input>
-                    <p className='titles'>Times:</p>
-                    <input className='inputs' type='time'
+                    </div>
+                    <div className='dateContainer'>
+                        <p className='titles'>Times:</p>
+                        <input className='inputs' type='time'
                             onChange={(e) => setStartTime(e.target.value)}></input>
-                    <input className='inputs' type='time'
+                        <input className='inputs' type='time'
                             onChange={(e) => setEndTime(e.target.value)}></input>
+                    </div>
                     <div className="histoPeriod">
                         <p className='histText'>Histogram Bucket Size:</p>
                         <input className="histoSelect" type="text" id="histo" onChange={(e) => {
@@ -150,7 +154,7 @@ const Validation = (props) => {
                                     checked={includeBase}
                                 />
                     </div>
-                    <div className='filterContainer'>
+                    <div className='statGroupContainer'>
                     <label><p className="checkText">StatBox Group: </p></label>
                         <select className='vfilterInputs'
                             onChange={(e) => { setStatgroup(e.target.value) }}
