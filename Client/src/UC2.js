@@ -24,7 +24,6 @@ const UC2 = (props) => {
     useEffect(() => {
 
         let temp = { ...init }
-        console.log(init)
         Object.keys(temp).map((key) => {
             if(key === "LMP" || key === "MW" || temp[key] === 'date' || temp[key] === 'object'){
                 delete temp[key]  
