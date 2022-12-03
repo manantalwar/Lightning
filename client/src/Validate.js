@@ -59,7 +59,7 @@ const Validation = (props) => {
 
     useEffect(()=>{
         if(init !== undefined){
-        setStateInit(init);
+            setStateInit(init);
         }
     },[init]);  
 
@@ -125,19 +125,19 @@ const Validation = (props) => {
             <Navbar page={page}/>
             <div className="contentVal">
                 <div className='dateTime'>
-                    <p className='titles'>Dates</p>
+                    <p className='titles'>Dates:</p>
                     <input className='inputs' type='date'
                             onChange={(e) => setStartDate(e.target.value)}></input>
                     <input className='inputs' type='date'
                             onChange={(e) => setEndDate(e.target.value)}></input>
-                    <p className='titles'>Times</p>
+                    <p className='titles'>Times:</p>
                     <input className='inputs' type='time'
                             onChange={(e) => setStartTime(e.target.value)}></input>
                     <input className='inputs' type='time'
                             onChange={(e) => setEndTime(e.target.value)}></input>
                     <div className="histoPeriod">
-                        <label htmlFor="histo">Histogram Bucket Size:</label><br />
-                        <input class="histoSelect" type="text" id="histo" onChange={(e) => {
+                        <p className='histText'>Histogram Bucket Size:</p>
+                        <input className="histoSelect" type="text" id="histo" onChange={(e) => {
                             let val = parseFloat(e.target.value);
                             if (!isNaN(val) && val !== 0) {
                                 setHistoBucket(Math.abs(val));

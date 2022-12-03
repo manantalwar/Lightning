@@ -6,7 +6,7 @@
     height: auto;
     margin-right: 1%;
     margin-left: 1%;
-    margin-top: 1%;
+    margin-top: 0%;
     text-align: center;
     color: white;
 }
@@ -28,46 +28,46 @@
     flex-direction: row;
     background-color: #4a5e67;
     padding-bottom: .5%;
+    align-items: center;
+    padding-top: .6%;
+    padding-bottom: .6%;
 }
 
 .titles{
     color: white;
     font-size: 20px;
     text-align: center;
-    margin: 1%;
-    margin-top: 1.5%;
+    margin: 0%;
+    margin-right: 1%;
+    margin-left: 1%;
 }
 
 .inputs{
     width: 10%;
     height: 60%;
-    margin-top: 1%;
+    margin: 0%;
     margin-right: 1%;
 }
 
 .nodeSelector{
-    width: 60%;
+    width: 65%;
     height: 30%;
-    margin-top: -10%;
 }
 
 .addB{
     width: 10%;
     height: 50%;
-    margin: 1.25%;
-
+    margin-right: 2%;
 }
 
 .scenarioSelector{
-    width: 60%;
+    width: 50%;
     height: 30%;
-    margin-top: -10%;
 }
 
 .metricSelector{
-    width: 60%;
+    width: 50%;
     height: 30%;
-    margin-top: -10%;
 }
 
 .statBox{
@@ -184,28 +184,24 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    margin-bottom: 0%;
-    margin-top: 0%;
-    margin-left: .5%;
-    margin-right: .5%;
-    width: 11%;
+    margin: 0%;
 }
 
 .checkText{
     font-size: 16px;
     color: white;
+    margin: 0%;
+    margin-bottom: 6%;
 }
 
 input.check{
     height: 20px;
     width: 20px;
-    margin-top: -7%;
 }
 
 .vfilterInputs{
-    width: 60%;
+    width: 50%;
     height: 30%;
-    margin-top: -10%;
 }
 
 .filterContainer{
@@ -235,5 +231,14 @@ input.check{
 }
 
 .histoSelect{
-    margin-top: 1%;
+    margin: 0%;
+    padding: 0%;
+    margin-top: -5%;
+}
+
+.histText{
+    font-size: 16px;
+    color: white;
+    margin: 0%;
+    margin-bottom: 3%;
 }
