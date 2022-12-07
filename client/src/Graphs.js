@@ -584,14 +584,14 @@ export function LineChart(props) {
     const {data, height, metric} = props
 
     function grabData(obj){
-        let newret = [{name: "Actual (" + metric + ") Scenario (1)", data: [], scen: '1', color: "#3333FF"}]
+        let newret = [{name: "Actual (" + metric + ") Scenario (1)", data: [], scen: '1', color: "#3333FF",  findNearestPointBy:"xy"}]
         let cap = 0;
         try{cap = obj.PERIOD_ID.length}catch{cap = 0}
 
         for(let i = 0; i < cap; i++){
             let scen = obj["SCENARIO_ID"][i];
             let pointer = newret.find((elem) => elem.scen === scen);
-            if(pointer === undefined){ pointer = {name: "Forcasted (" + metric + ") Scenario ("+scen+")", data: [], scen: scen, color: "#FF3333"}; newret.push(pointer);}
+            if(pointer === undefined){ pointer = {name: "Forcasted (" + metric + ") Scenario ("+scen+")", data: [], scen: scen, color: "#FF3333",  findNearestPointBy:"xy"}; newret.push(pointer);}
             let toPush = {x: new Date(obj["PERIOD_ID"][i]).getTime(), y:  parseFloat(obj[metric][i]), z: (obj['PNODE_NAME'][i])};
 
             pointer.data.push(toPush);
