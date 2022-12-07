@@ -7,15 +7,15 @@ prisma.$on('beforeExit', async () => {
     console.log('Connection Closed.')
 })
 
-//Gets one node With filter Array
-async function GetOne(collection, filters = {}){
+//Gets one node With filter Array (unused)
+/* async function GetOne(collection, filters = {}){
     try{
         const one = await prisma[collection].findFirst(filters)
         return one
     } finally {
         console.log('Data Queried.')
     }
-}
+} */
 
 //Gets many nodes With filter Array
 async function Get(collection, filters = {}){
@@ -28,6 +28,5 @@ async function Get(collection, filters = {}){
 }
 
 module.exports={
-    GetOne,
     Get
 }
