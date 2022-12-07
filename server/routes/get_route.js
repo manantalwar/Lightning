@@ -1,25 +1,27 @@
 const router = require("express").Router()
 
 router.route('/*').get((req, res, next)=>{
-    const p = req.path
+    const p = req.path.slice(1)
     let RESTful=req.RESTful
     let collection=req.collection
     let init=req.init
 
-    if(!Object.keys(init).includes(p.slice(1))){
+    if(!Object.keys(init).includes(p)){
         res.status(404).json('Error: Unknown Request');
     } 
-    else if (!p.slice(1).includes("/")) { //Data is in Node and not nested DB has exclude funcctionality!
+    else if (!p.includes("/")) { //Data is in Node and not nested DB has exclude funcctionality!
         let filters = {
-            distinct: [p.slice(1)],
+            distinct: [p],
             select: {},
         }
 
-        filters.select[p.slice(1)] = true;
+        filters.select[p] = true;
+
+        console.log(filters);
 
         RESTful.Get(collection, filters).then((nodes)  => {
             let arr = []
-            nodes.forEach((elem) => { arr.push(elem[p.slice(1)]) })
+            nodes.forEach((elem) => { arr.push(elem[p]);})
             res.send(arr)
         }).catch(err => res.status(400).json('Error: ' + err))
         
@@ -44,11 +46,13 @@ router.route('/*').get((req, res, next)=>{
             return [obj , arr , fieldname]
         }
 
-        let obj = unpack(p.slice(1));
+        let obj = unpack(p);
         
         let filters = {
             select: obj[0],
         }
+
+        console.log(filters)
 
         RESTful.Get(collection, filters).then((nodes) => { //de dupes the nested query result
             let arr = []                                   //discarding null sub objects
