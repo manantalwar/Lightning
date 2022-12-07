@@ -18,16 +18,18 @@ function takeIntoAccountDaylightSavings(localTimeString){
         return date;
     }
     // Get time zone offset for NY, USA
-    const getEstOffset = () => {
+    const getEstOffset = (today) => {
         const stdTimezoneOffset = () => {
             var jan = new Date(0, 1)
             var jul = new Date(6, 1)
             return Math.max(jan.getTimezoneOffset(), jul.getTimezoneOffset())
         }
 
-        var today = new Date()
+       // var today = new Date()
+       
         
         const isDstObserved = (today) => {
+           // console.log("Today is : "+today)
             return today.getTimezoneOffset() < stdTimezoneOffset()
         }
 
@@ -40,57 +42,51 @@ function takeIntoAccountDaylightSavings(localTimeString){
     // convert to msec since Jan 1 1970
     //const d = new Date()
   
-    const d=getstringToDate(localTimeString);
+    const dat = getstringToDate(localTimeString);
     //const d=new Date(2022,11,06, 1);
-    const localTime = d.getTime()
+    const localTime = dat.getTime()
     // obtain local UTC offset and convert to msec
-    const localOffset = d.getTimezoneOffset() * 60 * 1000
+    const localOffset = dat.getTimezoneOffset() * 60 * 1000
 
     // obtain UTC time in msec
     const utcTime = localTime + localOffset
 
     // obtain and add destination's UTC time offset
-    const estOffset = getEstOffset()
+    const estOffset = getEstOffset(dat)
     const usa = utcTime + (60 * 60 * 1000 * estOffset)
 
     // convert msec value to date string
     const nd = new Date(usa)
-
-    
-
-
-    
-    console.log(nd.getTime())
     return nd;
 }
 
 // takeIntoAccountDaylightSavings('17-JUL-2020 01')
-d1 = takeIntoAccountDaylightSavings('06-Nov-2022 00')
-date3 = takeIntoAccountDaylightSavings('06-Nov-2022 01')
-date4 = takeIntoAccountDaylightSavings('06-Nov-2022 02')
-date5 = takeIntoAccountDaylightSavings('06-Nov-2022 03')
-d2 = takeIntoAccountDaylightSavings('06-Nov-2022 04')
+let d1 = takeIntoAccountDaylightSavings('06-Nov-2022 00')
+let date3 = takeIntoAccountDaylightSavings('06-Nov-2022 01')
+let date4 = takeIntoAccountDaylightSavings('06-Nov-2022 02')
+let date5 = takeIntoAccountDaylightSavings('06-Nov-2022 03')
+let d2 = takeIntoAccountDaylightSavings('06-Nov-2022 04')
 console.log("Diff1: %d", date5.getTime() - date4.getTime())
 console.log("Diff2: %d", date4.getTime() - date3.getTime())
 console.log(d1)
+console.log(date2)
 console.log(date3)
 console.log(date4)
 console.log(date5)
-console.log(d2)
 
-date7 = takeIntoAccountDaylightSavings('13-Mar-2022 00')
+let date7 = takeIntoAccountDaylightSavings('13-Mar-2022 00')
 // These next 3 dates display the same time, but why?
-date0 = takeIntoAccountDaylightSavings('13-Mar-2022 01') 
-date1 = takeIntoAccountDaylightSavings('13-Mar-2022 02')
-date2 = takeIntoAccountDaylightSavings('13-Mar-2022 03')
+let date0 = takeIntoAccountDaylightSavings('13-Mar-2022 01') 
+let date1 = takeIntoAccountDaylightSavings('13-Mar-2022 02')
+let date2 = takeIntoAccountDaylightSavings('13-Mar-2022 03')
 console.log(date0)
 console.log(date1)
 console.log(date2)
 
 // These next 3 dates display the same time, but why?
-date9 = takeIntoAccountDaylightSavings('14-Mar-2021 01') 
-date10 = takeIntoAccountDaylightSavings('14-Mar-2021 02')
-date11 = takeIntoAccountDaylightSavings('14-Mar-2021 03')
+let date9 = takeIntoAccountDaylightSavings('14-Mar-2021 01') 
+let date10 = takeIntoAccountDaylightSavings('14-Mar-2021 02')
+let date11 = takeIntoAccountDaylightSavings('14-Mar-2021 03')
 console.log(date9)
 console.log(date10)
 console.log(date11)
