@@ -3,7 +3,7 @@ import './UC2.css'
 import {aggregateNodes} from './getFromServer.mjs'
 import { useLocation } from "react-router-dom"
 import { useEffect, useState } from 'react'
-import {DataTable, PeroidButton} from './Graphs.js'
+import {DataTable, PeroidButton, LineChart} from './Graphs.js'
 
 const UC2 = (props) => {
 
@@ -109,9 +109,13 @@ const UC2 = (props) => {
                         <DataTable period={period} data={data} metric={metric} group={groupby} />
                     </div>
                     <br />
+
+                    <div className = 'graph'>
+                            <LineChart height={95} data={data} metric={metric}/>
+                    </div>
+
                 </div>
             </div>
-
                 {/* <div className="values">{nodes?.map((node) => (JSON.stringify(node)))}</div>     */}
         </div>
     )

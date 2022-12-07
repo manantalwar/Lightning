@@ -4,8 +4,7 @@ import './Validate.css'
 import Modal from './Modal'
 import expand from './expand.jpeg'
 import {aggregateNodes, get} from './getFromServer.mjs'
-import { HeatMap, ScatterPlot, Histogram, PeroidButton, DataTable} from './Graphs';
-import LineChart from './Graphs';
+import { HeatMap, ScatterPlot, Histogram, PeroidButton, DataTable, LineChart} from './Graphs';
 
 const Validation = (props) => {
     const page = "Validation"
@@ -201,16 +200,16 @@ const Validation = (props) => {
                 <div className='graphs'>
                     <div className = 'graph'>
                         <div className="expanding"> 
-                            <LineChart height={95} data={nodes}/>
+                            <LineChart height={95} data={nodes} metric={"MW"}/>
                             <button className= "expandpos" onClick={() => setIsOpen1(true)}><img className="expanding" src={expand} alt="expand"/></button>
                             <Modal open={isOpen1} onClose={() => setIsOpen1(false)}>
                                 <div>
-                                    <LineChart height={50} data={nodes}/>
+                                    <LineChart height={50} data={nodes}  metric={"MW"}/>
                                 </div>
                             </Modal>
                         </div>
-
                     </div>
+
                     <div className = 'graph'>
                         <div className="expanding"> 
                         <ScatterPlot height={95} data={nodes}/>

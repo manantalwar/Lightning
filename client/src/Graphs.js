@@ -575,29 +575,37 @@ export function HeatMap (props){
         );
 }
 
-export default function LineChart(props) {
-
+export function LineChart(props) {
     /*
     Have some function receive Data as a Constructor/Parameter
     Format for Specific Graph
     Display
     */
-    const {data, height} = props
+    const {data, height, metric} = props
 
     function grabData(obj){
-        let ret = {set1:[], set2:[]}
+        let newret = [{name: "Actual (" + metric + ") Scenario (1)", data: [], scen: '1', color: "#3333FF"}]
         let cap = 0;
         try{cap = obj.PERIOD_ID.length}catch{cap = 0}
+
         for(let i = 0; i < cap; i++){
-            let toPush = {x: new Date(obj["PERIOD_ID"][i]).getTime(), y:  parseFloat(obj["MW"][i]), z: (obj['PNODE_NAME'][i])}
-            if(obj["SCENARIO_ID"][i] === '1'){
+            let scen = obj["SCENARIO_ID"][i];
+            let pointer = newret.find((elem) => elem.scen === scen);
+            if(pointer === undefined){ pointer = {name: "Forcasted (" + metric + ") Scenario ("+scen+")", data: [], scen: scen, color: "#FF3333"}; newret.push(pointer);}
+            let toPush = {x: new Date(obj["PERIOD_ID"][i]).getTime(), y:  parseFloat(obj[metric][i]), z: (obj['PNODE_NAME'][i])};
+
+            pointer.data.push(toPush);
+
+           /*  if(obj["SCENARIO_ID"][i] === '1'){
                 ret.set1.push(toPush)
             }
             else{   
                 ret.set2.push(toPush)
-            }
+            } */
+
         }
-        return ret;
+        /* return ret; */
+        return newret;
     }
     let dat = grabData(data);
     /* console.log(dat) */
@@ -608,7 +616,7 @@ export default function LineChart(props) {
             type: 'spline'
         },
         title: {
-            text: 'System Demand'
+            text: 'System ('+metric+")"
         },
         subtitle: {
             text: 'Forecasted & Actual'
@@ -649,20 +657,7 @@ export default function LineChart(props) {
         // Define the data points. All series have a dummy year of 1970/71 in order
         // to be compared on the same x axis. Note that in JavaScript, months start
         // at 0 for January, 1 for February etc.
-        series: [
-            {
-                name: "Actual (MW)",
-                data: dat.set1
-                /*[
-                    [Date.UTC(2022, 9, 19, 0, 0), 8250],
-                    [Date.UTC(2022, 9, 19, 1, 0), 7777],
-                    [Date.UTC(2022, 9, 19, 2, 0), 5677],
-                ]*/
-            }, {
-                name: "Forecasted (MW)",
-                data: dat.set2
-            },
-        ]
+        series: dat
     }
 
     const chartComponent = useRef(null);
