@@ -585,13 +585,19 @@ export function LineChart(props) {
 
     function grabData(obj){
         let newret = [{name: "Actual (" + metric + ") Scenario (1)", data: [], scen: '1', color: "#3333FF",  findNearestPointBy:"xy"}]
+        let colors = ["#FF3333", "#16e02b", "#da14e0", "#ebe41a", "#eb13dc"];
+        let colorcount = 0;
         let cap = 0;
         try{cap = obj.PERIOD_ID.length}catch{cap = 0}
 
         for(let i = 0; i < cap; i++){
             let scen = obj["SCENARIO_ID"][i];
             let pointer = newret.find((elem) => elem.scen === scen);
-            if(pointer === undefined){ pointer = {name: "Forcasted (" + metric + ") Scenario ("+scen+")", data: [], scen: scen, color: "#FF3333",  findNearestPointBy:"xy"}; newret.push(pointer);}
+            if(pointer === undefined){ 
+                pointer = {name: "Forcasted (" + metric + ") Scenario ("+scen+")", data: [], scen: scen, color: colors[colorcount],  findNearestPointBy:"xy"};
+                if(colorcount < (colors.length-1)){colorcount+=1;}
+                newret.push(pointer);
+            }
             let toPush = {x: new Date(obj["PERIOD_ID"][i]).getTime(), y:  parseFloat(obj[metric][i]), z: (obj['PNODE_NAME'][i])};
 
             pointer.data.push(toPush);
